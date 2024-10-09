@@ -130,6 +130,7 @@ namespace MaloProduction
             {
                 GUILayout.FlexibleSpace();
 
+                GUI.backgroundColor = Color.red;
                 if (GUILayout.Button("Delete",
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
@@ -137,6 +138,7 @@ namespace MaloProduction
                     DeleteCard();
                     ChangeWindow(WindowState.ManageCardMenu);
                 }
+                GUI.backgroundColor = Color.white;
 
                 if (GUILayout.Button("Back",
                     GUILayout.Height(50),
@@ -155,6 +157,7 @@ namespace MaloProduction
             if (AssetDatabase.DeleteAsset(pathCardToDelete))
             {
                 print("Card delete");
+                allCards.RemoveAt(indexCardToModify);
             }
         }
     }
