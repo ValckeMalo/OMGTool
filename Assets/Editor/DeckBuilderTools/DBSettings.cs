@@ -5,35 +5,35 @@ namespace MaloProduction
 {
     public partial class DeckBuilderTools : EditorWindow
     {
-        Texture2D text;
-
-        private void UpdateOptionsMenu()
+        private void UpdateSettings()
         {
-            DrawHeaderOptionsMenu();
-            DrawOptionSprite();
+            HeaderSettings();
+            SettingsSpriteField();
         }
 
-        private void DrawHeaderOptionsMenu()
+        private void HeaderSettings()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
-                EditorGUILayout.LabelField("Options",
+                //Title
+                EditorGUILayout.LabelField("Settings",
                     new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
                     GUILayout.ExpandWidth(true),
                     GUILayout.MinHeight(30),
                     GUILayout.MaxHeight(70),
                     GUILayout.Height(50));
 
-                if (GUILayout.Button("B",
+                //Button Back
+                if (GUILayout.Button("Back",
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    ChangeWindow(WindowState.MainMenu);
+                    ChangeState(WindowState.ManageCard);
                 }
             }
         }
 
-        private void DrawOptionSprite()
+        private void SettingsSpriteField()
         {
             GUILayout.BeginHorizontal(EditorStyles.helpBox, GUILayout.ExpandHeight(true));
             int index = 0;

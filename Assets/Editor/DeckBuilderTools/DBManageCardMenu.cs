@@ -9,19 +9,13 @@ namespace MaloProduction
         private string projectCardPath = "Assets/ScriptableObjects/Cards";
         private List<CardData> allCards = new List<CardData>();
 
-        private void InitManageCardMenu()
-        {
-            HasAnyCard();
-        }
-
-        private void UpdateManagerCardMenu()
+        private void UpdateManageCard()
         {
             DrawHeaderManageCardMenu();
-            CreateFileNonexistent();
 
             if (allCards.Count > 0)
             {
-                DrawCardsButton();
+                GridCardsButton();
             }
             else
             {
@@ -33,14 +27,16 @@ namespace MaloProduction
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
-                if (GUILayout.Button("R",
+                //refresh all cards button
+                if (GUILayout.Button("Refresh",
                     GUILayout.Height(50),
                     GUILayout.Width(50)
                     ))
                 {
-                    HasAnyCard();
+                    RefreshCardList();
                 }
 
+                //Title
                 EditorGUILayout.LabelField("Manage Cards",
                     new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
                     GUILayout.ExpandWidth(true),
@@ -48,17 +44,18 @@ namespace MaloProduction
                     GUILayout.MaxHeight(70),
                     GUILayout.Height(50));
 
-                if (GUILayout.Button("B",
+                //options button
+                if (GUILayout.Button("Options",
                     GUILayout.Height(50),
                     GUILayout.Width(50)
                     ))
                 {
-                    ChangeWindow(WindowState.MainMenu);
+                    ChangeState(WindowState.Settings);
                 }
             }
         }
 
-        private void HasAnyCard()
+        private void RefreshCardList()
         {
             string[] assetPaths = AssetDatabase.FindAssets("t:CardData", new[] { projectCardPath });
             allCards.Clear();
@@ -78,7 +75,7 @@ namespace MaloProduction
             }
         }
 
-        private void DrawCardsButton()
+        private void GridCardsButton()
         {
             float windowWidth = EditorGUIUtility.currentViewWidth;
             float buttonWidth = 85f;
@@ -105,9 +102,9 @@ namespace MaloProduction
 
                 //draw invisible button on the top of the preview and name of the card
                 Rect temp = GUILayoutUtility.GetLastRect();
-                if (GUI.Button(temp, "", new GUIStyle { }))
+                if (GUI.Button(temp, "", transparentButton))
                 {
-                    ChangeWindow(WindowState.ModifyCard);
+                    ChangeState(WindowState.ModifyCard);
                     UpdateSerializedCard(allCards[i], i);
                 }
 

@@ -5,7 +5,7 @@ namespace MaloProduction
 {
     public partial class DeckBuilderTools : EditorWindow
     {
-        private SerializedObject soCard;
+        private SerializedObject currentCard;
         private SerializedProperty propCardName;
         private SerializedProperty propCardValue;
         private SerializedProperty propCardWakfu;
@@ -19,18 +19,18 @@ namespace MaloProduction
 
         private void UpdateModifyCard()
         {
-            DrawHeaderModifyCard();
+            HeaderModifyCard();
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
-                DrawCardData();
-                PreviewCard(soCard.targetObject as CardData, 500);
+                CardDataField();
+                PreviewCard(currentCard.targetObject as CardData, 500);
             }
 
             DrawToolBar();
         }
 
-        private void DrawHeaderModifyCard()
+        private void HeaderModifyCard()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
@@ -59,21 +59,22 @@ namespace MaloProduction
 
         private void UpdateSerializedCard(CardData cardData, int index)
         {
-            soCard = new SerializedObject(cardData);
-            propCardName = soCard.FindProperty("cardName");
-            propCardValue = soCard.FindProperty("cardValue");
-            propCardWakfu = soCard.FindProperty("wakfuCost");
-            propCardIcon = soCard.FindProperty("iconCard");
-            propCardType = soCard.FindProperty("cardType");
-            propCardTarget = soCard.FindProperty("target");
-            propCardSpells = soCard.FindProperty("spells");
+            currentCard = new SerializedObject(cardData);
+
+            propCardName = currentCard.FindProperty("cardName");
+            propCardValue = currentCard.FindProperty("cardValue");
+            propCardWakfu = currentCard.FindProperty("wakfuCost");
+            propCardIcon = currentCard.FindProperty("iconCard");
+            propCardType = currentCard.FindProperty("cardType");
+            propCardTarget = currentCard.FindProperty("target");
+            propCardSpells = currentCard.FindProperty("spells");
 
             indexCardToModify = index;
         }
 
-        private void DrawCardData()
+        private void CardDataField()
         {
-            soCard.Update();
+            currentCard.Update();
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
                 //CARD NAME
@@ -120,7 +121,7 @@ namespace MaloProduction
                 }
                 EditorGUILayout.EndScrollView();
             }
-            soCard.ApplyModifiedProperties();
+            currentCard.ApplyModifiedProperties(); // save
             LooseFocus();
         }
 
@@ -131,20 +132,23 @@ namespace MaloProduction
                 GUILayout.FlexibleSpace();
 
                 GUI.backgroundColor = Color.red;
+                //Delete card button
                 if (GUILayout.Button("Delete",
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
+                    //TODO add pop "Are you sure" prio passable
                     DeleteCard();
-                    ChangeWindow(WindowState.ManageCardMenu);
+                    ChangeState(WindowState.ManageCard);
                 }
                 GUI.backgroundColor = Color.white;
 
+                //back to all card
                 if (GUILayout.Button("Back",
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    ChangeWindow(WindowState.ManageCardMenu);
+                    ChangeState(WindowState.ManageCard);
                 }
             }
         }
@@ -156,7 +160,6 @@ namespace MaloProduction
 
             if (AssetDatabase.DeleteAsset(pathCardToDelete))
             {
-                print("Card delete");
                 allCards.RemoveAt(indexCardToModify);
             }
         }

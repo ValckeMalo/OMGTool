@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -6,20 +7,33 @@ namespace MaloProduction
 {
     public partial class DeckBuilderTools : EditorWindow
     {
+        #region Enum
+        private enum MessageType
+        {
+            Message,
+            Warning,
+            Error,
+        }
         private enum WindowState
         {
-            MainMenu,
-            ManageCardMenu,
-            CreateCard,
-            ModifyCard,
-            OptionMenu,
+            ManageCard = 0,
+            ModifyCard = 1,
+            Settings = 2,
         }
+        #endregion
 
-        private WindowState currentWindow = WindowState.MainMenu;
+        private static DeckBuilderTools window;
+
+        private WindowState state = WindowState.ManageCard;
+
         private string cardPath = Application.dataPath + "/ScriptableObjects/Cards";
         private string SOPath = Application.dataPath + "/ScriptableObjects";
+
         private CardOptions soCardOptions;
-        private static DeckBuilderTools window;
+
+        private Texture2D hoverButtonTexture;
+        private GUIStyle transparentButton;
+        private Action[] stateFct = new Action[3];
 
         [MenuItem("Tools/Deck Builder")]
         public static void ShowWindow()
@@ -31,59 +45,35 @@ namespace MaloProduction
         private void LoadAssets()
         {
             soCardOptions = Resources.Load("CardOptions") as CardOptions;
-        }
+            hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
 
-        private void ChangeWindow(WindowState nextWindow)
-        {
-            currentWindow = nextWindow;
+            transparentButton = new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } };
 
-            if (currentWindow == WindowState.ManageCardMenu)
-            {
-                InitManageCardMenu();
-            }
-        }
+            RefreshCardList();
 
-        public void UpdateWindow()
-        {
-            switch (currentWindow)
-            {
-                case WindowState.MainMenu:
-                    UpdateMainMenu();
-                    break;
-                case WindowState.ManageCardMenu:
-                    UpdateManagerCardMenu();
-                    break;
-                case WindowState.CreateCard:
-                    break;
-                case WindowState.ModifyCard:
-                    UpdateModifyCard();
-                    break;
-                case WindowState.OptionMenu:
-                    UpdateOptionsMenu();
-                    break;
-
-                default:
-                    break;
-            }
+            stateFct[0] = UpdateManageCard;
+            stateFct[1] = UpdateModifyCard;
+            stateFct[2] = UpdateSettings;
         }
 
         private void OnGUI()
         {
-            UpdateWindow();
+            stateFct[(int)state]();
         }
 
-        private bool CheckFileExist(string path)
+        private void ChangeState(WindowState nextState)
+        {
+            state = nextState;
+
+            if (state == WindowState.ManageCard)
+            {
+                RefreshCardList();
+            }
+        }
+
+        private bool IsFileExist(string path)
         {
             return Directory.Exists(path);
-        }
-
-        //create the file 
-        private void CreateFileNonexistent()
-        {
-            if (!CheckFileExist(SOPath) && !CheckFileExist(cardPath))
-            {
-                Directory.CreateDirectory(cardPath);
-            }
         }
 
         private void LooseFocus()
@@ -111,13 +101,6 @@ namespace MaloProduction
                 default:
                     break;
             }
-        }
-
-        private enum MessageType
-        {
-            Message,
-            Warning,
-            Error,
         }
     }
 }
