@@ -9,9 +9,14 @@ namespace MaloProduction
         private string projectCardPath = "Assets/ScriptableObjects/Cards";
         private List<CardData> allCards = new List<CardData>();
 
+        //Filter variable
+        private string nameFilter = string.Empty;
+        private CardTypeFilter typeFilter = CardTypeFilter.None;
+
         private void UpdateManageCard()
         {
-            DrawHeaderManageCardMenu();
+            HeaderManageCardMenu();
+            ToolBarMangeCard();
 
             if (allCards.Count > 0)
             {
@@ -23,7 +28,89 @@ namespace MaloProduction
             }
         }
 
-        private void DrawHeaderManageCardMenu()
+        private enum CardTypeFilter
+        {
+            Attack,
+            Defense,
+            Boost,
+            Neutral,
+            GodPositive,
+            GodNegativ,
+            Finisher,
+            None,
+        }
+
+        private void ToolBarMangeCard()
+        {
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.MaxHeight(50f)))
+            {
+                //Title
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
+                {
+                    EditorGUILayout.LabelField("Filter : ",
+                        new GUIStyle(EditorStyles.boldLabel) { fontSize = 15, alignment = TextAnchor.MiddleLeft },
+                        GUILayout.ExpandHeight(true),
+                        GUILayout.Width(50f));
+                }
+
+                //name Filter
+                using (new EditorGUILayout.VerticalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
+                    {
+                        EditorGUILayout.LabelField("Name : ", GUILayout.MaxWidth(50f));
+                        nameFilter = EditorGUILayout.TextField(nameFilter);
+                    }
+                    GUILayout.FlexibleSpace();
+                }
+
+                //type filter
+                using (new EditorGUILayout.VerticalScope())
+                {
+                    GUILayout.FlexibleSpace();
+
+                    using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
+                    {
+                        EditorGUILayout.LabelField("Type : ", GUILayout.MaxWidth(50f));
+                        typeFilter = (CardTypeFilter)EditorGUILayout.EnumPopup(typeFilter);
+                    }
+                    GUILayout.FlexibleSpace();
+                }
+
+                //other filter
+                using (new EditorGUILayout.VerticalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
+                    {
+                        EditorGUILayout.LabelField("Other : ", GUILayout.MaxWidth(50f));
+                        //EditorGUILayout.DropdownButton();
+                    }
+                    GUILayout.FlexibleSpace();
+                }
+                GUILayout.FlexibleSpace();
+
+                CreateCardButton();
+                LooseFocus();
+            }
+        }
+
+        private void CreateCardButton()
+        {
+            //create card button
+            GUI.contentColor = Color.green;
+            if (GUILayout.Button("+", new GUIStyle(GUI.skin.button) { fontSize = 40, alignment = TextAnchor.MiddleCenter },
+                GUILayout.Height(50),
+                GUILayout.Width(50)
+                ))
+            {
+                print("ouioui", MessageType.Error);
+            }
+            GUI.contentColor = Color.white;
+        }
+
+        private void HeaderManageCardMenu()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {

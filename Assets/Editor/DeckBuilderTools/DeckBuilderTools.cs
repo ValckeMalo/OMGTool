@@ -33,7 +33,6 @@ namespace MaloProduction
 
         private Texture2D hoverButtonTexture;
         private GUIStyle transparentButton;
-        private Action[] stateFct = new Action[3];
 
         [MenuItem("Tools/Deck Builder")]
         public static void ShowWindow()
@@ -50,15 +49,24 @@ namespace MaloProduction
             transparentButton = new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } };
 
             RefreshCardList();
-
-            stateFct[0] = UpdateManageCard;
-            stateFct[1] = UpdateModifyCard;
-            stateFct[2] = UpdateSettings;
         }
 
         private void OnGUI()
         {
-            stateFct[(int)state]();
+            switch (state)
+            {
+                case WindowState.ManageCard:
+                    UpdateManageCard();
+                    break;
+                case WindowState.ModifyCard:
+                    UpdateModifyCard();
+                    break;
+                case WindowState.Settings:
+                    UpdateSettings();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void ChangeState(WindowState nextState)
