@@ -6,8 +6,44 @@ namespace MaloProduction
 {
     public partial class DeckBuilderTools : EditorWindow
     {
+        private enum Comparison
+        {
+            GreaterOrEqual,
+            Equal,
+            LessOrEqual,
+        }
+
         private string projectCardPath = "Assets/ScriptableObjects/Cards";
         private List<CardData> allCards = new List<CardData>();
+        private Filter[] filters = new Filter[4]
+            {
+                new Filter(new List<FilterElement>()
+                {
+                    new FilterElement("Wakfu Cost"),
+                    new FilterElement(Comparison.Equal),
+                    new FilterElement(0,0,6)
+                }),
+
+                new Filter(new List<FilterElement>()
+                {
+                    new FilterElement("Value Card"),
+                    new FilterElement(Comparison.Equal),
+                    new FilterElement(0),
+                }),
+
+                new Filter(new List<FilterElement>()
+                {
+                    new FilterElement("Target"),
+                    new FilterElement(Target.FirstEnemy),
+                }),
+
+                new Filter(new List<FilterElement>()
+                {
+                    new FilterElement(Spells.Poison),
+                    new FilterElement(Comparison.Equal),
+                    new FilterElement(0),
+                }),
+            };
 
         //Filter variable
         private string nameFilter = string.Empty;
@@ -26,6 +62,8 @@ namespace MaloProduction
             {
                 NoneCardCreatedTitle();
             }
+
+            GUI.enabled = true;
         }
 
         private enum CardTypeFilter
@@ -40,8 +78,14 @@ namespace MaloProduction
             None,
         }
 
+        private bool isCLicked = false;
+        private bool toggle = false;
+        //private Spells spells = Spells.Poison;
+        //private int amountSpell = 0;
+
         private void ToolBarMangeCard()
         {
+            //tool bar scope
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.MaxHeight(50f)))
             {
                 //Title
@@ -60,7 +104,7 @@ namespace MaloProduction
                     using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
                     {
                         EditorGUILayout.LabelField("Name : ", GUILayout.MaxWidth(50f));
-                        nameFilter = EditorGUILayout.TextField(nameFilter);
+                        nameFilter = EditorGUILayout.TextField(nameFilter, GUILayout.MaxWidth(150f));
                     }
                     GUILayout.FlexibleSpace();
                 }
@@ -73,7 +117,7 @@ namespace MaloProduction
                     using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
                     {
                         EditorGUILayout.LabelField("Type : ", GUILayout.MaxWidth(50f));
-                        typeFilter = (CardTypeFilter)EditorGUILayout.EnumPopup(typeFilter);
+                        typeFilter = (CardTypeFilter)EditorGUILayout.EnumPopup(typeFilter, GUILayout.MaxWidth(150f));
                     }
                     GUILayout.FlexibleSpace();
                 }
@@ -85,14 +129,69 @@ namespace MaloProduction
                     using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
                     {
                         EditorGUILayout.LabelField("Other : ", GUILayout.MaxWidth(50f));
-                        //EditorGUILayout.DropdownButton();
+
+                        string label = "No Filters Selected";
+                        if (toggle)
+                        {
+                            label = "One Filter Selected";
+                        }
+
+                        if (GUILayout.Button(label,
+                                             new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter, fontSize = 10, fontStyle = FontStyle.Italic },
+                                             GUILayout.MaxWidth(300f)))
+                        {
+                            isCLicked = isCLicked.Invert();
+                        }
+
                     }
+
+                    if (isCLicked)
+                    {
+                        Rect lastRect = GUILayoutUtility.GetLastRect();
+                        float yMarginDropdown = 5f;
+                        float heightDropdown = 100f;
+                        Vector2 dropdownPosition = new Vector2(lastRect.x, lastRect.y + lastRect.height + yMarginDropdown);
+                        Vector2 dropdownSize = new Vector2(lastRect.width, heightDropdown);
+                        Rect dropdownFilterRect = new Rect(dropdownPosition, dropdownSize);
+
+                        using (new GUI.GroupScope(dropdownFilterRect, EditorStyles.helpBox))
+                        {
+                            Rect filterRect = new Rect(Vector2.zero, new Vector2(dropdownSize.x, 20f));
+
+                            foreach (Filter filter in filters)
+                            {
+                                filter.FilterBox(filterRect, 5f);
+                                filterRect.position = new Vector2(filterRect.position.x, filterRect.position.y + 20f);
+                            }
+
+                            //Vector2 marginBorder = new Vector2(5f, 5f);
+                            //Rect toggleRect = new Rect(Vector2.zero + marginBorder, Vector2.one * 20f);
+                            //toggle = GUI.Toggle(toggleRect, toggle, GUIContent.none);
+
+                            //GUI.enabled = toggle;
+
+                            //Vector2 halfSize = new Vector2((dropdownSize.x - toggleRect.width) / 2 - marginBorder.x * 2, toggleRect.height);
+
+                            //Rect ValueRect = new Rect(toggleRect.position + new Vector2(toggleRect.width, 0f), halfSize);
+                            //spells = (Spells)EditorGUI.EnumPopup(ValueRect, spells);
+
+                            //Rect AmountRect = new Rect(ValueRect.position + new Vector2(ValueRect.width + marginBorder.x, 0f), halfSize);
+                            //amountSpell = EditorGUI.IntField(AmountRect, amountSpell);
+                        }
+
+                        //GUI.enabled = true;
+                    }
+
                     GUILayout.FlexibleSpace();
                 }
                 GUILayout.FlexibleSpace();
 
                 CreateCardButton();
-                LooseFocus();
+                if (LooseFocus())
+                {
+                    isCLicked = false;
+                }
+                GUI.enabled = !isCLicked;
             }
         }
 

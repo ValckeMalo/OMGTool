@@ -84,13 +84,42 @@ namespace MaloProduction
             return Directory.Exists(path);
         }
 
-        private void LooseFocus()
+        private bool LooseFocus()
         {
             if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
             {
                 GUI.FocusControl(null);
                 Repaint();
+                return true;
             }
+            return false;
+        }
+
+        private enum ClickEvent
+        {
+            InsideBox,
+            OutsideBox,
+        }
+
+        private bool LooseFocus(ClickEvent clickEvent, Rect dimensionRect)
+        {
+            if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
+            {
+                GUI.FocusControl(null);
+                Repaint();
+
+                if (clickEvent == ClickEvent.OutsideBox && !IsPointInsideBox(Event.current.mousePosition, dimensionRect))
+                {
+                    print(true);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsPointInsideBox(Vector2 pointPosition, Rect box)
+        {
+            return box.Contains(pointPosition);
         }
 
         private void print(string message, MessageType messageType = MessageType.Message)
@@ -110,5 +139,51 @@ namespace MaloProduction
                     break;
             }
         }
+
+        private void print(bool @bool, MessageType messageType = MessageType.Message)
+        {
+            string message = @bool.ToString();
+            switch (messageType)
+            {
+                case MessageType.Message:
+                    Debug.Log(message);
+                    break;
+                case MessageType.Warning:
+                    Debug.LogWarning(message);
+                    break;
+                case MessageType.Error:
+                    Debug.LogError(message);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void print(Rect rect, MessageType messageType = MessageType.Message)
+        {
+            string message = rect.ToString();
+            switch (messageType)
+            {
+                case MessageType.Message:
+                    Debug.Log(message);
+                    break;
+                case MessageType.Warning:
+                    Debug.LogWarning(message);
+                    break;
+                case MessageType.Error:
+                    Debug.LogError(message);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+public static class MyExtension
+{
+    public static bool Invert(this bool value)
+    {
+        return !value;
     }
 }
