@@ -177,7 +177,7 @@ namespace MaloProduction
                 GUILayout.Height(50),
                 GUILayout.Width(50)))
             {
-                print("ouioui", MessageType.Error);
+                Debug.Log("ouioui");
             }
             GUI.contentColor = Color.white;
         }
@@ -261,7 +261,7 @@ namespace MaloProduction
 
                 //draw invisible button on the top of the preview and name of the card
                 Rect temp = GUILayoutUtility.GetLastRect();
-                if (GUI.Button(temp, "", transparentButton))
+                if (GUI.Button(temp, "", new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } }))
                 {
                     ChangeState(WindowState.ModifyCard);
                     UpdateSerializedCard(allCards[i], i);
