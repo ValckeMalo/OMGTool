@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
-using UnityEngine;
-using static UnityEditor.Rendering.FilterWindow;
-
 namespace MaloProduction
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEditor;
+    using UnityEngine;
+
     public partial class DeckBuilderTools : EditorWindow
     {
         //Filter Box
@@ -51,16 +50,7 @@ namespace MaloProduction
         {
             HeaderManageCardMenu();
             ToolBarMangeCard();
-
-            if (cardLibrary.cards.Count > 0)
-            {
-                GridCardsButton(GetFilteredCard());
-            }
-            else
-            {
-                NoneCardCreatedTitle();
-            }
-
+            UpdateBody();
             GUI.enabled = true;
         }
 
@@ -184,6 +174,27 @@ namespace MaloProduction
             GUI.contentColor = Color.white;
         }
 
+        #region Body
+        private void UpdateBody()
+        {
+            if (cardLibrary.cards.Count > 0)
+            {
+                List<CardData> filteredList = GetFilteredCard();
+
+                if (filteredList.Count > 0)
+                {
+                    GridCardsButton(filteredList);
+                }
+                else
+                {
+                    NoCardsFound();
+                }
+            }
+            else
+            {
+                NoCardsCreated();
+            }
+        }
         private void GridCardsButton(List<CardData> listFiltered)
         {
             float windowWidth = EditorGUIUtility.currentViewWidth;
@@ -223,16 +234,27 @@ namespace MaloProduction
             GUILayout.EndHorizontal();
         }
 
-        private void NoneCardCreatedTitle()
+        private void NoCardsCreated()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
-                EditorGUILayout.LabelField("None Card Created", new GUIStyle(GUI.skin.label)
+                EditorGUILayout.LabelField("No Cards Created", new GUIStyle(GUI.skin.label)
                 { alignment = TextAnchor.MiddleCenter, fontSize = 25, fontStyle = FontStyle.Bold },
                 GUILayout.ExpandHeight(true),
                 GUILayout.ExpandWidth(true));
             }
         }
+        private void NoCardsFound()
+        {
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
+            {
+                EditorGUILayout.LabelField("No Cards Found", new GUIStyle(GUI.skin.label)
+                { alignment = TextAnchor.MiddleCenter, fontSize = 25, fontStyle = FontStyle.Bold },
+                GUILayout.ExpandHeight(true),
+                GUILayout.ExpandWidth(true));
+            }
+        }
+        #endregion
 
         #region Filter Fonction
         private List<CardData> GetFilteredCard()
