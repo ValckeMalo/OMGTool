@@ -15,7 +15,7 @@ namespace MaloProduction
         private SerializedProperty propCardTarget;
         private SerializedProperty propCardSpells;
 
-        private int indexCardToModify;
+        private int indexCard;
         private Vector2 scrollPosition;
 
         private void UpdateModifyCard()
@@ -28,7 +28,7 @@ namespace MaloProduction
                 PreviewCard(currentCard.targetObject as CardData, 500);
             }
 
-            DrawToolBar();
+            ModifyCardToolBar();
         }
 
         #region Header
@@ -36,13 +36,15 @@ namespace MaloProduction
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
+                //Previous Card
                 if (GUILayout.Button("Previous",
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    //GetPreviousCard();
+                    NavigateToCard(CardNavigation.Previous);
                 }
 
+                //Title
                 EditorGUILayout.LabelField(propCardName.stringValue,
                     new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
                     GUILayout.ExpandWidth(true),
@@ -50,13 +52,38 @@ namespace MaloProduction
                     GUILayout.MaxHeight(70),
                     GUILayout.Height(50));
 
+                //Next Card
                 if (GUILayout.Button("Next",
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    //GetNextCard();
+                    NavigateToCard(CardNavigation.Next);
                 }
             }
+        }
+
+        private void NavigateToCard(CardNavigation direction)
+        {
+            int minIndex = 0;
+            int maxIndex = cardLibrary.cards.Count - 1;
+            if (direction == CardNavigation.Previous)
+            {
+                indexCard--;
+                if (indexCard < 0)
+                {
+                    indexCard = maxIndex;
+                }
+            }
+            else
+            {
+                indexCard++;
+                if (indexCard > maxIndex)
+                {
+                    indexCard = minIndex;
+                }
+            }
+
+            UpdateSerializedCard(indexCard);
         }
         #endregion
 
@@ -116,7 +143,7 @@ namespace MaloProduction
         #endregion
 
         #region Tool Bar
-        private void DrawToolBar()
+        private void ModifyCardToolBar()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
             {
@@ -146,19 +173,19 @@ namespace MaloProduction
 
         private void DeleteCard()
         {
-            CardData cardToDelete = cardLibrary.cards[indexCardToModify];
+            CardData cardToDelete = cardLibrary.cards[indexCard];
             string pathCardToDelete = AssetDatabase.GetAssetPath(cardToDelete);
 
             if (AssetDatabase.DeleteAsset(pathCardToDelete))
             {
-                cardLibrary.cards.RemoveAt(indexCardToModify);
+                cardLibrary.cards.RemoveAt(indexCard);
             }
         }
         #endregion
 
-        private void UpdateSerializedCard(CardData cardData, int index)
+        private void UpdateSerializedCard(int indexCard)
         {
-            currentCard = new SerializedObject(cardData);
+            currentCard = new SerializedObject(cardLibrary.cards[indexCard]);
 
             propCardName = currentCard.FindProperty("cardName");
             propCardValue = currentCard.FindProperty("cardValue");
@@ -168,7 +195,7 @@ namespace MaloProduction
             propCardTarget = currentCard.FindProperty("target");
             propCardSpells = currentCard.FindProperty("spells");
 
-            indexCardToModify = index;
+            this.indexCard = indexCard;
         }
     }
 }

@@ -36,6 +36,11 @@ namespace MaloProduction
             AllEnemy = Target.AllEnemy,
             Me = Target.Me,
         }
+        private enum CardNavigation
+        {
+            Previous,
+            Next,
+        }
         #endregion
 
         //Window
