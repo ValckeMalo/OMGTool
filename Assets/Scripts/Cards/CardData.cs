@@ -15,7 +15,7 @@ public class CardData : ScriptableObject
     public CardType cardType;
     public Target target;
 
-    public List<SpellsBonus> spells;
+    public List<SpellsBonus> spells = new List<SpellsBonus>();
 
     public int wakfuCost;
     public int cardValue;

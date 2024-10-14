@@ -49,6 +49,9 @@ namespace MaloProduction
         private CardLibrary cardLibrary;
         private Texture2D hoverButtonTexture;
 
+        //directory
+        static string pathCard = "Assets/ScriptableObjects/Cards/";
+
         [MenuItem("Tools/Deck Builder")]
         public static void ShowWindow()
         {

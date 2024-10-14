@@ -88,13 +88,17 @@ namespace MaloProduction
                 GUILayout.Height(50),
                 GUILayout.Width(50)))
             {
-                AddCard();
+                CreateACard();
             }
             GUI.contentColor = Color.white;
         }
-        private void AddCard()
+        private void CreateACard()
         {
-            
+            ScriptableObject newCard = ScriptableObject.CreateInstance(typeof(CardData));
+            (newCard as CardData).cardName = "NewCard";
+            string newCardName = "NewCard" + ExtensionMethods.GenerateRandomString(10);
+            AssetDatabase.CreateAsset(newCard, pathCard + newCardName + ".asset");
+            cardLibrary.cards.Add(newCard as CardData);
         }
         #endregion
 
