@@ -14,6 +14,7 @@ namespace MaloProduction
         }
         private enum CardTypeFilter
         {
+            None,
             Attack = CardType.Attack,
             Defense = CardType.Defense,
             Boost = CardType.Boost,
@@ -21,7 +22,6 @@ namespace MaloProduction
             GodPositive = CardType.GodPositive,
             GodNegative = CardType.GodNegative,
             Finisher = CardType.Finisher,
-            None,
         }
         private enum Comparison
         {

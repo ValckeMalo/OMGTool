@@ -49,7 +49,7 @@ namespace MaloProduction
         private void UpdateManageCard()
         {
             HeaderManageCardMenu();
-            ToolBarMangeCard();
+            FilterBar();
             UpdateBody();
             GUI.enabled = true;
         }
@@ -77,9 +77,10 @@ namespace MaloProduction
             }
         }
 
-        private void ToolBarMangeCard()
+        #region Filter Bar
+        private void FilterBar()
         {
-            //tool bar scope
+            //Filter bar scope
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.MaxHeight(50f)))
             {
                 //Title
@@ -150,15 +151,59 @@ namespace MaloProduction
                 }
                 GUILayout.FlexibleSpace();
 
+                ResetFilterButton();
                 AddCardButton();
 
                 if (LooseFocus())
                 {
                     isFilterBoxOpen = false;
                 }
-
                 GUI.enabled = !isFilterBoxOpen;
             }
+        }
+
+        private void ResetFilterButton()
+        {
+            if (GUILayout.Button("Reset Filter", GUILayout.MaxWidth(50f), GUILayout.ExpandHeight(true)))
+            {
+                ResetFilter();
+            }
+        }
+        private void ResetFilter()
+        {
+            nameFilter = string.Empty;
+            typeFilter = CardTypeFilter.None;
+
+            filter = new Filter
+                        (new List<FilterLine>()
+                            {
+                                new FilterLine(new List<FilterElement>()
+                                {
+                                    new FilterElement("Wakfu Cost :"),
+                                    new FilterElement(Comparison.Equal),
+                                    new FilterElement(0,-6,6)
+                                }),
+
+                                new FilterLine(new List<FilterElement>()
+                                {
+                                    new FilterElement("Value Card :"),
+                                    new FilterElement(Comparison.Equal),
+                                    new FilterElement(0),
+                                }),
+
+                                new FilterLine(new List<FilterElement>()
+                                {
+                                    new FilterElement("Target :"),
+                                    new FilterElement(TargetFilter.FirstEnemy),
+                                }),
+
+                                new FilterLine(new List<FilterElement>()
+                                {
+                                    new FilterElement(Spells.Poison),
+                                    new FilterElement(Comparison.Equal),
+                                    new FilterElement(0),
+                                }),
+                            });
         }
 
         private void AddCardButton()
@@ -169,10 +214,15 @@ namespace MaloProduction
                 GUILayout.Height(50),
                 GUILayout.Width(50)))
             {
-                Debug.Log("ouioui");
+                AddCard();
             }
             GUI.contentColor = Color.white;
         }
+        private void AddCard()
+        {
+            Debug.Log("ouioui");
+        }
+        #endregion
 
         #region Body
         private void UpdateBody()
