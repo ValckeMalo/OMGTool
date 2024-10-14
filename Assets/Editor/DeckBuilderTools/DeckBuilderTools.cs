@@ -12,13 +12,31 @@ namespace MaloProduction
             ModifyCard = 1,
             Settings = 2,
         }
+        private enum CardTypeFilter
+        {
+            Attack = CardType.Attack,
+            Defense = CardType.Defense,
+            Boost = CardType.Boost,
+            Neutral = CardType.Neutral,
+            GodPositive = CardType.GodPositive,
+            GodNegative = CardType.GodNegative,
+            Finisher = CardType.Finisher,
+            None,
+        }
+        private enum Comparison
+        {
+            GreaterOrEqual,
+            Equal,
+            LessOrEqual,
+        }
         #endregion
 
         private static DeckBuilderTools window;
 
         private WindowState state = WindowState.ManageCard;
 
-        private CardOptions soCardOptions;
+        private CardOptions cardOptions;
+        private CardLibrary cardLibrary;
         private Texture2D hoverButtonTexture;
 
         [MenuItem("Tools/Deck Builder")]
@@ -30,10 +48,9 @@ namespace MaloProduction
 
         private void LoadAssets()
         {
-            soCardOptions = Resources.Load("CardOptions") as CardOptions;
+            cardOptions = Resources.Load("CardOptions") as CardOptions;
             hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
-
-            RefreshCardList();
+            cardLibrary = Resources.Load("CardLibrary") as CardLibrary;
         }
 
         private void OnEnable() => LoadAssets();
@@ -56,15 +73,7 @@ namespace MaloProduction
             }
         }
 
-        private void ChangeState(WindowState nextState)
-        {
-            state = nextState;
-
-            if (state == WindowState.ManageCard)
-            {
-                RefreshCardList();
-            }
-        }
+        private void ChangeState(WindowState nextState) => state = nextState;
 
         private bool LooseFocus()
         {

@@ -7,7 +7,7 @@ namespace MaloProduction
     {
         private void PreviewCard(CardData card,int width)
         {
-            if (soCardOptions == null)
+            if (cardOptions == null)
             {
                 LoadAssets();
             }
@@ -20,7 +20,7 @@ namespace MaloProduction
             Rect scopeRect = GUILayoutUtility.GetLastRect();
             Vector2 centerScope = scopeRect.center;
 
-            Texture2D backgroundTexture = soCardOptions.collectionBgCardTexture[(int)card.cardType].bgCardTexture;
+            Texture2D backgroundTexture = cardOptions.collectionBgCardTexture[(int)card.cardType].bgCardTexture;
             if (backgroundTexture == null)
             {
                 Debug.LogWarning("No background for" + card.cardType.ToString() + " Card");
@@ -52,7 +52,7 @@ namespace MaloProduction
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             ////wakfu icon/////////////////////////////////////////////////////////////////////////////////////////////////
-            Texture2D iconWakfu = soCardOptions.wakfu;
+            Texture2D iconWakfu = cardOptions.wakfu;
             Vector2 iconWakfuSize = new Vector2(backgroundTextureSize.x / 4, backgroundTextureSize.x / 4);
             Vector2 iconWakfuPosition = new Vector2(topRightBackground.x - iconWakfuSize.x - borderBackgroundCard.x, topRightBackground.y + borderBackgroundCard.y);
             Rect iconWakfuRect = new Rect(iconWakfuPosition, iconWakfuSize);
@@ -135,7 +135,7 @@ namespace MaloProduction
             GUI.contentColor = Color.white;
 
             ////Value icon/////////////////////////////////////////////////////////////////////////////////////////////////
-            Texture2D valueIcon = soCardOptions.attack;
+            Texture2D valueIcon = cardOptions.attack;
             Vector2 valueIconSize = new Vector2(backgroundTextureSize.x / 4, backgroundTextureSize.x / 4);
             Vector2 valueIconPosition = new Vector2(valueLabelPosisiton.x + valueLabelSize.x, valueLabelPosisiton.y);
             Rect valueIconRect = new Rect(valueIconPosition, valueIconSize);

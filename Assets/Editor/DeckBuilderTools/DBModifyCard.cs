@@ -38,7 +38,7 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    GetPreviousCard();
+                    //GetPreviousCard();
                 }
 
                 EditorGUILayout.LabelField(propCardName.stringValue,
@@ -52,7 +52,7 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    GetNextCard();
+                    //GetNextCard();
                 }
             }
         }
@@ -155,12 +155,12 @@ namespace MaloProduction
 
         private void DeleteCard()
         {
-            CardData cardToDelete = allCards[indexCardToModify];
-            string pathCardToDelete = AssetDatabase.GetAssetPath(cardToDelete);
+            //CardData cardToDelete = allCards[indexCardToModify];
+            //string pathCardToDelete = AssetDatabase.GetAssetPath(cardToDelete);
 
-            if (AssetDatabase.DeleteAsset(pathCardToDelete))
+            //if (AssetDatabase.DeleteAsset(pathCardToDelete))
             {
-                allCards.RemoveAt(indexCardToModify);
+                //allCards.RemoveAt(indexCardToModify);
             }
         }
     }

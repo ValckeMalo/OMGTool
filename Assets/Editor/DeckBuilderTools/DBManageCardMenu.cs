@@ -6,19 +6,14 @@ namespace MaloProduction
 {
     public partial class DeckBuilderTools : EditorWindow
     {
-        private enum Comparison
-        {
-            GreaterOrEqual,
-            Equal,
-            LessOrEqual,
-        }
-
-        //Define
+        //Filter Box
+        //////Define
         private static float Spacing = 5f;
         private static float HeightFilterBox = 100f;
-
-        private string projectCardPath = "Assets/ScriptableObjects/Cards";
-        private List<CardData> allCards = new List<CardData>();
+        //////Filter Box Var
+        private bool isFilterBoxOpen = false;
+        private string nameFilter = string.Empty;
+        private CardTypeFilter typeFilter = CardTypeFilter.None;
         private Filter filter = new Filter
             (new List<FilterLine>()
                 {
@@ -26,7 +21,7 @@ namespace MaloProduction
                     {
                         new FilterElement("Wakfu Cost :"),
                         new FilterElement(Comparison.Equal),
-                        new FilterElement(0,0,6)
+                        new FilterElement(0,-6,6)
                     }),
 
                     new FilterLine(new List<FilterElement>()
@@ -50,16 +45,12 @@ namespace MaloProduction
                     }),
                 });
 
-        //Filter variable
-        private string nameFilter = string.Empty;
-        private CardTypeFilter typeFilter = CardTypeFilter.None;
-
         private void UpdateManageCard()
         {
             HeaderManageCardMenu();
             ToolBarMangeCard();
 
-            if (allCards.Count > 0)
+            if (cardLibrary.cardsLibrary.Count > 0)
             {
                 GridCardsButton();
             }
@@ -70,20 +61,6 @@ namespace MaloProduction
 
             GUI.enabled = true;
         }
-
-        private enum CardTypeFilter
-        {
-            Attack = CardType.Attack,
-            Defense = CardType.Defense,
-            Boost = CardType.Boost,
-            Neutral = CardType.Neutral,
-            GodPositive = CardType.GodPositive,
-            GodNegative = CardType.GodNegative,
-            Finisher = CardType.Finisher,
-            None,
-        }
-
-        private bool isCLicked = false;
 
         private void ToolBarMangeCard()
         {
@@ -139,12 +116,12 @@ namespace MaloProduction
                                              new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter, fontSize = 10, fontStyle = FontStyle.Italic },
                                              GUILayout.MaxWidth(300f)))
                         {
-                            isCLicked = isCLicked.Invert();
+                            isFilterBoxOpen = isFilterBoxOpen.Invert();
                         }
 
                     }
 
-                    if (isCLicked)
+                    if (isFilterBoxOpen)
                     {
                         Rect headerFilterBoxRect = GUILayoutUtility.GetLastRect();
                         Vector2 filterBoxPosition = new Vector2(headerFilterBoxRect.x, headerFilterBoxRect.y + headerFilterBoxRect.height + Spacing);
@@ -162,10 +139,10 @@ namespace MaloProduction
 
                 if (LooseFocus())
                 {
-                    isCLicked = false;
+                    isFilterBoxOpen = false;
                 }
 
-                GUI.enabled = !isCLicked;
+                GUI.enabled = !isFilterBoxOpen;
             }
         }
 
@@ -186,17 +163,8 @@ namespace MaloProduction
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
-                //refresh all cards button
-                if (GUILayout.Button("Refresh",
-                    GUILayout.Height(50),
-                    GUILayout.Width(50)
-                    ))
-                {
-                    RefreshCardList();
-                }
-
                 //Title
-                EditorGUILayout.LabelField("Manage Cards",
+                EditorGUILayout.LabelField("Card Tool",
                     new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
                     GUILayout.ExpandWidth(true),
                     GUILayout.MinHeight(30),
@@ -214,26 +182,6 @@ namespace MaloProduction
             }
         }
 
-        private void RefreshCardList()
-        {
-            string[] assetPaths = AssetDatabase.FindAssets("t:CardData", new[] { projectCardPath });
-            allCards.Clear();
-
-            if (assetPaths.Length > 0)
-            {
-                foreach (string assetPath in assetPaths)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(assetPath);
-                    CardData cardData = AssetDatabase.LoadAssetAtPath<CardData>(path);
-
-                    if (cardData != null)
-                    {
-                        allCards.Add(cardData);
-                    }
-                }
-            }
-        }
-
         private void GridCardsButton()
         {
             float windowWidth = EditorGUIUtility.currentViewWidth;
@@ -243,7 +191,7 @@ namespace MaloProduction
 
             GUILayout.BeginHorizontal();
 
-            for (int i = 0; i < allCards.Count; i++)
+            for (int i = 0; i < cardLibrary.cardsLibrary.Count; i++)
             {
                 if (remainingWidth < buttonWidth + margin)
                 {
@@ -254,9 +202,9 @@ namespace MaloProduction
 
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(buttonWidth), GUILayout.Height(120)))
                 {
-                    PreviewCard(allCards[i], (int)buttonWidth);
+                    PreviewCard(cardLibrary.cardsLibrary[i], (int)buttonWidth);
 
-                    EditorGUILayout.LabelField(allCards[i].cardName, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.Width(buttonWidth));
+                    EditorGUILayout.LabelField(cardLibrary.cardsLibrary[i].cardName, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.Width(buttonWidth));
                 }
 
                 //draw invisible button on the top of the preview and name of the card
@@ -264,7 +212,7 @@ namespace MaloProduction
                 if (GUI.Button(temp, "", new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } }))
                 {
                     ChangeState(WindowState.ModifyCard);
-                    UpdateSerializedCard(allCards[i], i);
+                    UpdateSerializedCard(cardLibrary.cardsLibrary[i], i);
                 }
 
                 remainingWidth -= buttonWidth + margin;
@@ -282,22 +230,6 @@ namespace MaloProduction
                 GUILayout.ExpandHeight(true),
                 GUILayout.ExpandWidth(true));
             }
-        }
-
-        private void GetNextCard()
-        {
-            int nextIndex = indexCardToModify + 1;
-            if (nextIndex >= allCards.Count) nextIndex = 0;
-
-            UpdateSerializedCard(allCards[nextIndex], nextIndex);
-        }
-
-        private void GetPreviousCard()
-        {
-            int previousIndex = indexCardToModify - 1;
-            if (previousIndex < 0) previousIndex = allCards.Count - 1;
-
-            UpdateSerializedCard(allCards[previousIndex], previousIndex);
         }
     }
 }

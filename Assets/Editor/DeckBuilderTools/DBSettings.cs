@@ -52,7 +52,7 @@ namespace MaloProduction
                             {
                                 GUILayout.FlexibleSpace();
 
-                                soCardOptions.collectionBgCardTexture[index].bgCardTexture = (Texture2D)EditorGUILayout.ObjectField(soCardOptions.collectionBgCardTexture[index].bgCardTexture, typeof(Texture2D), false,
+                                cardOptions.collectionBgCardTexture[index].bgCardTexture = (Texture2D)EditorGUILayout.ObjectField(cardOptions.collectionBgCardTexture[index].bgCardTexture, typeof(Texture2D), false,
                                     GUILayout.MinHeight(190),
                                     GUILayout.MaxHeight(200),
                                     GUILayout.Height(190),
@@ -63,7 +63,7 @@ namespace MaloProduction
                                 GUILayout.FlexibleSpace();
                             }
 
-                            EditorGUILayout.LabelField(soCardOptions.collectionBgCardTexture[index].type.ToString() + " Card", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14, alignment = TextAnchor.MiddleCenter });
+                            EditorGUILayout.LabelField(cardOptions.collectionBgCardTexture[index].type.ToString() + " Card", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14, alignment = TextAnchor.MiddleCenter });
                         }
                         index++;
                     }
