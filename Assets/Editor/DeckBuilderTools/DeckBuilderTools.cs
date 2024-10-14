@@ -29,12 +29,18 @@ namespace MaloProduction
             Equal,
             LessOrEqual,
         }
+        private enum TargetFilter
+        {
+            FirstEnemy = Target.FirstEnemy,
+            LastEnemy = Target.LastEnemy,
+            AllEnemy = Target.AllEnemy,
+            Me = Target.Me,
+        }
         #endregion
 
         private static DeckBuilderTools window;
 
         private WindowState state = WindowState.ManageCard;
-
         private CardOptions cardOptions;
         private CardLibrary cardLibrary;
         private Texture2D hoverButtonTexture;

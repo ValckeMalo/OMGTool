@@ -72,6 +72,8 @@ namespace MaloProduction
 
         private List<FilterElement> filterElements = new List<FilterElement>();
         private int elementsCount = 0;
+        public int ElementsCount { get; }
+        public int LastIndex { get => elementsCount - 1; }
 
         public FilterLine(FilterLine copy)
         {
@@ -90,6 +92,16 @@ namespace MaloProduction
         {
             filterElements.Add(element);
             elementsCount++;
+        }
+
+        public FilterElementType GetTypeElementAt(int index)
+        {
+            return filterElements[index].Type;
+        }
+
+        public FilterElement GetElementAt(int index)
+        {
+            return filterElements[index];
         }
 
         public void DrawFilterLine(Rect rect, float spacing, float margin = 5f)
@@ -198,6 +210,11 @@ namespace MaloProduction
         public int ToggleCount(bool state)
         {
             return filterLines.Where(line => line.Toggle == state).Select(line => line.Toggle).Count();
+        }
+
+        public List<FilterLine> GetLineToggle(bool state)
+        {
+            return filterLines.Where(line => line.Toggle == state).Select(line => line).ToList();
         }
     }
 }

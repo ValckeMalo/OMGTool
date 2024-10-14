@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace MaloProduction
 {
@@ -34,7 +36,7 @@ namespace MaloProduction
                     new FilterLine(new List<FilterElement>()
                     {
                         new FilterElement("Target :"),
-                        new FilterElement(Target.FirstEnemy),
+                        new FilterElement(TargetFilter.FirstEnemy),
                     }),
 
                     new FilterLine(new List<FilterElement>()
@@ -50,9 +52,9 @@ namespace MaloProduction
             HeaderManageCardMenu();
             ToolBarMangeCard();
 
-            if (cardLibrary.cardsLibrary.Count > 0)
+            if (cardLibrary.cards.Count > 0)
             {
-                GridCardsButton();
+                GridCardsButton(GetFilteredCard());
             }
             else
             {
@@ -60,6 +62,29 @@ namespace MaloProduction
             }
 
             GUI.enabled = true;
+        }
+
+        private void HeaderManageCardMenu()
+        {
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
+            {
+                //Title
+                EditorGUILayout.LabelField("Card Tool",
+                    new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
+                    GUILayout.ExpandWidth(true),
+                    GUILayout.MinHeight(30),
+                    GUILayout.MaxHeight(70),
+                    GUILayout.Height(50));
+
+                //options button
+                if (GUILayout.Button("Settings",
+                    GUILayout.Height(50),
+                    GUILayout.Width(50)
+                    ))
+                {
+                    ChangeState(WindowState.Settings);
+                }
+            }
         }
 
         private void ToolBarMangeCard()
@@ -159,30 +184,7 @@ namespace MaloProduction
             GUI.contentColor = Color.white;
         }
 
-        private void HeaderManageCardMenu()
-        {
-            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
-            {
-                //Title
-                EditorGUILayout.LabelField("Card Tool",
-                    new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
-                    GUILayout.ExpandWidth(true),
-                    GUILayout.MinHeight(30),
-                    GUILayout.MaxHeight(70),
-                    GUILayout.Height(50));
-
-                //options button
-                if (GUILayout.Button("Options",
-                    GUILayout.Height(50),
-                    GUILayout.Width(50)
-                    ))
-                {
-                    ChangeState(WindowState.Settings);
-                }
-            }
-        }
-
-        private void GridCardsButton()
+        private void GridCardsButton(List<CardData> listFiltered)
         {
             float windowWidth = EditorGUIUtility.currentViewWidth;
             float buttonWidth = 85f;
@@ -191,7 +193,7 @@ namespace MaloProduction
 
             GUILayout.BeginHorizontal();
 
-            for (int i = 0; i < cardLibrary.cardsLibrary.Count; i++)
+            for (int i = 0; i < listFiltered.Count; i++)
             {
                 if (remainingWidth < buttonWidth + margin)
                 {
@@ -202,9 +204,9 @@ namespace MaloProduction
 
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(buttonWidth), GUILayout.Height(120)))
                 {
-                    PreviewCard(cardLibrary.cardsLibrary[i], (int)buttonWidth);
+                    PreviewCard(listFiltered[i], (int)buttonWidth);
 
-                    EditorGUILayout.LabelField(cardLibrary.cardsLibrary[i].cardName, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.Width(buttonWidth));
+                    EditorGUILayout.LabelField(listFiltered[i].cardName, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.Width(buttonWidth));
                 }
 
                 //draw invisible button on the top of the preview and name of the card
@@ -212,7 +214,7 @@ namespace MaloProduction
                 if (GUI.Button(temp, "", new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } }))
                 {
                     ChangeState(WindowState.ModifyCard);
-                    UpdateSerializedCard(cardLibrary.cardsLibrary[i], i);
+                    UpdateSerializedCard(listFiltered[i], i);
                 }
 
                 remainingWidth -= buttonWidth + margin;
@@ -231,5 +233,134 @@ namespace MaloProduction
                 GUILayout.ExpandWidth(true));
             }
         }
+
+        #region Filter Fonction
+        private List<CardData> GetFilteredCard()
+        {
+            int toggleCount = filter.ToggleCount(true);
+            if (nameFilter == string.Empty && typeFilter == CardTypeFilter.None && toggleCount == 0)
+            {
+                return cardLibrary.cards;
+            }
+
+            List<CardData> filteredList = cardLibrary.cards;
+
+            if (nameFilter != string.Empty)
+            {
+                filteredList = filteredList.Where(card => card.cardName.ToLower().Replace(" ", "").Contains(nameFilter.Replace(" ", "").ToLower())).Select(card => card).ToList();
+            }
+
+            if (typeFilter != CardTypeFilter.None)
+            {
+                filteredList = filteredList.Where(card => card.cardType == (CardType)typeFilter).Select(card => card).ToList();
+            }
+
+            if (toggleCount > 0)
+            {
+                List<FilterLine> filterdLines = filter.GetLineToggle(true);
+
+                foreach (FilterLine line in filterdLines)
+                {
+                    int lastIndex = line.LastIndex;
+                    FilterElement lastElement = line.GetElementAt(lastIndex);
+                    FilterElement penultimateElement = line.GetElementAt(lastIndex - 1);
+
+                    switch (line.GetTypeElementAt(lastIndex))
+                    {
+                        case FilterElementType.Enum:
+                            if (TryEnumTarget(lastElement))
+                            {
+                                filteredList = filteredList.Where(card => card.target == (Target)lastElement.EnumValue).Select(card => card).ToList();
+                            }
+                            break;
+
+                        case FilterElementType.Int:
+                            if (TryEnumComparison(penultimateElement))
+                            {
+                                FilterElement antepenultimateElement = line.GetElementAt(lastIndex - 2);
+                                if (TryEnumSpell(antepenultimateElement))
+                                {
+                                    filteredList = ComparisonSpell(filteredList, (Comparison)penultimateElement.EnumValue, (Spells)antepenultimateElement.EnumValue, lastElement.IntValue);
+                                }
+                                else
+                                {
+                                    filteredList = ComparisonCardValue(filteredList, (Comparison)penultimateElement.EnumValue, lastElement.IntValue);
+                                }
+                            }
+                            break;
+
+                        case FilterElementType.IntSlider:
+                            if (TryEnumComparison(penultimateElement))
+                            {
+                                filteredList = ComparisonWakfuCost(filteredList, (Comparison)penultimateElement.EnumValue, lastElement.IntValue);
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+
+
+            return filteredList;
+        }
+
+        private bool TryEnumComparison(FilterElement element)
+        {
+            return (element.Type == FilterElementType.Enum && element.EnumValue is Comparison);
+        }
+        private bool TryEnumTarget(FilterElement element)
+        {
+            return (element.Type == FilterElementType.Enum && element.EnumValue is TargetFilter);
+        }
+        private bool TryEnumSpell(FilterElement element)
+        {
+            return (element.Type == FilterElementType.Enum && element.EnumValue is Spells);
+        }
+
+        private List<CardData> ComparisonWakfuCost(List<CardData> filteredList, Comparison comparison, int intValue)
+        {
+            switch (comparison)
+            {
+                case Comparison.GreaterOrEqual:
+                    return filteredList.Where(card => card.wakfuCost >= intValue).Select(card => card).ToList();
+                case Comparison.Equal:
+                    return filteredList.Where(card => card.wakfuCost == intValue).Select(card => card).ToList();
+                case Comparison.LessOrEqual:
+                    return filteredList.Where(card => card.wakfuCost <= intValue).Select(card => card).ToList();
+                default:
+                    return filteredList;
+            }
+        }
+        private List<CardData> ComparisonCardValue(List<CardData> filteredList, Comparison comparison, int intValue)
+        {
+            switch (comparison)
+            {
+                case Comparison.GreaterOrEqual:
+                    return filteredList.Where(card => card.cardValue >= intValue).Select(card => card).ToList();
+                case Comparison.Equal:
+                    return filteredList.Where(card => card.cardValue == intValue).Select(card => card).ToList();
+                case Comparison.LessOrEqual:
+                    return filteredList.Where(card => card.cardValue <= intValue).Select(card => card).ToList();
+                default:
+                    return filteredList;
+            }
+        }
+        private List<CardData> ComparisonSpell(List<CardData> filteredList, Comparison comparison, Spells spell, int intValue)
+        {
+            switch (comparison)
+            {
+                case Comparison.GreaterOrEqual:
+                    return filteredList.Where(card => card.spells.Where(spells => spells.spell == spell).Select(spells => spells).ToArray()[0].amount >= intValue).Select(card => card).ToList();
+                case Comparison.Equal:
+                    return filteredList.Where(card => card.spells.Where(spells => spells.spell == spell).Select(spells => spells).ToArray()[0].amount == intValue).Select(card => card).ToList();
+                case Comparison.LessOrEqual:
+                    return filteredList.Where(card => card.spells.Where(spells => spells.spell == spell).Select(spells => spells).ToArray()[0].amount <= intValue).Select(card => card).ToList();
+                default:
+                    return filteredList;
+            }
+        }
+        #endregion
     }
 }
