@@ -5,6 +5,7 @@ namespace MaloProduction
 {
     public partial class DeckBuilderTools : EditorWindow
     {
+        //SerializedObject var
         private SerializedObject currentCard;
         private SerializedProperty propCardName;
         private SerializedProperty propCardValue;
@@ -30,6 +31,7 @@ namespace MaloProduction
             DrawToolBar();
         }
 
+        #region Header
         private void HeaderModifyCard()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
@@ -56,22 +58,9 @@ namespace MaloProduction
                 }
             }
         }
+        #endregion
 
-        private void UpdateSerializedCard(CardData cardData, int index)
-        {
-            currentCard = new SerializedObject(cardData);
-
-            propCardName = currentCard.FindProperty("cardName");
-            propCardValue = currentCard.FindProperty("cardValue");
-            propCardWakfu = currentCard.FindProperty("wakfuCost");
-            propCardIcon = currentCard.FindProperty("iconCard");
-            propCardType = currentCard.FindProperty("cardType");
-            propCardTarget = currentCard.FindProperty("target");
-            propCardSpells = currentCard.FindProperty("spells");
-
-            indexCardToModify = index;
-        }
-
+        #region Body
         private void CardDataField()
         {
             currentCard.Update();
@@ -124,7 +113,9 @@ namespace MaloProduction
             currentCard.ApplyModifiedProperties(); // save
             LooseFocus();
         }
+        #endregion
 
+        #region Tool Bar
         private void DrawToolBar()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
@@ -137,7 +128,7 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    //TODO add pop "Are you sure" prio passable
+                    //TODO add pop "Are you sure" prio important
                     DeleteCard();
                     ChangeState(WindowState.ManageCard);
                 }
@@ -155,13 +146,29 @@ namespace MaloProduction
 
         private void DeleteCard()
         {
-            //CardData cardToDelete = allCards[indexCardToModify];
-            //string pathCardToDelete = AssetDatabase.GetAssetPath(cardToDelete);
+            CardData cardToDelete = cardLibrary.cards[indexCardToModify];
+            string pathCardToDelete = AssetDatabase.GetAssetPath(cardToDelete);
 
-            //if (AssetDatabase.DeleteAsset(pathCardToDelete))
+            if (AssetDatabase.DeleteAsset(pathCardToDelete))
             {
-                //allCards.RemoveAt(indexCardToModify);
+                cardLibrary.cards.RemoveAt(indexCardToModify);
             }
+        }
+        #endregion
+
+        private void UpdateSerializedCard(CardData cardData, int index)
+        {
+            currentCard = new SerializedObject(cardData);
+
+            propCardName = currentCard.FindProperty("cardName");
+            propCardValue = currentCard.FindProperty("cardValue");
+            propCardWakfu = currentCard.FindProperty("wakfuCost");
+            propCardIcon = currentCard.FindProperty("iconCard");
+            propCardType = currentCard.FindProperty("cardType");
+            propCardTarget = currentCard.FindProperty("target");
+            propCardSpells = currentCard.FindProperty("spells");
+
+            indexCardToModify = index;
         }
     }
 }
