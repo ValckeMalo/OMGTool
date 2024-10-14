@@ -18,8 +18,11 @@ namespace MaloProduction
         private int indexCard;
         private Vector2 scrollPosition;
 
+        private bool popUpDelete = false;
+
         private void UpdateModifyCard()
         {
+            GUI.enabled = !popUpDelete;
             HeaderModifyCard();
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
@@ -29,6 +32,7 @@ namespace MaloProduction
             }
 
             ModifyCardToolBar();
+            PopUpDelete();
         }
 
         #region Header
@@ -170,9 +174,7 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    //TODO add pop "Are you sure" prio important
-                    DeleteCard();
-                    ChangeState(WindowState.ManageCard);
+                    popUpDelete = true;
                 }
                 GUI.backgroundColor = Color.white;
 
@@ -186,6 +188,43 @@ namespace MaloProduction
             }
         }
 
+        private void PopUpDelete()
+        {
+            if (popUpDelete)
+            {
+                GUI.enabled = true;
+                PopUpChoice popUpChoice = PopUp.PopUpBox(position.size, position.size * 0.5f,
+                                                         new PopUpContent("Are You Sure To Delete This Card",
+                                                                          PopUpContent.PopUpButton.YesButton,
+                                                                          PopUpContent.PopUpButton.NoButton),
+                                                         new PopUpSettings(true, PopUpAnchor.MiddleCenter, hoverButtonTexture));
+
+                PopUpChoiceAction(popUpChoice);
+            }
+        }
+        private void PopUpChoiceAction(PopUpChoice popUpChoice)
+        {
+            switch (popUpChoice)
+            {
+                case PopUpChoice.Yes:
+                    popUpDelete = false;
+                    DeleteCard();
+                    ChangeState(WindowState.ManageCard);
+                    GUI.enabled = true;
+                    break;
+                case PopUpChoice.No:
+                    popUpDelete = false;
+                    GUI.enabled = true;
+                    break;
+                case PopUpChoice.None:
+                    GUI.enabled = false;
+                    break;
+                default:
+                    Debug.Log("Don't Recognized The Value");
+                    GUI.enabled = false;
+                    break;
+            }
+        }
         private void DeleteCard()
         {
             CardData cardToDelete = cardLibrary.cards[indexCard];

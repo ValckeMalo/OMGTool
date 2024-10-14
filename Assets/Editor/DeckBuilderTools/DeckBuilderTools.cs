@@ -102,6 +102,8 @@ namespace MaloProduction
             cardOptions = Resources.Load("CardOptions") as CardOptions;
             hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
             cardLibrary = Resources.Load("CardLibrary") as CardLibrary;
+
+            UpdateSerializedCard(indexCard);
         }
     }
 }
