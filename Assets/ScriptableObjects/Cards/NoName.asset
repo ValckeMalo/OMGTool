@@ -15,8 +15,8 @@ MonoBehaviour:
   cardType: 0
   target: 2
   spells:
-  - initiative: 1
-    spell: 1
+  - initiative: 0
+    spell: 0
     amount: 2
   wakfuCost: 0
   cardValue: 6
