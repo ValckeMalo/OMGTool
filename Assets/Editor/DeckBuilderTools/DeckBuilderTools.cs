@@ -14,7 +14,7 @@ namespace MaloProduction
         }
         private enum CardTypeFilter
         {
-            None,
+            All,
             Attack = CardType.Attack,
             Defense = CardType.Defense,
             Boost = CardType.Boost,
@@ -38,9 +38,13 @@ namespace MaloProduction
         }
         #endregion
 
+        //Window
         private static DeckBuilderTools window;
 
+        //main var
         private WindowState state = WindowState.ManageCard;
+
+        //Load Asset
         private CardOptions cardOptions;
         private CardLibrary cardLibrary;
         private Texture2D hoverButtonTexture;
@@ -50,13 +54,6 @@ namespace MaloProduction
         {
             window = GetWindow<DeckBuilderTools>("Deck Builder");
             window.LoadAssets();
-        }
-
-        private void LoadAssets()
-        {
-            cardOptions = Resources.Load("CardOptions") as CardOptions;
-            hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
-            cardLibrary = Resources.Load("CardLibrary") as CardLibrary;
         }
 
         private void OnEnable() => LoadAssets();
@@ -90,6 +87,13 @@ namespace MaloProduction
                 return true;
             }
             return false;
+        }
+
+        private void LoadAssets()
+        {
+            cardOptions = Resources.Load("CardOptions") as CardOptions;
+            hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
+            cardLibrary = Resources.Load("CardLibrary") as CardLibrary;
         }
     }
 }

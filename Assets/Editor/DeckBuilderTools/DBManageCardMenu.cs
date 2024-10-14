@@ -14,7 +14,7 @@ namespace MaloProduction
         //////Filter Box Var
         private bool isFilterBoxOpen = false;
         private string nameFilter = string.Empty;
-        private CardTypeFilter typeFilter = CardTypeFilter.None;
+        private CardTypeFilter typeFilter = CardTypeFilter.All;
         private Filter filter = new Filter
             (new List<FilterLine>()
                 {
@@ -54,28 +54,49 @@ namespace MaloProduction
             GUI.enabled = true;
         }
 
+        #region Header Bar
         private void HeaderManageCardMenu()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
+
+                //Create Card
+                AddCardButton();
+
                 //Title
                 EditorGUILayout.LabelField("Card Tool",
                     new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
                     GUILayout.ExpandWidth(true),
-                    GUILayout.MinHeight(30),
-                    GUILayout.MaxHeight(70),
-                    GUILayout.Height(50));
+                    GUILayout.Height(50f));
 
                 //options button
                 if (GUILayout.Button("Settings",
-                    GUILayout.Height(50),
-                    GUILayout.Width(50)
+                    GUILayout.Height(50f),
+                    GUILayout.Width(50f)
                     ))
                 {
                     ChangeState(WindowState.Settings);
                 }
             }
         }
+
+        private void AddCardButton()
+        {
+            //create a card button
+            GUI.contentColor = Color.green;
+            if (GUILayout.Button("+", new GUIStyle(GUI.skin.button) { fontSize = 40, alignment = TextAnchor.MiddleCenter },
+                GUILayout.Height(50),
+                GUILayout.Width(50)))
+            {
+                AddCard();
+            }
+            GUI.contentColor = Color.white;
+        }
+        private void AddCard()
+        {
+            
+        }
+        #endregion
 
         #region Filter Bar
         private void FilterBar()
@@ -149,10 +170,9 @@ namespace MaloProduction
 
                     GUILayout.FlexibleSpace();
                 }
-                GUILayout.FlexibleSpace();
 
+                GUILayout.FlexibleSpace();
                 ResetFilterButton();
-                AddCardButton();
 
                 if (LooseFocus())
                 {
@@ -164,7 +184,7 @@ namespace MaloProduction
 
         private void ResetFilterButton()
         {
-            if (GUILayout.Button("Reset Filter", GUILayout.MaxWidth(50f), GUILayout.ExpandHeight(true)))
+            if (GUILayout.Button("Reset Filter", GUILayout.MaxWidth(100f), GUILayout.ExpandHeight(true)))
             {
                 ResetFilter();
             }
@@ -172,7 +192,7 @@ namespace MaloProduction
         private void ResetFilter()
         {
             nameFilter = string.Empty;
-            typeFilter = CardTypeFilter.None;
+            typeFilter = CardTypeFilter.All;
 
             filter = new Filter
                         (new List<FilterLine>()
@@ -204,23 +224,6 @@ namespace MaloProduction
                                     new FilterElement(0),
                                 }),
                             });
-        }
-
-        private void AddCardButton()
-        {
-            //create a card button
-            GUI.contentColor = Color.green;
-            if (GUILayout.Button("+", new GUIStyle(GUI.skin.button) { fontSize = 40, alignment = TextAnchor.MiddleCenter },
-                GUILayout.Height(50),
-                GUILayout.Width(50)))
-            {
-                AddCard();
-            }
-            GUI.contentColor = Color.white;
-        }
-        private void AddCard()
-        {
-            Debug.Log("ouioui");
         }
         #endregion
 
@@ -310,7 +313,7 @@ namespace MaloProduction
         private List<CardData> GetFilteredCard()
         {
             int toggleCount = filter.ToggleCount(true);
-            if (nameFilter == string.Empty && typeFilter == CardTypeFilter.None && toggleCount == 0)
+            if (nameFilter == string.Empty && typeFilter == CardTypeFilter.All && toggleCount == 0)
             {
                 return cardLibrary.cards;
             }
@@ -322,7 +325,7 @@ namespace MaloProduction
                 filteredList = filteredList.Where(card => card.cardName.ToLower().Replace(" ", "").Contains(nameFilter.Replace(" ", "").ToLower())).Select(card => card).ToList();
             }
 
-            if (typeFilter != CardTypeFilter.None)
+            if (typeFilter != CardTypeFilter.All)
             {
                 filteredList = filteredList.Where(card => card.cardType == (CardType)typeFilter).Select(card => card).ToList();
             }
