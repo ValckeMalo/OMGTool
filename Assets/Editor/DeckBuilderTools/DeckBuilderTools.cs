@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -159,6 +158,25 @@ namespace MaloProduction
             }
         }
 
+        private void print(int @int, MessageType messageType = MessageType.Message)
+        {
+            string message = @int.ToString();
+            switch (messageType)
+            {
+                case MessageType.Message:
+                    Debug.Log(message);
+                    break;
+                case MessageType.Warning:
+                    Debug.LogWarning(message);
+                    break;
+                case MessageType.Error:
+                    Debug.LogError(message);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void print(Rect rect, MessageType messageType = MessageType.Message)
         {
             string message = rect.ToString();
@@ -177,13 +195,5 @@ namespace MaloProduction
                     break;
             }
         }
-    }
-}
-
-public static class MyExtension
-{
-    public static bool Invert(this bool value)
-    {
-        return !value;
     }
 }

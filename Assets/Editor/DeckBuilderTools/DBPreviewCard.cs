@@ -94,7 +94,7 @@ namespace MaloProduction
             Vector2 targetCardSize = new Vector2(backgroundTextureSize.x - borderBackgroundCard.x * 2, (int)(FontSizePreviewCard / 1.5f));
             Vector2 targetCardPosition = new Vector2(titleCardPosition.x, titleCardPosition.y + titleCardSize.y);
             Rect targetCardRect = new Rect(targetCardPosition, targetCardSize);
-            string finalTargetLabel = target + PPPP.targetString[(int)card.target];
+            string finalTargetLabel = target + TargetStringProvider.TargetDescriptions[(int)card.target];
             GUI.Label(targetCardRect, finalTargetLabel, new GUIStyle(EditorStyles.label) { fontSize = FontSizePreviewCard / 2, alignment = TextAnchor.UpperCenter });
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

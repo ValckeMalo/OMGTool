@@ -25,10 +25,20 @@ public class CardData : ScriptableObject
     public Texture2D iconCard;
 }
 
-public static class PPPP
+public static class TargetStringProvider
 {
-    public static string[] targetString = new string[(int)Target.Count] { "premier ennemi", "dernier ennemi", "tous les ennemis", "Oropo", };
+    /// <summary>
+    /// Array of strings representing different types of targets.
+    /// </summary>
+    public static string[] TargetDescriptions = new string[(int)Target.Count]
+    {
+        "premier ennemi",
+        "dernier ennemi",
+        "tous les ennemis",
+        "Oropo"
+    };
 }
+
 
 public enum Spells
 {
@@ -57,6 +67,6 @@ public enum CardType
     Boost,
     Neutral,
     GodPositive,
-    GodNegativ,
+    GodNegative,
     Finisher,
 }

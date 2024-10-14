@@ -1,6 +1,7 @@
 namespace MaloProduction
 {
     using System.Collections.Generic;
+    using System.Linq;
     using UnityEditor;
     using UnityEngine;
 
@@ -13,9 +14,16 @@ namespace MaloProduction
         Toggle
     }
 
+    public enum LabelSizeMode
+    {
+        FitToLabel,
+        StretchToFit,
+    }
+
     public class FilterElement
     {
         public FilterElementType Type { get; private set; }
+        public LabelSizeMode Mode { get; private set; }
         public string Label { get; private set; }
         public System.Enum EnumValue { get; set; }
         public int IntValue { get; set; }
@@ -23,10 +31,11 @@ namespace MaloProduction
         public int MinSliderValue { get; private set; }
         public int MaxSliderValue { get; private set; }
 
-        public FilterElement(string label)
+        public FilterElement(string label, LabelSizeMode mode = LabelSizeMode.FitToLabel)
         {
             Type = FilterElementType.Label;
             Label = label;
+            Mode = mode;
         }
 
         public FilterElement(System.Enum enumValue)
@@ -56,7 +65,7 @@ namespace MaloProduction
         }
     }
 
-    public class Filter
+    public class FilterLine
     {
         private bool toggle = false;
         public bool Toggle { get => toggle; }
@@ -64,14 +73,14 @@ namespace MaloProduction
         private List<FilterElement> filterElements = new List<FilterElement>();
         private int elementsCount = 0;
 
-        public Filter(Filter copy)
+        public FilterLine(FilterLine copy)
         {
             toggle = copy.toggle;
             filterElements = new List<FilterElement>(copy.filterElements);
             elementsCount = copy.elementsCount;
         }
 
-        public Filter(List<FilterElement> filterElements)
+        public FilterLine(List<FilterElement> filterElements)
         {
             this.filterElements = filterElements;
             elementsCount = filterElements.Count;
@@ -83,7 +92,7 @@ namespace MaloProduction
             elementsCount++;
         }
 
-        public void FilterBox(Rect rect, float spacing, float margin = 5f)
+        public void DrawFilterLine(Rect rect, float spacing, float margin = 5f)
         {
             Vector2 togglePosition = new Vector2(rect.position.x + margin, rect.position.y + margin);
             Vector2 toggleSize = new Vector2(15f, 15f);
@@ -91,19 +100,50 @@ namespace MaloProduction
 
             toggle = EditorGUI.Toggle(toggleRect, toggle);
 
-            //if not toggle disable the line
+            //if not bool is not toggle disable the line
             GUI.enabled = toggle;
 
+            //get the start pose of all elements after the toggle and spacing
             Vector2 elementPosition = new Vector2(togglePosition.x + toggleSize.x + spacing, togglePosition.y);
-            Vector2 elementSize = new Vector2((rect.width - toggleSize.x) / elementsCount, toggleSize.y);
+            //get all size elements can fit in minus (margin * 2f), because toggle add the margin once, to not touch the border
+            float maxElementsSizeX = rect.width - toggleSize.x - margin * 2f;
+            //get the size for one element minus all the spacing between elements
+            Vector2 elementSize = new Vector2((maxElementsSizeX - (spacing * elementsCount)) / elementsCount, toggleSize.y);
+            //final rect for one Element
             Rect elementRect = new Rect(elementPosition, elementSize);
 
+            int elementRemainCount = elementsCount;
+            bool elementSizeChange = false;
+            float maxElementsSizeXRemain = maxElementsSizeX;
             foreach (FilterElement element in filterElements)
             {
                 switch (element.Type)
                 {
                     case FilterElementType.Label:
-                        EditorGUI.LabelField(elementRect, element.Label);
+
+                        switch (element.Mode)
+                        {
+                            case LabelSizeMode.FitToLabel:
+                                float widthLabel = GUI.skin.label.CalcSize(new GUIContent(element.Label)).x;
+                                elementRect.width = widthLabel;
+                                EditorGUI.LabelField(elementRect, element.Label);
+
+                                elementRemainCount--;
+                                maxElementsSizeXRemain -= widthLabel;
+                                elementSize.x = (maxElementsSizeXRemain - (spacing * elementRemainCount)) / elementRemainCount;
+                                elementRect.width = elementSize.x;
+                                elementRect.x += widthLabel;
+                                elementSizeChange = true;
+                                break;
+
+                            case LabelSizeMode.StretchToFit:
+                                EditorGUI.LabelField(elementRect, element.Label);
+                                break;
+
+                            default:
+                                break;
+                        }
+
                         break;
                     case FilterElementType.Enum:
                         element.EnumValue = EditorGUI.EnumPopup(elementRect, element.EnumValue);
@@ -119,10 +159,45 @@ namespace MaloProduction
                         break;
                 }
 
-                elementRect.position += new Vector2(elementSize.x, 0f);
+                elementRemainCount--;
+                if (!elementSizeChange)
+                {
+                    maxElementsSizeXRemain -= elementSize.x;
+                    elementRect.x += elementSize.x + spacing;
+                }
+                elementSizeChange = false;
             }
 
             GUI.enabled = true;
+        }
+    }
+
+    public class Filter
+    {
+        private List<FilterLine> filterLines;
+
+        public Filter(List<FilterLine> filterLines)
+        {
+            this.filterLines = filterLines;
+        }
+
+        public void FilterBox(Rect rect)
+        {
+            using (new GUI.GroupScope(rect, EditorStyles.helpBox))
+            {
+                Rect filterLineRect = new Rect(Vector2.zero, new Vector2(rect.width, 20f));
+
+                foreach (FilterLine filterLine in filterLines)
+                {
+                    filterLine.DrawFilterLine(filterLineRect, 5f);
+                    filterLineRect.position += new Vector2(0f, 20f);
+                }
+            }
+        }
+
+        public int ToggleCount(bool state)
+        {
+            return filterLines.Where(line => line.Toggle == state).Select(line => line.Toggle).Count();
         }
     }
 }

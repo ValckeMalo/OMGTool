@@ -1,6 +1,6 @@
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 namespace MaloProduction
 {
@@ -13,37 +13,42 @@ namespace MaloProduction
             LessOrEqual,
         }
 
+        //Define
+        private static float Spacing = 5f;
+        private static float HeightFilterBox = 100f;
+
         private string projectCardPath = "Assets/ScriptableObjects/Cards";
         private List<CardData> allCards = new List<CardData>();
-        private Filter[] filters = new Filter[4]
-            {
-                new Filter(new List<FilterElement>()
+        private Filter filter = new Filter
+            (new List<FilterLine>()
                 {
-                    new FilterElement("Wakfu Cost"),
-                    new FilterElement(Comparison.Equal),
-                    new FilterElement(0,0,6)
-                }),
+                    new FilterLine(new List<FilterElement>()
+                    {
+                        new FilterElement("Wakfu Cost :"),
+                        new FilterElement(Comparison.Equal),
+                        new FilterElement(0,0,6)
+                    }),
 
-                new Filter(new List<FilterElement>()
-                {
-                    new FilterElement("Value Card"),
-                    new FilterElement(Comparison.Equal),
-                    new FilterElement(0),
-                }),
+                    new FilterLine(new List<FilterElement>()
+                    {
+                        new FilterElement("Value Card :"),
+                        new FilterElement(Comparison.Equal),
+                        new FilterElement(0),
+                    }),
 
-                new Filter(new List<FilterElement>()
-                {
-                    new FilterElement("Target"),
-                    new FilterElement(Target.FirstEnemy),
-                }),
+                    new FilterLine(new List<FilterElement>()
+                    {
+                        new FilterElement("Target :"),
+                        new FilterElement(Target.FirstEnemy),
+                    }),
 
-                new Filter(new List<FilterElement>()
-                {
-                    new FilterElement(Spells.Poison),
-                    new FilterElement(Comparison.Equal),
-                    new FilterElement(0),
-                }),
-            };
+                    new FilterLine(new List<FilterElement>()
+                    {
+                        new FilterElement(Spells.Poison),
+                        new FilterElement(Comparison.Equal),
+                        new FilterElement(0),
+                    }),
+                });
 
         //Filter variable
         private string nameFilter = string.Empty;
@@ -68,20 +73,17 @@ namespace MaloProduction
 
         private enum CardTypeFilter
         {
-            Attack,
-            Defense,
-            Boost,
-            Neutral,
-            GodPositive,
-            GodNegativ,
-            Finisher,
+            Attack = CardType.Attack,
+            Defense = CardType.Defense,
+            Boost = CardType.Boost,
+            Neutral = CardType.Neutral,
+            GodPositive = CardType.GodPositive,
+            GodNegative = CardType.GodNegative,
+            Finisher = CardType.Finisher,
             None,
         }
 
         private bool isCLicked = false;
-        private bool toggle = false;
-        //private Spells spells = Spells.Poison;
-        //private int amountSpell = 0;
 
         private void ToolBarMangeCard()
         {
@@ -122,20 +124,17 @@ namespace MaloProduction
                     GUILayout.FlexibleSpace();
                 }
 
-                //other filter
+                //Filter Box filter
                 using (new EditorGUILayout.VerticalScope())
                 {
                     GUILayout.FlexibleSpace();
+
+                    //Filter Box Header Scope
                     using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
                     {
                         EditorGUILayout.LabelField("Other : ", GUILayout.MaxWidth(50f));
 
-                        string label = "No Filters Selected";
-                        if (toggle)
-                        {
-                            label = "One Filter Selected";
-                        }
-
+                        string label = FilterStringFormatter.GetFilterDescription(filter.ToggleCount(true));
                         if (GUILayout.Button(label,
                                              new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter, fontSize = 10, fontStyle = FontStyle.Italic },
                                              GUILayout.MaxWidth(300f)))
@@ -147,62 +146,36 @@ namespace MaloProduction
 
                     if (isCLicked)
                     {
-                        Rect lastRect = GUILayoutUtility.GetLastRect();
-                        float yMarginDropdown = 5f;
-                        float heightDropdown = 100f;
-                        Vector2 dropdownPosition = new Vector2(lastRect.x, lastRect.y + lastRect.height + yMarginDropdown);
-                        Vector2 dropdownSize = new Vector2(lastRect.width, heightDropdown);
-                        Rect dropdownFilterRect = new Rect(dropdownPosition, dropdownSize);
+                        Rect headerFilterBoxRect = GUILayoutUtility.GetLastRect();
+                        Vector2 filterBoxPosition = new Vector2(headerFilterBoxRect.x, headerFilterBoxRect.y + headerFilterBoxRect.height + Spacing);
+                        Vector2 filterBoxSize = new Vector2(headerFilterBoxRect.width, HeightFilterBox);
+                        Rect filterBoxRect = new Rect(filterBoxPosition, filterBoxSize);
 
-                        using (new GUI.GroupScope(dropdownFilterRect, EditorStyles.helpBox))
-                        {
-                            Rect filterRect = new Rect(Vector2.zero, new Vector2(dropdownSize.x, 20f));
-
-                            foreach (Filter filter in filters)
-                            {
-                                filter.FilterBox(filterRect, 5f);
-                                filterRect.position = new Vector2(filterRect.position.x, filterRect.position.y + 20f);
-                            }
-
-                            //Vector2 marginBorder = new Vector2(5f, 5f);
-                            //Rect toggleRect = new Rect(Vector2.zero + marginBorder, Vector2.one * 20f);
-                            //toggle = GUI.Toggle(toggleRect, toggle, GUIContent.none);
-
-                            //GUI.enabled = toggle;
-
-                            //Vector2 halfSize = new Vector2((dropdownSize.x - toggleRect.width) / 2 - marginBorder.x * 2, toggleRect.height);
-
-                            //Rect ValueRect = new Rect(toggleRect.position + new Vector2(toggleRect.width, 0f), halfSize);
-                            //spells = (Spells)EditorGUI.EnumPopup(ValueRect, spells);
-
-                            //Rect AmountRect = new Rect(ValueRect.position + new Vector2(ValueRect.width + marginBorder.x, 0f), halfSize);
-                            //amountSpell = EditorGUI.IntField(AmountRect, amountSpell);
-                        }
-
-                        //GUI.enabled = true;
+                        filter.FilterBox(filterBoxRect);
                     }
 
                     GUILayout.FlexibleSpace();
                 }
                 GUILayout.FlexibleSpace();
 
-                CreateCardButton();
+                AddCardButton();
+
                 if (LooseFocus())
                 {
                     isCLicked = false;
                 }
+
                 GUI.enabled = !isCLicked;
             }
         }
 
-        private void CreateCardButton()
+        private void AddCardButton()
         {
-            //create card button
+            //create a card button
             GUI.contentColor = Color.green;
             if (GUILayout.Button("+", new GUIStyle(GUI.skin.button) { fontSize = 40, alignment = TextAnchor.MiddleCenter },
                 GUILayout.Height(50),
-                GUILayout.Width(50)
-                ))
+                GUILayout.Width(50)))
             {
                 print("ouioui", MessageType.Error);
             }
