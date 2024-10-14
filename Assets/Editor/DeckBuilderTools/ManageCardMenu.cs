@@ -282,13 +282,29 @@ namespace MaloProduction
                 if (GUI.Button(temp, "", new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } }))
                 {
                     ChangeState(WindowState.ModifyCard);
-                    UpdateSerializedCard(listFiltered[i], i);
+                    UpdateSerializedCard(FindIndexInLibrary(listFiltered[i]));
                 }
 
                 remainingWidth -= buttonWidth + margin;
             }
 
             GUILayout.EndHorizontal();
+        }
+
+        private int FindIndexInLibrary(CardData cardSearch)
+        {
+            int index = 0;
+            foreach (CardData card in cardLibrary.cards)
+            {
+                if (cardSearch == card)
+                {
+                    return index;
+                }
+                index++;
+            }
+
+            Debug.LogError("Card Not Found In The Card Library");
+            return 0;
         }
 
         private void NoCardsCreated()

@@ -140,6 +140,21 @@ namespace MaloProduction
             currentCard.ApplyModifiedProperties(); // save
             LooseFocus();
         }
+
+        private void UpdateSerializedCard(int indexCard)
+        {
+            currentCard = new SerializedObject(cardLibrary.cards[indexCard]);
+
+            propCardName = currentCard.FindProperty("cardName");
+            propCardValue = currentCard.FindProperty("cardValue");
+            propCardWakfu = currentCard.FindProperty("wakfuCost");
+            propCardIcon = currentCard.FindProperty("iconCard");
+            propCardType = currentCard.FindProperty("cardType");
+            propCardTarget = currentCard.FindProperty("target");
+            propCardSpells = currentCard.FindProperty("spells");
+
+            this.indexCard = indexCard;
+        }
         #endregion
 
         #region Tool Bar
@@ -182,20 +197,5 @@ namespace MaloProduction
             }
         }
         #endregion
-
-        private void UpdateSerializedCard(int indexCard)
-        {
-            currentCard = new SerializedObject(cardLibrary.cards[indexCard]);
-
-            propCardName = currentCard.FindProperty("cardName");
-            propCardValue = currentCard.FindProperty("cardValue");
-            propCardWakfu = currentCard.FindProperty("wakfuCost");
-            propCardIcon = currentCard.FindProperty("iconCard");
-            propCardType = currentCard.FindProperty("cardType");
-            propCardTarget = currentCard.FindProperty("target");
-            propCardSpells = currentCard.FindProperty("spells");
-
-            this.indexCard = indexCard;
-        }
     }
 }
