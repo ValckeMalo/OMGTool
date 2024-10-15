@@ -22,8 +22,8 @@ namespace MaloProduction
                 BackgroundColor = backgroundColor;
             }
 
-            public static PopUpButton YesButton = new PopUpButton("Yes", Color.black, Color.green);
-            public static PopUpButton NoButton = new PopUpButton("No", Color.black, Color.red);
+            public static PopUpButton YesButton = new PopUpButton("Yes", Color.white, Color.green);
+            public static PopUpButton NoButton = new PopUpButton("No", Color.white, Color.red);
         }
 
         public PopUpContent(PopUpContent popUpContent)

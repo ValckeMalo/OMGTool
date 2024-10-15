@@ -52,7 +52,16 @@ namespace MaloProduction
         //Load Asset
         private CardOptions cardOptions;
         private CardLibrary cardLibrary;
+
         private Texture2D hoverButtonTexture;
+        private Texture2D OpaqueBackgroundTexture;
+
+        //Icon Texture
+        private Texture2D TrashCanTexture;
+        private Texture2D CogTexture;
+        private Texture2D ForwardTexture;
+        private Texture2D BackwardTexture;
+        private Texture2D BackTexture;
 
         //directory
         static string pathCard = "Assets/ScriptableObjects/Cards/";
@@ -65,6 +74,7 @@ namespace MaloProduction
         }
 
         private void OnEnable() => LoadAssets();
+        private void OnLostFocus() => ModifyNameCardObject();
 
         private void OnGUI()
         {
@@ -101,9 +111,20 @@ namespace MaloProduction
         {
             cardOptions = Resources.Load("CardOptions") as CardOptions;
             hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
+            OpaqueBackgroundTexture = Resources.Load("OpaqueBackground") as Texture2D;
             cardLibrary = Resources.Load("CardLibrary") as CardLibrary;
 
+            LoadIcon();
             UpdateSerializedCard(indexCard);
+        }
+
+        private void LoadIcon()
+        {
+            TrashCanTexture = Resources.Load("Icon/TrashCan") as Texture2D;
+            CogTexture = Resources.Load("Icon/Cog") as Texture2D;
+            ForwardTexture = Resources.Load("Icon/Forward") as Texture2D;
+            BackwardTexture = Resources.Load("Icon/Backwrad") as Texture2D;
+            BackTexture = Resources.Load("Icon/Return") as Texture2D;
         }
     }
 }

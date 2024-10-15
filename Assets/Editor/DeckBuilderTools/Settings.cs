@@ -24,7 +24,7 @@ namespace MaloProduction
                     GUILayout.Height(50));
 
                 //Button Back
-                if (GUILayout.Button("Back",
+                if (GUILayout.Button(BackTexture,
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {

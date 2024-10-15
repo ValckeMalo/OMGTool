@@ -41,7 +41,7 @@ namespace MaloProduction
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
                 //Previous Card
-                if (GUILayout.Button("Previous",
+                if (GUILayout.Button(BackwardTexture,
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
@@ -57,7 +57,7 @@ namespace MaloProduction
                     GUILayout.Height(50));
 
                 //Next Card
-                if (GUILayout.Button("Next",
+                if (GUILayout.Button(ForwardTexture,
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
@@ -141,8 +141,21 @@ namespace MaloProduction
                 }
                 EditorGUILayout.EndScrollView();
             }
-            currentCard.ApplyModifiedProperties(); // save
-            LooseFocus();
+
+            // save
+            currentCard.ApplyModifiedProperties();
+            if (LooseFocus())
+            {
+                ModifyNameCardObject();
+            }
+        }
+
+        private void ModifyNameCardObject()
+        {
+            if (propCardName.stringValue != "New Card" && state == WindowState.ModifyCard)
+            {
+                AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(currentCard.targetObject), propCardName.stringValue);
+            }
         }
 
         private void UpdateSerializedCard(int indexCard)
@@ -170,7 +183,7 @@ namespace MaloProduction
 
                 GUI.backgroundColor = Color.red;
                 //Delete card button
-                if (GUILayout.Button("Delete",
+                if (GUILayout.Button(TrashCanTexture,
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
@@ -179,7 +192,7 @@ namespace MaloProduction
                 GUI.backgroundColor = Color.white;
 
                 //back to all card
-                if (GUILayout.Button("Back",
+                if (GUILayout.Button(BackTexture,
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
@@ -197,7 +210,7 @@ namespace MaloProduction
                                                          new PopUpContent("Are You Sure To Delete This Card",
                                                                           PopUpContent.PopUpButton.YesButton,
                                                                           PopUpContent.PopUpButton.NoButton),
-                                                         new PopUpSettings(true, PopUpAnchor.MiddleCenter, hoverButtonTexture));
+                                                         new PopUpSettings(true, PopUpAnchor.MiddleCenter, OpaqueBackgroundTexture));
 
                 PopUpChoiceAction(popUpChoice);
             }

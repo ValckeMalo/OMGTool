@@ -70,7 +70,7 @@ namespace MaloProduction
                     GUILayout.Height(50f));
 
                 //options button
-                if (GUILayout.Button("Settings",
+                if (GUILayout.Button(CogTexture,
                     GUILayout.Height(50f),
                     GUILayout.Width(50f)
                     ))
