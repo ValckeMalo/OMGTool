@@ -1,14 +1,14 @@
-using UnityEngine;
-using UnityEditor;
-
 namespace MaloProduction
 {
+    using UnityEngine;
+    using UnityEditor;
+
     public partial class DeckBuilderTools : EditorWindow
     {
         private void UpdateSettings()
         {
             HeaderSettings();
-            SettingsSpriteField();
+            SettingsBody();
         }
 
         private void HeaderSettings()
@@ -33,52 +33,53 @@ namespace MaloProduction
             }
         }
 
-        private void SettingsSpriteField()
+        private void SettingsBody()
         {
-            GUILayout.BeginHorizontal(EditorStyles.helpBox, GUILayout.ExpandHeight(true));
-            int index = 0;
 
-            for (int j = 0; j < 2; j++)
+            //all body
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
-                GUILayout.FlexibleSpace();
-
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 2; i++)
                 {
-                    if (index < 7)
+                    using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
                     {
-                        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-                        {
-                            using (new EditorGUILayout.HorizontalScope())
-                            {
-                                GUILayout.FlexibleSpace();
+                        SettingsField();
+                        SettingsField();
+                        SettingsField();
+                    }
+                }
+            }
+        }
 
-                                cardOptions.collectionBgCardTexture[index].bgCardTexture = (Texture2D)EditorGUILayout.ObjectField(cardOptions.collectionBgCardTexture[index].bgCardTexture, typeof(Texture2D), false,
-                                    GUILayout.MinHeight(190),
-                                    GUILayout.MaxHeight(200),
-                                    GUILayout.Height(190),
-                                    GUILayout.MinWidth(140),
-                                    GUILayout.MaxWidth(150),
-                                    GUILayout.Width(140));
+        private void SettingsField()
+        {
+            //box
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+            {
+                //title
+                EditorGUILayout.LabelField("Attack", new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.ExpandWidth(true));
 
-                                GUILayout.FlexibleSpace();
-                            }
-
-                            EditorGUILayout.LabelField(cardOptions.collectionBgCardTexture[index].type.ToString() + " Card", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14, alignment = TextAnchor.MiddleCenter });
-                        }
-                        index++;
+                //container textures + labels
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+                {
+                    //first texture (background)
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+                    {
+                        EditorGUILayout.ObjectField(TrashCanTexture, typeof(Texture2D), false, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                        EditorGUILayout.LabelField("Background", new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.MaxWidth(150f));
                     }
 
-                    GUILayout.FlexibleSpace();
-                }
+                    GUILayout.Space(5f);
 
-                if (j == 0)
-                {
-                    GUILayout.EndHorizontal();
-                    GUILayout.BeginHorizontal(EditorStyles.helpBox, GUILayout.ExpandHeight(true));
+                    //second texture (Icon)
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+                    {
+                        EditorGUILayout.ObjectField(TrashCanTexture, typeof(Texture2D), false, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                        EditorGUILayout.LabelField("Icon", new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.MaxWidth(150f));
+                    }
                 }
             }
 
-            GUILayout.EndHorizontal();
         }
     }
 }

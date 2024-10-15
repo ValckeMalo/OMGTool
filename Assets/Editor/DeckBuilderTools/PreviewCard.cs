@@ -5,7 +5,7 @@ namespace MaloProduction
 {
     public partial class DeckBuilderTools : EditorWindow
     {
-        private void PreviewCard(CardData card,int width)
+        private void PreviewCard(CardData card, int width)
         {
             if (cardOptions == null)
             {
@@ -20,7 +20,8 @@ namespace MaloProduction
             Rect scopeRect = GUILayoutUtility.GetLastRect();
             Vector2 centerScope = scopeRect.center;
 
-            Texture2D backgroundTexture = cardOptions.collectionBgCardTexture[(int)card.cardType].bgCardTexture;
+            CardOptions.CardTypeTexture cardTypeTexture = cardOptions.collectionBgCardTexture[(int)card.cardType];
+            Texture2D backgroundTexture = cardTypeTexture.background;
             if (backgroundTexture == null)
             {
                 Debug.LogWarning("No background for" + card.cardType.ToString() + " Card");
@@ -135,7 +136,7 @@ namespace MaloProduction
             GUI.contentColor = Color.white;
 
             ////Value icon/////////////////////////////////////////////////////////////////////////////////////////////////
-            Texture2D valueIcon = cardOptions.attack;
+            Texture2D valueIcon = cardTypeTexture.iconCard;
             Vector2 valueIconSize = new Vector2(backgroundTextureSize.x / 4, backgroundTextureSize.x / 4);
             Vector2 valueIconPosition = new Vector2(valueLabelPosisiton.x + valueLabelSize.x, valueLabelPosisiton.y);
             Rect valueIconRect = new Rect(valueIconPosition, valueIconSize);
