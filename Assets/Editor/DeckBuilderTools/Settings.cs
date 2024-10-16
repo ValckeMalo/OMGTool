@@ -170,6 +170,8 @@ namespace MaloProduction
                     Line(linesSettings[i].section);
                     GUILayout.Space(spacingHeightLine);
                 }
+
+                settings.ApplyModifiedProperties();
             }
         }
 
@@ -216,7 +218,7 @@ namespace MaloProduction
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.Height(fieldTextureHeight)))
             {
                 //field
-                EditorGUILayout.PropertyField(field.property, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                EditorGUILayout.PropertyField(field.property, GUIContent.none, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
                 //title
                 EditorGUILayout.LabelField(field.titleProperty, new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
             }
