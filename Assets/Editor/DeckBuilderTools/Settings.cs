@@ -58,7 +58,7 @@ namespace MaloProduction
 
         #region Define
         private const float fieldTextureHeight = 275f;
-        private const float lineHeight = 250f;
+        private const float lineHeight = 300f;
         private const short nbLine = 4;
         private const float spacingWidthLine = 20f;
         private const float spacingHeightLine = 15f;
@@ -219,6 +219,17 @@ namespace MaloProduction
             {
                 //field
                 EditorGUILayout.PropertyField(field.property, GUIContent.none, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+
+                if (field.property.objectReferenceValue != null && field.property.objectReferenceValue is Texture2D)
+                {
+                    Texture2D texture = (Texture2D)field.property.objectReferenceValue;
+                    Rect lastRect = GUILayoutUtility.GetLastRect();
+                    //ajustement pour bien combler
+                    lastRect.position -= new Vector2(4f, 0f);
+                    lastRect.size -= new Vector2(10f, 0f);
+                    GUI.DrawTexture(lastRect, texture);
+                }
+
                 //title
                 EditorGUILayout.LabelField(field.titleProperty, new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
             }
@@ -226,22 +237,3 @@ namespace MaloProduction
         #endregion
     }
 }
-
-/* garder les lignes comme elles sont mais dans les sections mettre un paramètre param et gérer la taille automatiquement
- * les param seront sur une structure
- * 
- * private struct ParamOptions
- * {
- *      
- *      string titleSection;
-
- *      Texture2D texture;
- *      string titleTexture;
- *      
- *      ou
- *      
- *      SerializedProperty property;
- *      string titleSection;
- *      string titleProperty;
- * }
- */
