@@ -17,7 +17,19 @@ MonoBehaviour:
   spells:
   - initiative: 0
     spell: 0
-    amount: 2
+    amount: 0
+  - initiative: 0
+    spell: 0
+    amount: 0
+  - initiative: 0
+    spell: 0
+    amount: 0
+  - initiative: 0
+    spell: 0
+    amount: 0
+  - initiative: 0
+    spell: 0
+    amount: 0
   wakfuCost: 0
   cardValue: 6
   cardName: NoName

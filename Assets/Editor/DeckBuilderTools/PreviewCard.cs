@@ -7,7 +7,7 @@ namespace MaloProduction
     {
         private void PreviewCard(CardData card, int width)
         {
-            if (cardOptions == null)
+            if (cardSettings == null)
             {
                 LoadAssets();
             }
@@ -20,7 +20,7 @@ namespace MaloProduction
             Rect scopeRect = GUILayoutUtility.GetLastRect();
             Vector2 centerScope = scopeRect.center;
 
-            CardOptions.CardTypeTexture cardTypeTexture = cardOptions.collectionBgCardTexture[(int)card.cardType];
+            CardOptions.CardTypeTexture cardTypeTexture = cardSettings.cardsTypeTexture[(int)card.cardType];
             Texture2D backgroundTexture = cardTypeTexture.background;
             if (backgroundTexture == null)
             {
@@ -53,7 +53,7 @@ namespace MaloProduction
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             ////wakfu icon/////////////////////////////////////////////////////////////////////////////////////////////////
-            Texture2D iconWakfu = cardOptions.wakfu;
+            Texture2D iconWakfu = cardSettings.wakfu;
             Vector2 iconWakfuSize = new Vector2(backgroundTextureSize.x / 4, backgroundTextureSize.x / 4);
             Vector2 iconWakfuPosition = new Vector2(topRightBackground.x - iconWakfuSize.x - borderBackgroundCard.x, topRightBackground.y + borderBackgroundCard.y);
             Rect iconWakfuRect = new Rect(iconWakfuPosition, iconWakfuSize);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "CardOptions",order = 2,menuName = "DeckBuilder/CardOptions")]
 public class CardOptions : ScriptableObject
 {
-    public List<CardTypeTexture> collectionBgCardTexture = new List<CardTypeTexture>();
+    public List<CardTypeTexture> cardsTypeTexture = new List<CardTypeTexture>();
 
     public Texture2D wakfu;
 

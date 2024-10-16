@@ -48,9 +48,10 @@ namespace MaloProduction
 
         //main var
         private WindowState state = WindowState.ManageCard;
+        private Vector2 scrollPosition;
 
         //Load Asset
-        private CardOptions cardOptions;
+        private CardOptions cardSettings;
         private CardLibrary cardLibrary;
 
         private Texture2D hoverButtonTexture;
@@ -109,13 +110,14 @@ namespace MaloProduction
 
         private void LoadAssets()
         {
-            cardOptions = Resources.Load("CardOptions") as CardOptions;
+            cardSettings = Resources.Load("CardOptions") as CardOptions;
             hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
             OpaqueBackgroundTexture = Resources.Load("OpaqueBackground") as Texture2D;
             cardLibrary = Resources.Load("CardLibrary") as CardLibrary;
 
             LoadIcon();
             UpdateSerializedCard(indexCard);
+            ReloadSettings();
         }
 
         private void LoadIcon()

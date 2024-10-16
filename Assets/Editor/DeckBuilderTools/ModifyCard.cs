@@ -16,8 +16,6 @@ namespace MaloProduction
         private SerializedProperty propCardSpells;
 
         private int indexCard;
-        private Vector2 scrollPosition;
-
         private bool popUpDelete = false;
 
         private void UpdateModifyCard()
@@ -134,12 +132,14 @@ namespace MaloProduction
                 }
 
                 //SPELLS LIST
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                using (EditorGUILayout.ScrollViewScope scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition, GUILayout.MaxHeight(250f)))
                 {
-                    EditorGUILayout.PropertyField(propCardSpells);
+                    scrollPosition = scrollView.scrollPosition;
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                    {
+                        EditorGUILayout.PropertyField(propCardSpells);
+                    }
                 }
-                EditorGUILayout.EndScrollView();
             }
 
             // save
