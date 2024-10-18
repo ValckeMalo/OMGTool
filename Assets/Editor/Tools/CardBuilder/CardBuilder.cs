@@ -3,13 +3,13 @@ namespace MaloProduction
     using UnityEditor;
     using UnityEngine;
 
-    public partial class DeckBuilderTools : EditorWindow
+    public partial class CardBuilder : EditorWindow
     {
         #region Enum
         private enum WindowState
         {
-            ManageCard = 0,
-            ModifyCard = 1,
+            Home = 0,
+            Modify = 1,
             Settings = 2,
         }
         private enum CardTypeFilter
@@ -44,10 +44,10 @@ namespace MaloProduction
         #endregion
 
         //Window
-        private static DeckBuilderTools window;
+        private static CardBuilder window;
 
         //main var
-        private WindowState state = WindowState.ManageCard;
+        private WindowState state = WindowState.Home;
         private Vector2 scrollPosition;
 
         //Load Asset
@@ -70,7 +70,7 @@ namespace MaloProduction
         [MenuItem("Tools/Deck Builder")]
         public static void ShowWindow()
         {
-            window = GetWindow<DeckBuilderTools>("Deck Builder");
+            window = GetWindow<CardBuilder>("Card Builder");
             window.LoadAssets();
         }
 
@@ -81,10 +81,10 @@ namespace MaloProduction
         {
             switch (state)
             {
-                case WindowState.ManageCard:
+                case WindowState.Home:
                     UpdateManageCard();
                     break;
-                case WindowState.ModifyCard:
+                case WindowState.Modify:
                     UpdateModifyCard();
                     break;
                 case WindowState.Settings:

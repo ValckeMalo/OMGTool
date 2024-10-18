@@ -3,7 +3,7 @@ namespace MaloProduction
     using UnityEngine;
     using UnityEditor;
 
-    public partial class DeckBuilderTools : EditorWindow
+    public partial class CardBuilder : EditorWindow
     {
         #region Struct
         private struct SettingsLine
@@ -149,7 +149,7 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    ChangeState(WindowState.ManageCard);
+                    ChangeState(WindowState.Home);
                 }
             }
 

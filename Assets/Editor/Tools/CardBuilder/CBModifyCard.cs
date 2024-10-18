@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace MaloProduction
 {
-    public partial class DeckBuilderTools : EditorWindow
+    public partial class CardBuilder : EditorWindow
     {
         //SerializedObject var
         private SerializedObject currentCard;
@@ -152,7 +152,7 @@ namespace MaloProduction
 
         private void ModifyNameCardObject()
         {
-            if (propCardName.stringValue != "New Card" && state == WindowState.ModifyCard)
+            if (propCardName.stringValue != "New Card" && state == WindowState.Modify)
             {
                 AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(currentCard.targetObject), propCardName.stringValue);
             }
@@ -196,7 +196,7 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
-                    ChangeState(WindowState.ManageCard);
+                    ChangeState(WindowState.Home);
                 }
             }
         }
@@ -222,7 +222,7 @@ namespace MaloProduction
                 case PopUpChoice.Yes:
                     popUpDelete = false;
                     DeleteCard();
-                    ChangeState(WindowState.ManageCard);
+                    ChangeState(WindowState.Home);
                     GUI.enabled = true;
                     break;
                 case PopUpChoice.No:

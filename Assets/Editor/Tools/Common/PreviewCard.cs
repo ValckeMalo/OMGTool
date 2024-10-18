@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MaloProduction
 {
-    public partial class DeckBuilderTools : EditorWindow
+    public partial class CardBuilder : EditorWindow
     {
         private void PreviewCard(CardData card, int width)
         {

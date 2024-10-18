@@ -5,7 +5,7 @@ namespace MaloProduction
     using UnityEditor;
     using UnityEngine;
 
-    public partial class DeckBuilderTools : EditorWindow
+    public partial class CardBuilder : EditorWindow
     {
         //Filter Box
         //////Define
@@ -65,7 +65,7 @@ namespace MaloProduction
                 AddCardButton();
 
                 //Title
-                EditorGUILayout.LabelField("Card Tool",
+                EditorGUILayout.LabelField("Card Builder",
                     new GUIStyle(EditorStyles.boldLabel) { fontSize = 20, alignment = TextAnchor.MiddleCenter },
                     GUILayout.ExpandWidth(true),
                     GUILayout.Height(50f));
@@ -294,7 +294,7 @@ namespace MaloProduction
                 Rect temp = GUILayoutUtility.GetLastRect();
                 if (GUI.Button(temp, "", new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } }))
                 {
-                    ChangeState(WindowState.ModifyCard);
+                    ChangeState(WindowState.Modify);
                     UpdateSerializedCard(FindIndexInLibrary(listFiltered[i]));
                 }
 
