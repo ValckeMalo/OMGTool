@@ -1,3 +1,4 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UIDocuments/StylesSheet/HUDStylesSheet.uss?fileID=7433441132597879392&amp;guid=3ac3fc749b6836e40961ed09df17a8e0&amp;type=3#HUDStylesSheet" />
+    <engine:VisualElement name="Bottom" style="flex-grow: 1; height: 444px; min-height: 20%; max-height: 20%; bottom: 0; border-top-width: 29px; border-right-width: 29px; border-bottom-width: 29px; border-left-width: 29px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); rotate: 0; position: absolute; width: 100%; max-width: 100%; min-width: 100%;" />
 </engine:UXML>
