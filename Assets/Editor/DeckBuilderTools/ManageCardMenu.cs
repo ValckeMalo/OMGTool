@@ -46,6 +46,8 @@ namespace MaloProduction
                     }),
                 });
 
+        private CardType cardTypeCreated = CardType.Attack;
+
         private void UpdateManageCard()
         {
             HeaderManageCardMenu();
@@ -57,9 +59,8 @@ namespace MaloProduction
         #region Header Bar
         private void HeaderManageCardMenu()
         {
-            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.MaxHeight(50f)))
             {
-
                 //Create Card
                 AddCardButton();
 
@@ -82,21 +83,33 @@ namespace MaloProduction
 
         private void AddCardButton()
         {
-            //create a card button
-            GUI.contentColor = Color.green;
-            if (GUILayout.Button("+", new GUIStyle(GUI.skin.button) { fontSize = 40, alignment = TextAnchor.MiddleCenter },
-                GUILayout.Height(50),
-                GUILayout.Width(50)))
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.Width(175f)))
             {
-                CreateACard();
+                //create a card button
+                GUI.contentColor = Color.green;
+                if (GUILayout.Button("+", new GUIStyle(GUI.skin.button) { fontSize = 40, alignment = TextAnchor.MiddleCenter },
+                    GUILayout.Height(50),
+                    GUILayout.Width(50)))
+                {
+                    CreateACard();
+                }
+                GUI.contentColor = Color.white;
+
+                using (new EditorGUILayout.VerticalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    //type card
+                    cardTypeCreated = (CardType)EditorGUILayout.EnumPopup(cardTypeCreated, GUILayout.ExpandWidth(true));
+                    GUILayout.FlexibleSpace();
+                }
             }
-            GUI.contentColor = Color.white;
         }
         private void CreateACard()
         {
             ScriptableObject newCard = ScriptableObject.CreateInstance(typeof(CardData));
             (newCard as CardData).cardName = "NewCard";
             string newCardName = "NewCard" + ExtensionMethods.GenerateRandomString(10);
+            (newCard as CardData).cardType = cardTypeCreated;
             AssetDatabase.CreateAsset(newCard, pathCard + newCardName + ".asset");
             cardLibrary.cards.Add(newCard as CardData);
         }

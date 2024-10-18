@@ -24,7 +24,7 @@ public class AttributesTuto : MonoBehaviour
     [ShowIfMultiples("haveResistance", "haveArmor"), SerializeField, Range(0f, 100f)] private float resistanceMultiplier;
 
     [Header("Color")]
-    [Color(5f, 50f, 125f, 200f, true, ColorUsage.Background), SerializeField] private float mana;
+    [Color(255f, 255f, 0f, 200f, true, ColorUsage.Background), SerializeField] private float mana;
 
     [Header("Sprite")]
     [Sprite, SerializeField] private Sprite characterIco;
