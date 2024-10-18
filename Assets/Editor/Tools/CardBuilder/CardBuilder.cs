@@ -67,7 +67,7 @@ namespace MaloProduction
         //directory
         static string pathCard = "Assets/ScriptableObjects/Cards/";
 
-        [MenuItem("Tools/Deck Builder")]
+        [MenuItem("Tools/Card Builder")]
         public static void ShowWindow()
         {
             window = GetWindow<CardBuilder>("Card Builder");
