@@ -217,22 +217,45 @@ namespace MaloProduction
         {
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.Height(fieldTextureHeight)))
             {
-                //field
-                EditorGUILayout.PropertyField(field.property, GUIContent.none, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                EditorGUILayout.VerticalScope imageScope;
+                using (imageScope = new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true), GUILayout.Height(fieldTextureHeight)))
+                {
+                    GUILayout.FlexibleSpace();
+                }
 
-                if (field.property.objectReferenceValue != null && field.property.objectReferenceValue is Texture2D)
+                //field
+                EditorGUILayout.PropertyField(field.property, GUIContent.none, GUILayout.ExpandWidth(true));
+
+                //display the image
+                if (field.property.objectReferenceValue != null && imageScope != null && field.property.objectReferenceValue is Texture2D)
                 {
                     Texture2D texture = (Texture2D)field.property.objectReferenceValue;
-                    Rect lastRect = GUILayoutUtility.GetLastRect();
-                    //ajustement pour bien combler
-                    lastRect.position -= new Vector2(4f, 0f);
-                    lastRect.size -= new Vector2(10f, 0f);
-                    GUI.DrawTexture(lastRect, texture);
+                    Vector2 dimTexture = new Vector2(texture.width, texture.height);
+                    GUI.DrawTexture(GetRectTexture(dimTexture, imageScope.rect), texture);
                 }
 
                 //title
                 EditorGUILayout.LabelField(field.titleProperty, new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
             }
+        }
+
+        private Rect GetRectTexture(Vector2 textureSize, Rect targetRect)
+        {
+            float textureAspect = textureSize.x / textureSize.y;
+            float rectAspect = targetRect.width / targetRect.height;
+
+            if (textureAspect > rectAspect)
+            {
+                float height = targetRect.width / textureAspect;
+                targetRect = new Rect(targetRect.x, targetRect.y + (targetRect.height - height) / 2, targetRect.width, height);
+            }
+            else
+            {
+                float width = targetRect.height * textureAspect;
+                targetRect = new Rect(targetRect.x + (targetRect.width - width) / 2, targetRect.y, width, targetRect.height);
+            }
+
+            return targetRect;
         }
         #endregion
     }
