@@ -100,35 +100,38 @@ namespace MaloProduction
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             ////Spells/////////////////////////////////////////////////////////////////////////////////////////////////////
-            int spellsCount = card.spells.Count;
-            if (spellsCount > 0)
+            if (card.spells != null)
             {
-                Vector2 spellCardSize = new Vector2(targetCardSize.x, (int)(FontSizePreviewCard / 2f));
-                Vector2 spellCardPosition = new Vector2(targetCardPosition.x, targetCardPosition.y + targetCardSize.y);
-                Rect spellCardRect = new Rect(spellCardPosition, spellCardSize);
-                string spellCardText = string.Empty;
-
-                for (int i = 0; i < spellsCount; i++)
+                int spellsCount = card.spells.Count;
+                if (spellsCount > 0)
                 {
-                    CardData.SpellsBonus spellBonus = card.spells[i];
+                    Vector2 spellCardSize = new Vector2(targetCardSize.x, (int)(FontSizePreviewCard / 2f));
+                    Vector2 spellCardPosition = new Vector2(targetCardPosition.x, targetCardPosition.y + targetCardSize.y);
+                    Rect spellCardRect = new Rect(spellCardPosition, spellCardSize);
+                    string spellCardText = string.Empty;
 
-                    if (spellBonus.initiative)
+                    for (int i = 0; i < spellsCount; i++)
                     {
-                        spellCardText += "Initiative : ";
-                        spellCardText += spellBonus.amount >= 0 ? "+ " : "- ";
-                        spellCardText += Mathf.Abs(spellBonus.amount).ToString() + " " + spellBonus.spell.ToString();
-                    }
-                    else
-                    {
-                        spellCardText += spellBonus.spell.ToString() + " : ";
-                        spellCardText += spellBonus.amount >= 0 ? "+ " : "- ";
-                        spellCardText += Mathf.Abs(spellBonus.amount).ToString();
-                    }
+                        CardData.SpellsBonus spellBonus = card.spells[i];
 
-                    GUI.Label(spellCardRect, spellCardText, new GUIStyle(EditorStyles.label) { fontSize = FontSizePreviewCard / 2, alignment = TextAnchor.UpperCenter });
+                        if (spellBonus.initiative)
+                        {
+                            spellCardText += "Initiative : ";
+                            spellCardText += spellBonus.amount >= 0 ? "+ " : "- ";
+                            spellCardText += Mathf.Abs(spellBonus.amount).ToString() + " " + spellBonus.spell.ToString();
+                        }
+                        else
+                        {
+                            spellCardText += spellBonus.spell.ToString() + " : ";
+                            spellCardText += spellBonus.amount >= 0 ? "+ " : "- ";
+                            spellCardText += Mathf.Abs(spellBonus.amount).ToString();
+                        }
 
-                    spellCardText = string.Empty;
-                    spellCardRect.y += spellCardSize.y;
+                        GUI.Label(spellCardRect, spellCardText, new GUIStyle(EditorStyles.label) { fontSize = FontSizePreviewCard / 2, alignment = TextAnchor.UpperCenter });
+
+                        spellCardText = string.Empty;
+                        spellCardRect.y += spellCardSize.y;
+                    }
                 }
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

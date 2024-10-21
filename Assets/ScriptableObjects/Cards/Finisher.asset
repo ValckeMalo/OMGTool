@@ -10,27 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
-  m_Name: NoName
+  m_Name: Finisher
   m_EditorClassIdentifier: 
-  cardType: 0
-  target: 2
-  spells:
-  - initiative: 0
-    spell: 0
-    amount: 0
-  - initiative: 0
-    spell: 0
-    amount: 0
-  - initiative: 0
-    spell: 0
-    amount: 0
-  - initiative: 0
-    spell: 0
-    amount: 0
-  - initiative: 0
-    spell: 0
-    amount: 0
+  cardType: 6
+  target: 0
+  spells: []
   wakfuCost: 0
-  cardValue: 6
-  cardName: NoName
-  iconCard: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+  cardValue: 0
+  cardName: Finisher
+  iconCard: {fileID: 0}

@@ -19,8 +19,8 @@ namespace MaloProduction
             Defense = CardType.Defense,
             Boost = CardType.Boost,
             Neutral = CardType.Neutral,
-            GodPositive = CardType.GodPositive,
-            GodNegative = CardType.GodNegative,
+            GodPositive = CardType.Divine,
+            GodNegative = CardType.Curse,
             Finisher = CardType.Finisher,
         }
         private enum Comparison

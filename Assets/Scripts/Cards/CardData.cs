@@ -66,7 +66,7 @@ public enum CardType
     Defense,
     Boost,
     Neutral,
-    GodPositive,
-    GodNegative,
+    Divine,
+    Curse,
     Finisher,
 }

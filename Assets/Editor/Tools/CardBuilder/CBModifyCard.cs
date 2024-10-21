@@ -43,6 +43,8 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
+                    LooseFocus();
+                    ModifyNameCardObject();
                     NavigateToCard(CardNavigation.Previous);
                 }
 
@@ -59,6 +61,8 @@ namespace MaloProduction
                     GUILayout.Height(50),
                     GUILayout.Width(50)))
                 {
+                    LooseFocus();
+                    ModifyNameCardObject();
                     NavigateToCard(CardNavigation.Next);
                 }
             }
