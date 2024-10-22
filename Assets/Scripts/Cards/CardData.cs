@@ -22,7 +22,7 @@ public class CardData : ScriptableObject
 
     public string cardName;
 
-    public Texture2D iconCard;
+    public Sprite iconCard;
 }
 
 public static class TargetStringProvider

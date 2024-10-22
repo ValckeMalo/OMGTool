@@ -227,9 +227,9 @@ namespace MaloProduction
                 EditorGUILayout.PropertyField(field.property, GUIContent.none, GUILayout.ExpandWidth(true));
 
                 //display the image
-                if (field.property.objectReferenceValue != null && imageScope != null && field.property.objectReferenceValue is Texture2D)
+                if (field.property.objectReferenceValue != null && imageScope != null && field.property.objectReferenceValue is Sprite)
                 {
-                    Texture2D texture = (Texture2D)field.property.objectReferenceValue;
+                    Texture2D texture = ((Sprite)field.property.objectReferenceValue).texture;
                     Vector2 dimTexture = new Vector2(texture.width, texture.height);
                     GUI.DrawTexture(GetRectTexture(dimTexture, imageScope.rect), texture);
                 }

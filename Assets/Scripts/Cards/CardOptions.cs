@@ -6,13 +6,13 @@ public class CardOptions : ScriptableObject
 {
     public List<CardTypeTexture> cardsTypeTexture = new List<CardTypeTexture>();
 
-    public Texture2D wakfu;
+    public Sprite wakfu;
 
     [System.Serializable]
     public class CardTypeTexture
     {
         public CardType type;
-        public Texture2D background;
-        public Texture2D iconCard;
+        public Sprite background;
+        public Sprite iconCard;
     }
 }

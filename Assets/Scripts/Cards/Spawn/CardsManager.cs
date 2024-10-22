@@ -3,18 +3,24 @@ using UnityEngine;
 
 public class CardsManager : MonoBehaviour
 {
-    [SerializeField] private CardOptions cardOptions;
-    [SerializeField] private GameObject prefabCard;
-
-    public delegate void EventCardSpawn();
+    public delegate void EventCardSpawn(CardData cardToSpawn);
     public static EventCardSpawn onCardSpawn;
 
-    [Button("OnCallDelegate")]
+    public CardData[] cardsToSpawn;
+
+    [Button("Spawn Cards array")]
     private void OnCallDelegate()
     {
         if (Application.isPlaying)
         {
-            onCardSpawn?.Invoke();
+            for (int i = 0; i < cardsToSpawn.Length; i++)
+            {
+                onCardSpawn?.Invoke(cardsToSpawn[i]);
+            }
+        }
+        else
+        {
+            Debug.LogError("Youre application is not playing");
         }
     }
 }

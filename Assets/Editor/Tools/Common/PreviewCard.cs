@@ -21,7 +21,11 @@ namespace MaloProduction
             Vector2 centerScope = scopeRect.center;
 
             CardOptions.CardTypeTexture cardTypeTexture = cardSettings.cardsTypeTexture[(int)card.cardType];
-            Texture2D backgroundTexture = cardTypeTexture.background;
+            if (cardTypeTexture.background == null || cardSettings.wakfu == null)
+            {
+                return;
+            }
+            Texture2D backgroundTexture = cardTypeTexture.background.texture;
             if (backgroundTexture == null)
             {
                 Debug.LogWarning("No background for" + card.cardType.ToString() + " Card");
@@ -41,19 +45,18 @@ namespace MaloProduction
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             ////Icon Card//////////////////////////////////////////////////////////////////////////////////////////////////
-            Texture2D iconCard = card.iconCard;
             Vector2 iconCardSize = new Vector2(backgroundTextureSize.x * 0.8f, backgroundTextureSize.y / 2);
             Vector2 iconCardCenter = new Vector2(centerScope.x - (iconCardSize.x / 2), centerScope.y - (iconCardSize.y / 2));
             Vector2 iconCardPosition = new Vector2(iconCardCenter.x, iconCardCenter.y - backgroundTextureSize.y * (5f / 100f));
             Rect iconCardRect = new Rect(iconCardPosition, iconCardSize);
-            if (iconCard != null)
+            if (card.iconCard != null && card.iconCard.texture != null)
             {
-                GUI.DrawTexture(iconCardRect, iconCard);
+                GUI.DrawTexture(iconCardRect, card.iconCard.texture);
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             ////wakfu icon/////////////////////////////////////////////////////////////////////////////////////////////////
-            Texture2D iconWakfu = cardSettings.wakfu;
+            Texture2D iconWakfu = cardSettings.wakfu.texture;
             Vector2 iconWakfuSize = new Vector2(backgroundTextureSize.x / 4, backgroundTextureSize.x / 4);
             Vector2 iconWakfuPosition = new Vector2(topRightBackground.x - iconWakfuSize.x - borderBackgroundCard.x, topRightBackground.y + borderBackgroundCard.y);
             Rect iconWakfuRect = new Rect(iconWakfuPosition, iconWakfuSize);
@@ -139,13 +142,16 @@ namespace MaloProduction
             GUI.contentColor = Color.white;
 
             ////Value icon/////////////////////////////////////////////////////////////////////////////////////////////////
-            Texture2D valueIcon = cardTypeTexture.iconCard;
-            Vector2 valueIconSize = new Vector2(backgroundTextureSize.x / 4, backgroundTextureSize.x / 4);
-            Vector2 valueIconPosition = new Vector2(valueLabelPosisiton.x + valueLabelSize.x, valueLabelPosisiton.y);
-            Rect valueIconRect = new Rect(valueIconPosition, valueIconSize);
-            if (valueIcon != null)
+            if (cardTypeTexture.iconCard != null)
             {
-                GUI.DrawTexture(valueIconRect, valueIcon);
+                Texture2D valueIcon = cardTypeTexture.iconCard.texture;
+                Vector2 valueIconSize = new Vector2(backgroundTextureSize.x / 4, backgroundTextureSize.x / 4);
+                Vector2 valueIconPosition = new Vector2(valueLabelPosisiton.x + valueLabelSize.x, valueLabelPosisiton.y);
+                Rect valueIconRect = new Rect(valueIconPosition, valueIconSize);
+                if (valueIcon != null)
+                {
+                    GUI.DrawTexture(valueIconRect, valueIcon);
+                }
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
