@@ -2,30 +2,70 @@ using MaloProduction.CustomAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UICard : MonoBehaviour
 {
     [Title("UI")]
-    [Header("UI Image")]
     [SerializeField] private Image background;
-    [SerializeField] private Image iconType;
-    [SerializeField] private Image icon;
-    [SerializeField] private Image wakfu;
+    [SerializeField] private Image shader;
 
-    [Header("UI Text")]
-    [SerializeField] private TextMeshProUGUI nameCard;
-    [SerializeField] private TextMeshProUGUI amount;
-    [SerializeField] private TextMeshProUGUI wakfuCost;
+    [Header("Header Section")]
+    [SerializeField] private Image iconValue;
+    [SerializeField] private TextMeshProUGUI valueText;
+
+    [SerializeField] private Image wakfu;
+    [SerializeField] private TextMeshProUGUI wakfuCostText;
+
+    [Header("Center Section")]
+    [SerializeField] private Image icon;
+
+    [Header("Foot Section")]
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI targetText;
+    [SerializeField] private TextMeshProUGUI spellsText;
 
     public void Init(CardData cardData, CardOptions options)
     {
         background.sprite = options.cardsTypeTexture[(int)cardData.cardType].background;
-        iconType.sprite = options.cardsTypeTexture[(int)cardData.cardType].iconCard;
-        icon.sprite = cardData.iconCard;
-        wakfu.sprite = options.wakfu;
 
-        nameCard.text = cardData.cardName;
-        amount.text = cardData.cardValue.ToString();
-        wakfuCost.text = cardData.wakfuCost.ToString();
+        //Header Section
+        iconValue.sprite = options.cardsTypeTexture[(int)cardData.cardType].iconCard;
+        valueText.text = cardData.cardValue.ToString();
+
+        wakfu.sprite = options.wakfu;
+        wakfuCostText.text = cardData.wakfuCost.ToString();
+
+        //Center Section
+        icon.sprite = cardData.iconCard;
+
+        //Foot Section
+        nameText.text = cardData.cardName;
+        targetText.text = "Taret : " + cardData.target.ToString();
+        spellsText.text = CreateSpellsText(cardData.spells);
+    }
+
+    private string CreateSpellsText(List<CardData.SpellsBonus> spellsBonus)
+    {
+        string spellsString = string.Empty;
+
+        foreach (CardData.SpellsBonus spellBonus in spellsBonus)
+        {
+            spellsString += spellBonus.spell.ToString(); // get the name of the spell by to string the enum
+            spellsString += " : "; // separator
+            spellsString += spellBonus.amount.ToString(); // value
+            spellsString += "\n"; // line break
+        }
+
+        return spellsString;
+    }
+
+    public void InitShader(Material shaderMaterial)
+    {
+        if (shaderMaterial != null)
+        {
+            shader.gameObject.SetActive(true);
+            shader.material = shaderMaterial;
+        }
     }
 }

@@ -1,10 +1,21 @@
 using MaloProduction.CustomAttributes;
+using System.Linq;
 using UnityEngine;
 
 public class CardSpawner : MonoBehaviour
 {
+    [System.Serializable]
+    private class ShaderCards
+    {
+        public CardType cardType;
+        public Material shaderMaterial;
+    }
+
     [SerializeField] private CardOptions cardOptions;
     [SerializeField] private GameObject prefabCard;
+
+    [Header("Shader")]
+    [SerializeField] private ShaderCards[] shaderCards = new ShaderCards[3];
 
     void Start()
     {
@@ -13,12 +24,15 @@ public class CardSpawner : MonoBehaviour
 
     private void SpawnCard(CardData cardToSpawn)
     {
-        GameObject newCard = prefabCard;
-
+        GameObject newCard = Instantiate(prefabCard, transform);
         newCard.name = cardToSpawn.name;
-        newCard.GetComponent<UICard>().Init(cardToSpawn, cardOptions);
 
-        Instantiate(newCard, transform);
+        UICard newCardUI = newCard.GetComponent<UICard>();
+        newCardUI.Init(cardToSpawn, cardOptions);
+        newCardUI.InitShader(shaderCards
+                                    .Where(shader => shader.cardType == cardToSpawn.cardType)
+                                    .Select(shader => shader.shaderMaterial)
+                                    .FirstOrDefault());
     }
 
     [Button("Clear Children")]

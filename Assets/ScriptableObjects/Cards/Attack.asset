@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardType: 0
   target: 2
-  spells: []
+  spells:
+  - initiative: 0
+    spell: 0
+    amount: 1
   wakfuCost: 0
   cardValue: 6
   cardName: Attack

@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardType: 2
   target: 0
-  spells: []
+  spells:
+  - initiative: 0
+    spell: 6
+    amount: -1
   wakfuCost: 0
   cardValue: 0
   cardName: Boost

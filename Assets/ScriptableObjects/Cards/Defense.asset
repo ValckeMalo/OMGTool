@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardType: 1
   target: 0
-  spells: []
+  spells:
+  - initiative: 0
+    spell: 1
+    amount: 2
   wakfuCost: 0
   cardValue: 0
   cardName: Defense
