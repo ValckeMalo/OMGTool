@@ -460,11 +460,17 @@ namespace MaloProduction
             switch (comparison)
             {
                 case Comparison.GreaterOrEqual:
-                    return filteredList.Where(card => card.spells.Where(spells => spells.spell == spell).Select(spells => spells).ToArray()[0].amount >= intValue).Select(card => card).ToList();
+                    return filteredList
+                            .Where(card => card.spells.Any(spells => spells.spell == spell && spells.amount >= intValue))
+                            .ToList();
                 case Comparison.Equal:
-                    return filteredList.Where(card => card.spells.Where(spells => spells.spell == spell).Select(spells => spells).ToArray()[0].amount == intValue).Select(card => card).ToList();
+                    return filteredList
+                            .Where(card => card.spells.Any(spells => spells.spell == spell && spells.amount == intValue))
+                            .ToList();
                 case Comparison.LessOrEqual:
-                    return filteredList.Where(card => card.spells.Where(spells => spells.spell == spell).Select(spells => spells).ToArray()[0].amount <= intValue).Select(card => card).ToList();
+                    return filteredList
+                            .Where(card => card.spells.Any(spells => spells.spell == spell && spells.amount <= intValue))
+                            .ToList();
                 default:
                     return filteredList;
             }

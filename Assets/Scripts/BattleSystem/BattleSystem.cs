@@ -1,12 +1,17 @@
-using MaloProduction.CustomAttributes;
 using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
     public delegate void EventNextTurn();
-    public static EventNextTurn OnNextTurn;
+    public delegate void EventEnemiesTurn();
+    public delegate void EventPlayerTurn();
 
-    [SerializeField] private StateTurn stateTurn;
+    public static EventNextTurn OnNextTurn;
+    public static EventEnemiesTurn OnEnemiesTurn;
+    public static EventPlayerTurn OnPlayerTurn;
+
+    [SerializeField] private StateTurn stateTurn = StateTurn.Ennemi;
+    public static int TurnIndex { get; private set; }
 
     private enum StateTurn
     {
@@ -14,16 +19,27 @@ public class BattleSystem : MonoBehaviour
         Ennemi,
     }
 
-    public void Start()
+    private void Start()
     {
+        TurnIndex = 0;
         OnNextTurn += NextTurnCall;
+        OnNextTurn?.Invoke();
     }
 
-    [Button("Next turn Call")]
     private void NextTurnCall()
     {
         stateTurn = (StateTurn)(((int)stateTurn + 1) % 2);
 
         Debug.Log(stateTurn + " turn");
+
+        if (stateTurn == StateTurn.Player)
+        {
+            TurnIndex++;
+            OnPlayerTurn?.Invoke();
+        }
+        else
+        {
+            OnEnemiesTurn?.Invoke();
+        }
     }
 }

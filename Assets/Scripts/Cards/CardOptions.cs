@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "CardOptions",order = 2,menuName = "DeckBuilder/CardOptions")]
+[CreateAssetMenu(fileName = "CardOptions",order = 2,menuName = "CardBuilder/CardOptions")]
 public class CardOptions : ScriptableObject
 {
     public List<CardTypeTexture> cardsTypeTexture = new List<CardTypeTexture>();
