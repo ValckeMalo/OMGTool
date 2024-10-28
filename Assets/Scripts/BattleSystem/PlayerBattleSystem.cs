@@ -14,6 +14,9 @@ namespace OMG.Battle
         public delegate void EventWakfuUse(int totalAmount, int maxWakfu);
         public static EventWakfuUse OnWakfuUse;
 
+        [Header("Card Deck")]
+        [SerializeField] private CardDeck playerDeck; 
+
         private int maxWakfu = 3;
         private int wakfuUsed = 0;
         private bool init = true;

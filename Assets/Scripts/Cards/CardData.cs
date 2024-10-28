@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "CardBuilder/Cards", order = 0, fileName = "NewCard")]
+[CreateAssetMenu(menuName = "Card/Cards", order = 3, fileName = "NewCard")]
 public class CardData : ScriptableObject
 {
     [System.Serializable]
