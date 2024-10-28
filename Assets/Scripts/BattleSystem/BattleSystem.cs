@@ -26,13 +26,16 @@ namespace OMG.Battle
 
         public static int TurnIndex { get; private set; }
 
-        private void Start()
+        private void Awake()
         {
-            TurnIndex = 0;
+            TurnIndex = 1;
 
             OnNextTurn += NextTurnCall;
             OnInitializeBattle += () => StartCoroutine(InitializeCombat());
+        }
 
+        private void Start()
+        {
             OnNextTurn?.Invoke(StateTurn.Start);
         }
 
@@ -49,6 +52,7 @@ namespace OMG.Battle
                     break;
 
                 case StateTurn.Ennemi:
+                    TurnIndex++;
                     OnEnemiesTurn?.Invoke(EnemyBattleState.PlayAction);
                     break;
 

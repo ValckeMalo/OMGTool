@@ -11,6 +11,13 @@ namespace OMG.Battle
 
     public class PlayerBattleSystem : MonoBehaviour
     {
+        public delegate void EventWakfuUse(int totalAmount, int maxWakfu);
+        public static EventWakfuUse OnWakfuUse;
+
+        private int maxWakfu = 3;
+        private int wakfuUsed = 0;
+        private bool init = true;
+
         public void Awake()
         {
             BattleSystem.OnPlayerTurn += PlayerTurn;
@@ -37,10 +44,28 @@ namespace OMG.Battle
         private IEnumerator Initialize()
         {
             Debug.Log($"Preparing the player Turn");
+
+            InitializeWakfu();
+
             yield return new WaitForSeconds(1f);
             Debug.Log($"Preparation Finished");
 
             BattleSystem.OnPlayerTurn?.Invoke(PlayerBattleState.Action);
+        }
+
+        private void InitializeWakfu()
+        {
+            wakfuUsed = 0;
+            if (!init)
+            {
+                maxWakfu++;
+                maxWakfu = Mathf.Min(maxWakfu, 6);
+            }
+            else
+            {
+                init = false;
+            }
+            OnWakfuUse?.Invoke(wakfuUsed, maxWakfu);
         }
 
         private IEnumerator Action()
