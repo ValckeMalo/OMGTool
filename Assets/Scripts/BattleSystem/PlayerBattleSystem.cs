@@ -1,46 +1,52 @@
+using System.Collections;
 using UnityEngine;
 
-public class PlayerBattleSystem : MonoBehaviour
+namespace OMG.Battle
 {
-    public delegate void EventPlayerTurn();
-    public delegate void EventPlayerDamage(int damgeInflict);
-
-    public static EventPlayerTurn OnPlayerTurn;
-    public static EventPlayerDamage onPlayerDamage;
-
-    [SerializeField] private PlayerData playerData;
-
-    [SerializeField] private int wakfuRemain = 3;
-    [SerializeField] private int maxWakfu = 3;
-
-    public void OnDestroy() => playerData.ResetData();
-
-    public void Awake()
+    public enum PlayerBattleState
     {
-        wakfuRemain = maxWakfu;
-        playerData.Clone();
-
-        onPlayerDamage += OnPlayerDamage;
-        BattleSystem.OnPlayerTurn += PlayerTurn;
+        Initialize,
+        Action,
     }
 
-    private void OnPlayerDamage(int damageInflict)
+    public class PlayerBattleSystem : MonoBehaviour
     {
-        Debug.LogWarning("Damage Inflict to player " + damageInflict.ToString());
-        playerData.InflictDamage(damageInflict);
-    }
+        public void Awake()
+        {
+            BattleSystem.OnPlayerTurn += PlayerTurn;
+        }
 
-    private void PlayerTurn()
-    {
-        IncreaseWakfu();
-        Debug.Log("Wakfu remain : " + wakfuRemain.ToString());
-        OnPlayerTurn?.Invoke();
-    }
+        private void PlayerTurn(PlayerBattleState state)
+        {
+            switch (state)
+            {
+                case PlayerBattleState.Initialize:
+                    StartCoroutine(Initialize());
+                    break;
 
-    private void IncreaseWakfu()
-    {
-        wakfuRemain = maxWakfu;
-        maxWakfu++;
-        maxWakfu = Mathf.Min(maxWakfu, 6);
+                case PlayerBattleState.Action:
+                    StartCoroutine(Action());
+                    break;
+
+                default:
+                    Debug.Log($"State not recognized : {state} in {GetType().Name}.");
+                    break;
+            }
+        }
+
+        private IEnumerator Initialize()
+        {
+            Debug.Log($"Preparing the player Turn");
+            yield return new WaitForSeconds(1f);
+            Debug.Log($"Preparation Finished");
+
+            BattleSystem.OnPlayerTurn?.Invoke(PlayerBattleState.Action);
+        }
+
+        private IEnumerator Action()
+        {
+            Debug.Log($"Wait For Action");
+            yield return null;
+        }
     }
 }

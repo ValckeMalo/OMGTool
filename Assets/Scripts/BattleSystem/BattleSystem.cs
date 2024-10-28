@@ -1,45 +1,74 @@
+using System.Collections;
 using UnityEngine;
 
-public class BattleSystem : MonoBehaviour
+namespace OMG.Battle
 {
-    public delegate void EventNextTurn();
-    public delegate void EventEnemiesTurn();
-    public delegate void EventPlayerTurn();
-
-    public static EventNextTurn OnNextTurn;
-    public static EventEnemiesTurn OnEnemiesTurn;
-    public static EventPlayerTurn OnPlayerTurn;
-
-    [SerializeField] private StateTurn stateTurn = StateTurn.Ennemi;
-    public static int TurnIndex { get; private set; }
-
-    private enum StateTurn
+    public enum StateTurn
     {
+        Start,
         Player,
         Ennemi,
+        Won,
+        Lose,
     }
 
-    private void Start()
+    public class BattleSystem : MonoBehaviour
     {
-        TurnIndex = 0;
-        OnNextTurn += NextTurnCall;
-        OnNextTurn?.Invoke();
-    }
+        public delegate void EventInitializeBattle();
+        public delegate void EventNextTurn(StateTurn nextState);
+        public delegate void EventEnemiesTurn(EnemyBattleState nextState);
+        public delegate void EventPlayerTurn(PlayerBattleState nextState);
 
-    private void NextTurnCall()
-    {
-        stateTurn = (StateTurn)(((int)stateTurn + 1) % 2);
+        public static EventInitializeBattle OnInitializeBattle;
+        public static EventNextTurn OnNextTurn;
+        public static EventEnemiesTurn OnEnemiesTurn;
+        public static EventPlayerTurn OnPlayerTurn;
 
-        Debug.Log(stateTurn + " turn");
+        public static int TurnIndex { get; private set; }
 
-        if (stateTurn == StateTurn.Player)
+        private void Start()
         {
-            TurnIndex++;
-            OnPlayerTurn?.Invoke();
+            TurnIndex = 0;
+
+            OnNextTurn += NextTurnCall;
+            OnInitializeBattle += () => StartCoroutine(InitializeCombat());
+
+            OnNextTurn?.Invoke(StateTurn.Start);
         }
-        else
+
+        private void NextTurnCall(StateTurn nextState)
         {
-            OnEnemiesTurn?.Invoke();
+            switch (nextState)
+            {
+                case StateTurn.Start:
+                    OnInitializeBattle?.Invoke();
+                    break;
+
+                case StateTurn.Player:
+                    OnPlayerTurn?.Invoke(PlayerBattleState.Initialize);
+                    break;
+
+                case StateTurn.Ennemi:
+                    OnEnemiesTurn?.Invoke(EnemyBattleState.PlayAction);
+                    break;
+
+                case StateTurn.Won:
+                    break;
+
+                case StateTurn.Lose:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private IEnumerator InitializeCombat()
+        {
+            Debug.Log("Initialize UI");
+            yield return new WaitForSeconds(1f);
+
+            OnEnemiesTurn?.Invoke(EnemyBattleState.ChooseAction);
         }
     }
 }
