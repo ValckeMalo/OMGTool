@@ -23,7 +23,10 @@ public class UICard : MonoBehaviour
     [Header("Foot Section")]
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI targetText;
-    [SerializeField] private TextMeshProUGUI spellsText;
+
+    [Header("Spells")]
+    [SerializeField] private Transform spellsText;
+    [SerializeField] private GameObject spellsLinePrefab;
 
     public void Init(CardData cardData, CardOptions options)
     {
@@ -41,23 +44,25 @@ public class UICard : MonoBehaviour
 
         //Foot Section
         nameText.text = cardData.cardName;
-        targetText.text = "Taret : " + cardData.target.ToString();
-        spellsText.text = CreateSpellsText(cardData.spells);
+        targetText.text = "Target : " + cardData.target.ToString();
+
+        //Spells
+        CreateSpellsText(cardData.spells);
     }
 
-    private string CreateSpellsText(List<CardData.SpellsBonus> spellsBonus)
+    private void CreateSpellsText(List<CardData.SpellsBonus> spellsBonus)
     {
-        string spellsString = string.Empty;
-
+        string spellsLineText = string.Empty;
         foreach (CardData.SpellsBonus spellBonus in spellsBonus)
         {
-            spellsString += spellBonus.spell.ToString(); // get the name of the spell by to string the enum
-            spellsString += " : "; // separator
-            spellsString += spellBonus.amount.ToString(); // value
-            spellsString += "\n"; // line break
-        }
+            spellsLineText += spellBonus.spell.ToString(); // get the name of the spell by to string the enum
+            spellsLineText += " : "; // separator
+            spellsLineText += spellBonus.amount.ToString(); // value
+            spellsLineText += "\n"; // line break
 
-        return spellsString;
+            GameObject spellsLine = Instantiate(spellsLinePrefab, spellsText);
+            spellsLine.GetComponent<TextMeshProUGUI>().text = spellsLineText;
+        }
     }
 
     public void InitShader(Material shaderMaterial)

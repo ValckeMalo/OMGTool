@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace OMG.Battle
@@ -15,7 +17,10 @@ namespace OMG.Battle
         public static EventWakfuUse OnWakfuUse;
 
         [Header("Card Deck")]
-        [SerializeField] private CardDeck playerDeck; 
+        [SerializeField] private CardDeck deck;
+        [SerializeField] private List<CardData> shuffleDeck;
+        private int cardOnBoard = 0;
+        private int indexShuffle = 0;
 
         private int maxWakfu = 3;
         private int wakfuUsed = 0;
@@ -24,6 +29,8 @@ namespace OMG.Battle
         public void Awake()
         {
             BattleSystem.OnPlayerTurn += PlayerTurn;
+
+            shuffleDeck = deck.cards.OrderBy(x => Random.value).ToList();
         }
 
         private void PlayerTurn(PlayerBattleState state)
@@ -48,7 +55,8 @@ namespace OMG.Battle
         {
             Debug.Log($"Preparing the player Turn");
 
-            InitializeWakfu();
+            UpdateWakfu();
+            SpawnCardFromDeck();
 
             yield return new WaitForSeconds(1f);
             Debug.Log($"Preparation Finished");
@@ -56,7 +64,7 @@ namespace OMG.Battle
             BattleSystem.OnPlayerTurn?.Invoke(PlayerBattleState.Action);
         }
 
-        private void InitializeWakfu()
+        private void UpdateWakfu()
         {
             wakfuUsed = 0;
             if (!init)
@@ -71,8 +79,25 @@ namespace OMG.Battle
             OnWakfuUse?.Invoke(wakfuUsed, maxWakfu);
         }
 
+        private void SpawnCardFromDeck()
+        {
+            if (deck == null)
+            {
+                Debug.Log($"Player doesn't have a Deck in {GetType().Name}.");
+                return;
+            }
+
+            while (cardOnBoard < 6)
+            {
+                CardSpawner.OnSpawnCard?.Invoke(shuffleDeck[indexShuffle]);
+                cardOnBoard++;
+                indexShuffle = (indexShuffle + 1) % shuffleDeck.Count;
+            }
+        }
+
         private IEnumerator Action()
         {
+
             Debug.Log($"Wait For Action");
             yield return null;
         }

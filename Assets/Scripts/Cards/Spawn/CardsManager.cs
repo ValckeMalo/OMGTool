@@ -1,5 +1,6 @@
 using MaloProduction.CustomAttributes;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CardsManager : MonoBehaviour
 {
