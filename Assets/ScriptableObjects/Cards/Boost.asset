@@ -18,7 +18,7 @@ MonoBehaviour:
   - initiative: 0
     spell: 6
     amount: -1
-  wakfuCost: 0
+  wakfuCost: -2
   cardValue: 0
   cardName: Boost
   iconCard: {fileID: 0}

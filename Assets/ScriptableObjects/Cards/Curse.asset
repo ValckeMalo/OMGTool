@@ -15,7 +15,7 @@ MonoBehaviour:
   cardType: 5
   target: 0
   spells: []
-  wakfuCost: 0
+  wakfuCost: 6
   cardValue: 0
   cardName: Curse
   iconCard: {fileID: 0}

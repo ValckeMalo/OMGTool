@@ -18,7 +18,7 @@ MonoBehaviour:
   - initiative: 0
     spell: 1
     amount: 2
-  wakfuCost: 0
+  wakfuCost: 2
   cardValue: 0
   cardName: Defense
   iconCard: {fileID: 0}

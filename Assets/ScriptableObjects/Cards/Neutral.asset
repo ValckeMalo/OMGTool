@@ -18,7 +18,7 @@ MonoBehaviour:
   - initiative: 0
     spell: 0
     amount: 2
-  wakfuCost: 0
+  wakfuCost: 1
   cardValue: 0
   cardName: Neutral
   iconCard: {fileID: 0}

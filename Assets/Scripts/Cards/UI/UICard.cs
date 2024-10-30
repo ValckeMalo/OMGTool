@@ -4,73 +4,76 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class UICard : MonoBehaviour
+namespace OMG.Card.UI
 {
-    [Title("UI")]
-    [SerializeField] private Image background;
-    [SerializeField] private Image shader;
-
-    [Header("Header Section")]
-    [SerializeField] private Image iconValue;
-    [SerializeField] private TextMeshProUGUI valueText;
-
-    [SerializeField] private Image wakfu;
-    [SerializeField] private TextMeshProUGUI wakfuCostText;
-
-    [Header("Center Section")]
-    [SerializeField] private Image icon;
-
-    [Header("Foot Section")]
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI targetText;
-
-    [Header("Spells")]
-    [SerializeField] private Transform spellsText;
-    [SerializeField] private GameObject spellsLinePrefab;
-
-    public void Init(CardData cardData, CardOptions options)
+    public class UICard : MonoBehaviour
     {
-        background.sprite = options.cardsTypeTexture[(int)cardData.cardType].background;
+        [Title("UI Card")]  
+        [SerializeField] private Image background;
+        [SerializeField] private Image shader;
 
-        //Header Section
-        iconValue.sprite = options.cardsTypeTexture[(int)cardData.cardType].iconCard;
-        valueText.text = cardData.cardValue.ToString();
+        [Header("Header Section")]
+        [SerializeField] private Image iconValue;
+        [SerializeField] private TextMeshProUGUI valueText;
 
-        wakfu.sprite = options.wakfu;
-        wakfuCostText.text = cardData.wakfuCost.ToString();
+        [SerializeField] private Image wakfu;
+        [SerializeField] private TextMeshProUGUI wakfuCostText;
 
-        //Center Section
-        icon.sprite = cardData.iconCard;
+        [Header("Center Section")]
+        [SerializeField] private Image icon;
 
-        //Foot Section
-        nameText.text = cardData.cardName;
-        targetText.text = "Target : " + cardData.target.ToString();
+        [Header("Foot Section")]
+        [SerializeField] private TextMeshProUGUI nameText;
+        [SerializeField] private TextMeshProUGUI targetText;
 
-        //Spells
-        CreateSpellsText(cardData.spells);
-    }
+        [Header("Spells")]
+        [SerializeField] private Transform spellsText;
+        [SerializeField] private GameObject spellsLinePrefab;
 
-    private void CreateSpellsText(List<CardData.SpellsBonus> spellsBonus)
-    {
-        string spellsLineText = string.Empty;
-        foreach (CardData.SpellsBonus spellBonus in spellsBonus)
+        public virtual void Init(CardData cardData, CardOptions options)
         {
-            spellsLineText += spellBonus.spell.ToString(); // get the name of the spell by to string the enum
-            spellsLineText += " : "; // separator
-            spellsLineText += spellBonus.amount.ToString(); // value
-            spellsLineText += "\n"; // line break
+            background.sprite = options.cardsTypeTexture[(int)cardData.cardType].background;
 
-            GameObject spellsLine = Instantiate(spellsLinePrefab, spellsText);
-            spellsLine.GetComponent<TextMeshProUGUI>().text = spellsLineText;
+            //Header Section
+            iconValue.sprite = options.cardsTypeTexture[(int)cardData.cardType].iconCard;
+            valueText.text = cardData.cardValue.ToString();
+
+            wakfu.sprite = options.wakfu;
+            wakfuCostText.text = cardData.wakfuCost.ToString();
+
+            //Center Section
+            icon.sprite = cardData.iconCard;
+
+            //Foot Section
+            nameText.text = cardData.cardName;
+            targetText.text = "Target : " + cardData.target.ToString();
+
+            //Spells
+            CreateSpellsText(cardData.spells);
         }
-    }
 
-    public void InitShader(Material shaderMaterial)
-    {
-        if (shaderMaterial != null)
+        private void CreateSpellsText(List<CardData.SpellsBonus> spellsBonus)
         {
-            shader.gameObject.SetActive(true);
-            shader.material = shaderMaterial;
+            string spellsLineText = string.Empty;
+            foreach (CardData.SpellsBonus spellBonus in spellsBonus)
+            {
+                spellsLineText += spellBonus.spell.ToString(); // get the name of the spell by to string the enum
+                spellsLineText += " : "; // separator
+                spellsLineText += spellBonus.amount.ToString(); // value
+                spellsLineText += "\n"; // line break
+
+                GameObject spellsLine = Instantiate(spellsLinePrefab, spellsText);
+                spellsLine.GetComponent<TextMeshProUGUI>().text = spellsLineText;
+            }
+        }
+
+        public void InitShader(Material shaderMaterial)
+        {
+            if (shaderMaterial != null)
+            {
+                shader.gameObject.SetActive(true);
+                shader.material = shaderMaterial;
+            }
         }
     }
 }

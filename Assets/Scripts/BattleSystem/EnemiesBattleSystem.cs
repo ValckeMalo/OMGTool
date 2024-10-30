@@ -48,7 +48,7 @@ namespace OMG.Battle
                 if (enemy != null)
                 {
                     Debug.Log($"{enemy.GetName()} is choosing his attack");
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.5f);
                     Debug.Log($"Attack choose");
                 }
             }
@@ -63,7 +63,7 @@ namespace OMG.Battle
                 if (enemy != null)
                 {
                     Debug.Log($"{enemy.GetName()} is doing his action");
-                    yield return new WaitForSeconds(2f);
+                    yield return new WaitForSeconds(0.5f);
                 }
             }
 

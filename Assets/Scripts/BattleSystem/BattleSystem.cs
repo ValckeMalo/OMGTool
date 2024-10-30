@@ -70,7 +70,7 @@ namespace OMG.Battle
         private IEnumerator InitializeCombat()
         {
             Debug.Log("Initialize UI");
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
             OnEnemiesTurn?.Invoke(EnemyBattleState.ChooseAction);
         }
