@@ -1,3 +1,4 @@
+using OMG.Card.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,9 @@ namespace OMG.Battle
 {
     public class HUDCombat : MonoBehaviour
     {
+        public delegate void EventEndTurn();
+        public static EventEndTurn OnEndTurn;
+
         #region Class
         #region UI Class
         private abstract class UIClass
@@ -21,7 +25,7 @@ namespace OMG.Battle
             [SerializeField] private TextMeshProUGUI stateTurnText;
             [SerializeField] private TextMeshProUGUI turnIndexText;
 
-            [SerializeField] private static string[] Converter = new string[2] { "FIN DU \nTOUR", "TOUR \nADVERSE" };
+            private static string[] Converter = new string[2] { "FIN DU \nTOUR", "TOUR \nADVERSE" };
 
             public enum TurnText
             {
@@ -32,25 +36,25 @@ namespace OMG.Battle
             public override void Init()
             {
                 button.onClick.AddListener(EndTurnButtonClicked);
-                UpdateTurnButton(false, BattleSystem.TurnIndex, TurnButton.TurnText.Enemy);
+                UpdateTurnButton(false, BattleSystem.TurnIndex, TurnText.Enemy);
 
                 BattleSystem.OnPlayerTurn += OnPlayerTurn;
             }
 
             private void OnPlayerTurn(PlayerBattleState state)
             {
-                UpdateTurnButton(true, BattleSystem.TurnIndex, TurnButton.TurnText.Player);
+                UpdateTurnButton(true, BattleSystem.TurnIndex, TurnText.Player);
             }
 
             private void EndTurnButtonClicked()
             {
-                UpdateTurnButton(false, BattleSystem.TurnIndex, TurnButton.TurnText.Enemy);
-                BattleSystem.OnNextTurn?.Invoke(StateTurn.Ennemi);
+                UpdateTurnButton(false, BattleSystem.TurnIndex, TurnText.Enemy);
+                OnEndTurn?.Invoke();
             }
 
-            private void UpdateTurnButton(bool isInteractible, int indexTurn, TurnButton.TurnText turnText)
+            private void UpdateTurnButton(bool isInteractible, int indexTurn, TurnText turnText)
             {
-                stateTurnText.text = TurnButton.Converter[(int)turnText];
+                stateTurnText.text = Converter[(int)turnText];
                 button.interactable = isInteractible;
                 turnIndexText.text = "TOUR " + indexTurn.ToString(); ;
             }
@@ -103,17 +107,45 @@ namespace OMG.Battle
             }
         }
         #endregion
+        #region Preview Wakfu Bar
+        [System.Serializable]
+        private class PreviewWakfuBar : UIClass
+        {
+            [SerializeField] private Slider slider;
+            private const int maxWakfuBar = 6;
+
+            public override void Init()
+            {
+                slider.value = 0;
+                slider.minValue = 0;
+                slider.maxValue = maxWakfuBar;
+                slider.wholeNumbers = true;
+
+                PlayerBattleSystem.OnOverCard += UpdatePreviewWakfuBar;
+            }
+
+            public void UpdatePreviewWakfuBar(PlayableCard card, int wakfuUsed, MouseState state)
+            {
+                if (state == MouseState.BeginOver)
+                    slider.value = Mathf.Min(card.Wakfu + wakfuUsed, 6);
+                else if (state == MouseState.ExitOver)
+                    slider.value = 0;
+            }
+        }
+        #endregion
         #endregion
 
         [Header("UI Class")]
         [SerializeField] private TurnButton turnButton;
         [Space(2f)]
         [SerializeField] private WakfuBar wakfuBar;
+        [SerializeField] private PreviewWakfuBar previewWakfuBar;
 
         public void Awake()
         {
             turnButton.Init();
             wakfuBar.Init();
+            previewWakfuBar.Init();
         }
     }
 }

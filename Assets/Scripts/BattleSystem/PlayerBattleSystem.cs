@@ -8,7 +8,6 @@ namespace OMG.Battle
 {
     public enum PlayerBattleState
     {
-        Initialize,
         Action,
     }
 
@@ -41,6 +40,7 @@ namespace OMG.Battle
             /// <returns></returns>
             public CardData GetNextCard()
             {
+                indexShuffle = (indexShuffle + 1) % deckShuffle.Length;
                 int indexEntry = indexShuffle;
 
                 if (deckShuffle == null || deckShuffle.Length <= 0)
@@ -143,26 +143,39 @@ namespace OMG.Battle
 
         #region Delegate
         public delegate void EventWakfuUse(int totalAmount, int maxWakfu);
+        public delegate bool EventInitialize();
+        public delegate void EventOverCard(PlayableCard playableCard, int wakfuUsed, MouseState state);
+
         public static EventWakfuUse OnWakfuUse;
+        public static EventInitialize OnInitialize;
+        public static EventOverCard OnOverCard;
         #endregion
 
         [Header("Card Deck")]
         [SerializeField] private GameBoard gameBoard = new GameBoard();
 
         private int maxWakfu = 3;
-        private int wakfuUsed = 0;
-        private bool init = true;
+        private static int wakfuUsed = 0;
+        public static int WakfuUsed { get => wakfuUsed; }
 
-        public void Awake() => BattleSystem.OnPlayerTurn += PlayerTurn;
+        public void Awake()
+        {
+            OnInitialize += Initialize;
+
+            BattleSystem.OnPlayerTurn += PlayerTurn;
+            HUDCombat.OnEndTurn += OnEndTurn;
+        }
+
+        private void OnEndTurn()
+        {
+            UpdateWakfu();
+            BattleSystem.OnNextTurn?.Invoke(StateTurn.Ennemi);
+        }
 
         private void PlayerTurn(PlayerBattleState state)
         {
             switch (state)
             {
-                case PlayerBattleState.Initialize:
-                    StartCoroutine(Initialize());
-                    break;
-
                 case PlayerBattleState.Action:
                     StartCoroutine(Action());
                     break;
@@ -173,31 +186,24 @@ namespace OMG.Battle
             }
         }
 
-        private IEnumerator Initialize()
+        private bool Initialize()
         {
             Debug.Log($"Preparing the player Turn");
 
+            wakfuUsed = 0;
+            UpdateWakfuHUD();
             gameBoard.ShuffleDeck();
-            UpdateWakfu();
 
-            yield return new WaitForSeconds(0.5f);
             Debug.Log($"Preparation Finished");
 
-            BattleSystem.OnPlayerTurn?.Invoke(PlayerBattleState.Action);
+            return true;
         }
 
         private void UpdateWakfu()
         {
             wakfuUsed = 0;
-            if (!init)
-            {
-                maxWakfu++;
-                maxWakfu = Mathf.Min(maxWakfu, 6);
-            }
-            else
-            {
-                init = false;
-            }
+            maxWakfu++;
+            maxWakfu = Mathf.Min(maxWakfu, 6);
 
             UpdateWakfuHUD();
         }

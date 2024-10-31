@@ -1,16 +1,26 @@
 using MaloProduction.CustomAttributes;
+using OMG.Battle;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace OMG.Card.UI
 {
-    public class PlayableCard : UICard
+    public enum MouseState
+    {
+        BeginOver,
+        ExitOver,
+    }
+
+    public class PlayableCard : UICard, IPointerEnterHandler, IPointerExitHandler
     {
         [Title("Playbale Card")]
         [SerializeField] private Image disableImage;
         [SerializeField] private Button cardButton;
         private CardData data;
+        private RectTransform rect;
+        private const float ratioScale = 1.5f;
 
         public void DisableCard() => disableImage.enabled = true;
         public void EnableCard() => disableImage.enabled = false;
@@ -37,6 +47,7 @@ namespace OMG.Card.UI
             base.Init(cardData, options);
 
             data = cardData;
+            rect = GetComponent<RectTransform>();
         }
 
         /// <summary>
@@ -54,5 +65,18 @@ namespace OMG.Card.UI
             Destroy(gameObject);
             return returnValue;
         }
+
+        #region IPointer
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            rect.sizeDelta = rect.sizeDelta * ratioScale;
+            PlayerBattleSystem.OnOverCard.Invoke(this, PlayerBattleSystem.WakfuUsed, MouseState.BeginOver);
+        }
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            rect.sizeDelta = rect.sizeDelta / ratioScale;
+            PlayerBattleSystem.OnOverCard.Invoke(this, PlayerBattleSystem.WakfuUsed, MouseState.ExitOver);
+        }
+        #endregion
     }
 }

@@ -14,12 +14,10 @@ namespace OMG.Battle
 
     public class BattleSystem : MonoBehaviour
     {
-        public delegate void EventInitializeBattle();
         public delegate void EventNextTurn(StateTurn nextState);
         public delegate void EventEnemiesTurn(EnemyBattleState nextState);
         public delegate void EventPlayerTurn(PlayerBattleState nextState);
 
-        public static EventInitializeBattle OnInitializeBattle;
         public static EventNextTurn OnNextTurn;
         public static EventEnemiesTurn OnEnemiesTurn;
         public static EventPlayerTurn OnPlayerTurn;
@@ -31,24 +29,20 @@ namespace OMG.Battle
             TurnIndex = 1;
 
             OnNextTurn += NextTurnCall;
-            OnInitializeBattle += () => StartCoroutine(InitializeCombat());
         }
 
-        private void Start()
-        {
-            OnNextTurn?.Invoke(StateTurn.Start);
-        }
+        private void Start() => NextTurnCall(StateTurn.Start);
 
         private void NextTurnCall(StateTurn nextState)
         {
             switch (nextState)
             {
                 case StateTurn.Start:
-                    OnInitializeBattle?.Invoke();
+                    StartCoroutine(InitializeCombat());
                     break;
 
                 case StateTurn.Player:
-                    OnPlayerTurn?.Invoke(PlayerBattleState.Initialize);
+                    OnPlayerTurn?.Invoke(PlayerBattleState.Action);
                     break;
 
                 case StateTurn.Ennemi:
@@ -69,10 +63,15 @@ namespace OMG.Battle
 
         private IEnumerator InitializeCombat()
         {
-            Debug.Log("Initialize UI");
-            yield return new WaitForSeconds(0.5f);
+            Debug.Log("Initialize player battle");
 
-            OnEnemiesTurn?.Invoke(EnemyBattleState.ChooseAction);
+            yield return new WaitUntil(() => PlayerBattleSystem.OnInitialize.Invoke());
+
+            Debug.Log("Initialize enemies battle");
+
+            yield return new WaitUntil(() => EnemiesBattleSystem.OnInitialize.Invoke());
+
+            NextTurnCall(StateTurn.Player);
         }
     }
 }

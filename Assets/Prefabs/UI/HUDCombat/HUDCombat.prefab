@@ -928,7 +928,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 5
   m_ChildAlignment: 7
-  m_Spacing: 10
+  m_Spacing: 5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -959,7 +959,6 @@ MonoBehaviour:
     shaderMaterial: {fileID: 2100000, guid: 3950fc3d7a43cd743b15feb470f71aff, type: 2}
   - cardType: 6
     shaderMaterial: {fileID: 2100000, guid: ee49d31d28c969a49955b3558029d80f, type: 2}
-  showCard: 0
 --- !u!1 &3796426918674266833
 GameObject:
   m_ObjectHideFlags: 0

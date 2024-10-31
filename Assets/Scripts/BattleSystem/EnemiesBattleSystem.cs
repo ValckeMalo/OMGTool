@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace OMG.Battle
 {
+    using OMG.Enemy;
+
     public enum EnemyBattleState
     {
         ChooseAction,
@@ -11,14 +13,26 @@ namespace OMG.Battle
 
     public class EnemiesBattleSystem : MonoBehaviour
     {
-        private Enemy[] enemies = new Enemy[3];
+        private ABSEnemy[] enemies = new ABSEnemy[3];
+
+        public delegate bool EventInitialize();
+        public static EventInitialize OnInitialize;
 
         private void Awake()
         {
+            OnInitialize += Initialize;
             BattleSystem.OnEnemiesTurn += EnemiesTurn;
 
             enemies[0] = new Bouftou();
             enemies[1] = new Arakne();
+            enemies[2] = new Bouftou();
+        }
+
+        private bool Initialize()
+        {
+            EnemiesChooseActions();
+
+            return true;
         }
 
         private void EnemiesTurn(EnemyBattleState state)
@@ -26,7 +40,7 @@ namespace OMG.Battle
             switch (state)
             {
                 case EnemyBattleState.ChooseAction:
-                    StartCoroutine(ChooseAttack());
+                    ChooseActions();
                     break;
 
                 case EnemyBattleState.PlayAction:
@@ -39,26 +53,29 @@ namespace OMG.Battle
             }
         }
 
-        private IEnumerator ChooseAttack()
+        private void ChooseActions()
         {
             Debug.Log("Enemies are choosing their action");
 
-            foreach (Enemy enemy in enemies)
+            EnemiesChooseActions();
+            BattleSystem.OnNextTurn?.Invoke(StateTurn.Player);
+        }
+
+        private void EnemiesChooseActions()
+        {
+            foreach (ABSEnemy enemy in enemies)
             {
                 if (enemy != null)
                 {
                     Debug.Log($"{enemy.GetName()} is choosing his attack");
-                    yield return new WaitForSeconds(0.5f);
                     Debug.Log($"Attack choose");
                 }
             }
-
-            BattleSystem.OnNextTurn?.Invoke(StateTurn.Player);
         }
 
         private IEnumerator EnemyActions()
         {
-            foreach (Enemy enemy in enemies)
+            foreach (ABSEnemy enemy in enemies)
             {
                 if (enemy != null)
                 {
@@ -69,42 +86,7 @@ namespace OMG.Battle
 
             Debug.Log("All enemy action Played");
 
-            StartCoroutine(ChooseAttack());
+            ChooseActions();
         }
     }
-
-    #region Enemy Class
-    public abstract class Enemy
-    {
-        public abstract int Action();
-
-        public abstract string GetName();
-    }
-
-    public class Bouftou : Enemy
-    {
-        public override int Action()
-        {
-            return 5;
-        }
-
-        public override string GetName()
-        {
-            return "Bouftou";
-        }
-    }
-
-    public class Arakne : Enemy
-    {
-        public override int Action()
-        {
-            return 10;
-        }
-
-        public override string GetName()
-        {
-            return "Arakne";
-        }
-    }
-    #endregion
 }
