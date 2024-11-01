@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OMG.Battle
 {
-    using OMG.Enemy;
+    using OMG.Unit.Monster;
 
     public enum EnemyBattleState
     {
@@ -13,7 +13,7 @@ namespace OMG.Battle
 
     public class EnemiesBattleSystem : MonoBehaviour
     {
-        private ABSEnemy[] enemies = new ABSEnemy[3];
+        private Monster[] enemies = new Monster[3];
 
         public delegate bool EventInitialize();
         public static EventInitialize OnInitialize;
@@ -63,7 +63,7 @@ namespace OMG.Battle
 
         private void EnemiesChooseActions()
         {
-            foreach (ABSEnemy enemy in enemies)
+            foreach (Monster enemy in enemies)
             {
                 if (enemy != null)
                 {
@@ -75,7 +75,7 @@ namespace OMG.Battle
 
         private IEnumerator EnemyActions()
         {
-            foreach (ABSEnemy enemy in enemies)
+            foreach (Monster enemy in enemies)
             {
                 if (enemy != null)
                 {
