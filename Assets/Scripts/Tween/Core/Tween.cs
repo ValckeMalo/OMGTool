@@ -2,7 +2,6 @@ namespace MaloProduction.Tween.Core
 {
     using MaloProduction.Tween.Delegate;
     using MaloProduction.Tween.Ease.Easing;
-    using System;
 
     public abstract class Tween
     {
@@ -17,6 +16,8 @@ namespace MaloProduction.Tween.Core
         public float duration = 0f;
         public float elapsedTime = 0f;
         public float timeScale = 1f;
+        public float delayDuration = 0f;
+        public float delay = 0f;
 
         public object target = null;
 
@@ -26,6 +27,7 @@ namespace MaloProduction.Tween.Core
 
         public bool isPlaying = false;
         public bool isComplete = false;
+        public bool isDelayComplete = true;
 
         public abstract bool AppplyTween();
         public abstract bool Startup();
@@ -44,6 +46,12 @@ namespace MaloProduction.Tween.Core
             onKill = null;
         }
 
+        /// <summary>
+        /// return if the tween need to be killed
+        /// </summary>
+        /// <param name="tween"></param>
+        /// <param name="toPosition"></param>
+        /// <returns></returns>
         public static bool DoGoto(Tween tween, float toPosition)
         {
             if (!tween.startupDone)
@@ -65,14 +73,6 @@ namespace MaloProduction.Tween.Core
                         return true;
                     }
                 }
-                if (tween.onPlay != null)
-                {
-                    OnTweenCallback(tween.onPlay);
-                    if (!tween.active)
-                    {
-                        return true;
-                    }
-                }
             }
 
             float previousElapsedTime = tween.elapsedTime;
@@ -81,6 +81,7 @@ namespace MaloProduction.Tween.Core
             if (tween.elapsedTime > tween.duration)
             {
                 tween.elapsedTime = tween.duration;
+                tween.isComplete = true;
             }
             else if (tween.elapsedTime <= 0f)
             {
@@ -94,7 +95,11 @@ namespace MaloProduction.Tween.Core
                 }
             }
 
-            tween.elapsedTime = toPosition;
+            if (!tween.isComplete)
+            {
+                tween.elapsedTime = toPosition;
+            }
+
             bool wasPlaying = tween.isPlaying;
             if (tween.AppplyTween())
             {

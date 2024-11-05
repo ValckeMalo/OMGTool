@@ -1,0 +1,38 @@
+namespace MaloProduction.Tween.DoTween.Module
+{
+    using MaloProduction.Tween.Core;
+    using UnityEngine;
+
+    public static class {0}Module
+    {
+        public static TweenerCore<{2}, {3}> DoMove(this {1} target, {3} endValue, float duration)
+        {
+
+        }
+
+        public static TweenerCore<{2}, {3}> DoScale(this {1} target, {3} endValue, float duration)
+        {
+
+        }
+
+        public static TweenerCore<float, float> DoFade(this {1} target, float endValue, float duration)
+        {
+
+        }
+
+        public static TweenerCore<Color, Color> DoColor(this {1} target, Color endValue, float duration)
+        {
+
+        }
+
+        public static TweenerCore<Quaternion, Quaternion> Do2DRotation(this {1} target, Vector2 endValue, float duration)
+        {
+
+        }
+
+        public static TweenerCore<Quaternion, Quaternion> Do3DRotation(this {1} target, Vector3 endValue, float duration)
+        {
+
+        }
+    }
+}

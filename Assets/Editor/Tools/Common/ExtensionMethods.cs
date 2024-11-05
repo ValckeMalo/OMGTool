@@ -1,5 +1,7 @@
 namespace MaloProduction
 {
+    using System.Globalization;
+    using System.Text.RegularExpressions;
     using UnityEngine;
 
     public static class ExtensionMethods
@@ -18,6 +20,18 @@ namespace MaloProduction
                 stringChars[i] = alphabet[Random.Range(0, alphabet.Length)];
             }
             return new string(stringChars);
+        }
+
+        public static string CamelCase(this string input)
+        {
+            if (string.IsNullOrEmpty(input)) return input;
+
+            var separated = Regex.Replace(input, "([A-Z])", " $1");
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            string result = textInfo.ToTitleCase(separated.ToLower());
+
+            return result.Replace(" ", "");
         }
     }
 }

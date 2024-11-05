@@ -52,10 +52,14 @@ namespace MaloProduction.Tween.Core
                 }
             }
 
+
             this.getter = getter;
             this.setter = setter;
             this.endValue = endValue;
             this.duration = duration;
+
+            this.plugin.SetFrom(this);
+            this.plugin.SetChangeValue(this);
 
             return true;
         }

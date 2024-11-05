@@ -15,5 +15,15 @@ namespace MaloProduction.Tween.Plugin
                   startValue + changeValue * EaseManager.Evaluate(tween.easeType, elapsedTime, duration)
             );
         }
+
+        public override void SetChangeValue(TweenerCore<float, float> tween)
+        {
+            tween.changeValue = tween.endValue - tween.startValue;
+        }
+
+        public override void SetFrom(TweenerCore<float, float> tween)
+        {
+            tween.startValue = tween.getter();
+        }
     }
 }

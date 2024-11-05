@@ -8,6 +8,9 @@ namespace MaloProduction.Tween.Plugin
     {
         private static IPlugin floatPlugin;
         private static IPlugin vector2Plugin;
+        private static IPlugin vector3Plugin;
+        private static IPlugin colorPlugin;
+        private static IPlugin quaternionPlugin;
 
         private static Dictionary<Type, IPlugin> customPlugin;
         private const int maxCustomPlugin = 20;
@@ -33,6 +36,30 @@ namespace MaloProduction.Tween.Plugin
                     vector2Plugin = new Vector2Plugin();
                 }
                 plugin = vector2Plugin;
+            }
+            else if (type1 == typeof(Quaternion))
+            {
+                if (quaternionPlugin == null)
+                {
+                    quaternionPlugin = new QuaternionPlugin();
+                }
+                plugin = quaternionPlugin;
+            }
+            else if (type1 == typeof(Vector3))
+            {
+                if (quaternionPlugin == null)
+                {
+                    quaternionPlugin = new Vector3Plugin();
+                }
+                plugin = quaternionPlugin;
+            }
+            else if (type1 == typeof(Color))
+            {
+                if (quaternionPlugin == null)
+                {
+                    quaternionPlugin = new ColorPlugin();
+                }
+                plugin = quaternionPlugin;
             }
 
             if (plugin != null)

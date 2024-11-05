@@ -5,23 +5,20 @@ namespace MaloProduction.Tween.Plugin
     using MaloProduction.Tween.Ease;
     using UnityEngine;
 
-    public class Vector2Plugin : ABSPlugin<Vector2, Vector2>
+    public class Vector3Plugin : ABSPlugin<Vector3, Vector3>
     {
-        public override void EvalutateAndApply(Tween tween, Vector2 startValue,
-            Vector2 endValue, Vector2 changeValue,
-            TweenSetter<Vector2> setter, TweenGetter<Vector2> getter,
-            float elapsedTime, float duration)
+        public override void EvalutateAndApply(Tween tween, Vector3 startValue, Vector3 endValue, Vector3 changeValue, TweenSetter<Vector3> setter, TweenGetter<Vector3> getter, float elapsedTime, float duration)
         {
             float easeValue = EaseManager.Evaluate(tween.easeType, elapsedTime, duration);
             setter(startValue + changeValue * easeValue);
         }
 
-        public override void SetChangeValue(TweenerCore<Vector2, Vector2> tween)
+        public override void SetChangeValue(TweenerCore<Vector3, Vector3> tween)
         {
             tween.changeValue = tween.endValue - tween.startValue;
         }
 
-        public override void SetFrom(TweenerCore<Vector2, Vector2> tween)
+        public override void SetFrom(TweenerCore<Vector3, Vector3> tween)
         {
             tween.startValue = tween.getter();
         }
