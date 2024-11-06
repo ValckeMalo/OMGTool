@@ -1,7 +1,7 @@
 namespace MaloProduction.Tween.Core
 {
     using MaloProduction.Tween.Delegate;
-    using MaloProduction.Tween.Ease.Easing;
+    using MaloProduction.Tween.Ease;
 
     public abstract class Tween
     {

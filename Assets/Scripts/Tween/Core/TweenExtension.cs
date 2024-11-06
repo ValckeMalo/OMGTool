@@ -2,6 +2,7 @@ namespace MaloProduction.Tween
 {
     using MaloProduction.Tween.Core;
     using MaloProduction.Tween.Delegate;
+    using MaloProduction.Tween.Ease;
 
     public static class TweenExtension
     {
@@ -35,6 +36,12 @@ namespace MaloProduction.Tween
             tweener.isDelayComplete = false;
             tweener.delay = 0f;
 
+            return tweener;
+        }
+
+        public static TweenerCore<T1, T2> SetEase<T1, T2>(this TweenerCore<T1, T2> tweener, Easing ease)
+        {
+            tweener.easeType = ease;
             return tweener;
         }
     }
