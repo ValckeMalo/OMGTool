@@ -1,11 +1,14 @@
-using System.Collections;
-using UnityEngine;
-
 namespace OMG.Battle
 {
+    using OMG.Unit;
+    using OMG.Unit.Monster;
+    using OMG.Unit.Player;
+    using System.Collections;
+    using UnityEngine;
+
     public enum StateTurn
     {
-        Start,
+        Initialize,
         Player,
         Ennemi,
         Won,
@@ -15,39 +18,32 @@ namespace OMG.Battle
     public class BattleSystem : MonoBehaviour
     {
         public delegate void EventNextTurn(StateTurn nextState);
-        public delegate void EventEnemiesTurn(EnemyBattleState nextState);
-        public delegate void EventPlayerTurn(PlayerBattleState nextState);
-
         public static EventNextTurn OnNextTurn;
-        public static EventEnemiesTurn OnEnemiesTurn;
-        public static EventPlayerTurn OnPlayerTurn;
 
-        public static int TurnIndex { get; private set; }
+        [SerializeField] private Player player;
+        [SerializeField] private Monster[] monsters = new Monster[3];
 
-        private void Awake()
-        {
-            TurnIndex = 1;
+        private static int turnIndex = 1;
+        public static int TurnIndex { get => turnIndex; }
 
-            OnNextTurn += NextTurnCall;
-        }
+        private void Awake() => OnNextTurn += NextTurn;
+        private void Start() => NextTurn(StateTurn.Initialize);
 
-        private void Start() => NextTurnCall(StateTurn.Start);
-
-        private void NextTurnCall(StateTurn nextState)
+        private void NextTurn(StateTurn nextState)
         {
             switch (nextState)
             {
-                case StateTurn.Start:
+                case StateTurn.Initialize:
                     StartCoroutine(InitializeCombat());
                     break;
 
                 case StateTurn.Player:
-                    OnPlayerTurn?.Invoke(PlayerBattleState.Action);
+                    PlayerBattleSystem.OnUnitTurn?.Invoke();
                     break;
 
                 case StateTurn.Ennemi:
-                    TurnIndex++;
-                    OnEnemiesTurn?.Invoke(EnemyBattleState.PlayAction);
+                    turnIndex++;
+                    MonstersBattleSystem.OnUnitTurn?.Invoke();
                     break;
 
                 case StateTurn.Won:
@@ -57,21 +53,29 @@ namespace OMG.Battle
                     break;
 
                 default:
+                    Debug.LogError($"Can't recognize the state send {nextState}.");
                     break;
             }
         }
 
         private IEnumerator InitializeCombat()
         {
-            Debug.Log("Initialize player battle");
+            yield return new WaitUntil(() => InitializeCallBack(PlayerBattleSystem.OnInitialize, player));
+            yield return new WaitUntil(() => InitializeCallBack(MonstersBattleSystem.OnInitialize, monsters));
 
-            yield return new WaitUntil(() => PlayerBattleSystem.OnInitialize.Invoke());
+            NextTurn(StateTurn.Player);
+        }
 
-            Debug.Log("Initialize enemies battle");
+        private bool InitializeCallBack(UnitBattleSystem.EventInitialize eventInitialize, params IUnit[] units)
+        {
+            if (eventInitialize == null)
+            {
+                Debug.LogError($"Can't Initialize {eventInitialize}");
+                return false;
+            }
 
-            yield return new WaitUntil(() => EnemiesBattleSystem.OnInitialize.Invoke());
-
-            NextTurnCall(StateTurn.Player);
+            eventInitialize.Invoke(units);
+            return true;
         }
     }
 }

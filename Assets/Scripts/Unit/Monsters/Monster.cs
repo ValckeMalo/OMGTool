@@ -5,7 +5,7 @@ namespace OMG.Unit.Monster
 
     public abstract class Monster : Unit
     {
-        MonsterBrain brain;
+        [UnityEngine.SerializeField] private MonsterBrain brain;
 
         public abstract void Action();
         public abstract void SearchNextAction();

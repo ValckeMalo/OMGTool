@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8695fbeacb95900499827f639895fa9d, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: f9af349ab86f5b443b48d12f2cf75b6e, type: 3}
+  m_Name: BouftouData
   m_EditorClassIdentifier: 
-  maxLife: 100
-  life: 100
-  ShowLog: 0
+  hp: 80
+  maxHp: 80
+  armor: 0
+  status: []

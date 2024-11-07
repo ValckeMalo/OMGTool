@@ -1,15 +1,16 @@
 namespace OMG.Unit.Monster
 {
+    using UnityEngine;
+
+    [CreateAssetMenu(fileName = "Arakne", menuName = "Unit/Monster/Arakne", order = 0)]
     public class Arakne : Monster
     {
         public override void Action()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void SearchNextAction()
         {
-            throw new System.NotImplementedException();
         }
 
         public override string GetName()

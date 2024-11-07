@@ -70,12 +70,10 @@ namespace OMG.Card.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             rect.sizeDelta = rect.sizeDelta * ratioScale;
-            PlayerBattleSystem.OnOverCard.Invoke(this, PlayerBattleSystem.WakfuUsed, MouseState.BeginOver);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
             rect.sizeDelta = rect.sizeDelta / ratioScale;
-            PlayerBattleSystem.OnOverCard.Invoke(this, PlayerBattleSystem.WakfuUsed, MouseState.ExitOver);
         }
         #endregion
     }

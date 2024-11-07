@@ -1,6 +1,7 @@
 namespace OMG.Unit.Action
 {
     using OMG.Unit;
+    using OMG.Unit.Status;
 
     public abstract class UnitAction
     {
@@ -66,11 +67,11 @@ namespace OMG.Unit.Action
             }
         }
 
-        protected void AddStatus(int nbTurn, Status status, IUnit unit)
+        protected void AddStatus(int nbTurn, StatusType status, IUnit unit)
         {
             unit.AddStatus(status, nbTurn);
         }
-        protected void AddStatus(int nbTurn, Status status, params IUnit[] units)
+        protected void AddStatus(int nbTurn, StatusType status, params IUnit[] units)
         {
             foreach (IUnit unit in units)
             {
@@ -78,11 +79,11 @@ namespace OMG.Unit.Action
             }
         }
 
-        protected void ClearStatus(Status status, IUnit unit)
+        protected void ClearStatus(StatusType status, IUnit unit)
         {
             unit.ClearStatus(status);
         }
-        protected void ClearStatus(Status status, params IUnit[] units)
+        protected void ClearStatus(StatusType status, params IUnit[] units)
         {
             foreach (IUnit unit in units)
             {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3909934220848040906}
   - component: {fileID: 1325926881126917223}
   m_Layer: 0
-  m_Name: EnemiesBattleSystem
+  m_Name: MonstersBattleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

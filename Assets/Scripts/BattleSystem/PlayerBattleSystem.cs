@@ -1,17 +1,14 @@
-using OMG.Card.Data;
-using OMG.Card.UI;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace OMG.Battle
 {
-    public enum PlayerBattleState
-    {
-        Action,
-    }
+    using OMG.Card.Data;
+    using OMG.Card.UI;
+    using OMG.Unit;
+    using OMG.Unit.Player;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using MaloProduction.CustomAttributes;
 
-    public class PlayerBattleSystem : MonoBehaviour
+    public class PlayerBattleSystem : UnitBattleSystem
     {
         #region Class
         #region Game Board
@@ -32,6 +29,11 @@ namespace OMG.Battle
             public int CountCardOnBoard { get => cardsOnBoard.Count; }
 
             public bool IsDeckNull { get => deck == null; }
+
+            public GameBoard(CardDeck deck)
+            {
+                this.deck = deck;
+            }
 
             /// <summary>
             /// Return the next card to come in the shuffle array
@@ -141,74 +143,66 @@ namespace OMG.Battle
         #endregion
         #endregion
 
-        #region Delegate
-        public delegate void EventWakfuUse(int totalAmount, int maxWakfu);
-        public delegate bool EventInitialize();
-        public delegate void EventOverCard(PlayableCard playableCard, int wakfuUsed, MouseState state);
-
-        public static EventWakfuUse OnWakfuUse;
         public static EventInitialize OnInitialize;
-        public static EventOverCard OnOverCard;
-        #endregion
+        public static EventUnitTurn OnUnitTurn;
 
-        [Header("Card Deck")]
-        [SerializeField] private GameBoard gameBoard = new GameBoard();
+        [SerializeField,ReadOnly] private Player player;
+        [SerializeField,ReadOnly] private GameBoard gameBoard;
 
-        private int maxWakfu = 3;
-        private static int wakfuUsed = 0;
-        public static int WakfuUsed { get => wakfuUsed; }
+        [SerializeField,ReadOnly] private int wakfu;
+        [SerializeField,ReadOnly] private int wakfuUnlock;
+        private const int maxWakfu = 6;
 
-        public void Awake()
+        public virtual void Awake()
         {
             OnInitialize += Initialize;
-
-            BattleSystem.OnPlayerTurn += PlayerTurn;
-            HUDCombat.OnEndTurn += OnEndTurn;
+            OnUnitTurn += UnitTurn;
         }
 
-        private void OnEndTurn()
+        protected override bool Initialize(params IUnit[] units)
         {
-            UpdateWakfu();
-            BattleSystem.OnNextTurn?.Invoke(StateTurn.Ennemi);
-        }
-
-        private void PlayerTurn(PlayerBattleState state)
-        {
-            switch (state)
-            {
-                case PlayerBattleState.Action:
-                    StartCoroutine(Action());
-                    break;
-
-                default:
-                    Debug.Log($"State not recognized : {state} in {GetType().Name}.");
-                    break;
-            }
-        }
-
-        private bool Initialize()
-        {
-            Debug.Log($"Preparing the player Turn");
-
-            wakfuUsed = 0;
-            UpdateWakfuHUD();
-            gameBoard.ShuffleDeck();
-
-            Debug.Log($"Preparation Finished");
+            InitializePlayer(units[0]);
+            InitialzeWakfu();
+            InitializeGameBoard();
 
             return true;
         }
-
-        private void UpdateWakfu()
+        protected override void UnitTurn()
         {
-            wakfuUsed = 0;
-            maxWakfu++;
-            maxWakfu = Mathf.Min(maxWakfu, 6);
-
-            UpdateWakfuHUD();
+            TrySpawnCards();
+            UnlockWakfu();
         }
 
-        private void SpawnCardFromDeck()
+        #region Initialize
+        private void InitializePlayer(IUnit unit)
+        {
+            if (unit == null)
+            {
+                return;
+            }
+
+            Player player = unit as Player;
+            if (player == null)
+            {
+                return;
+            }
+
+            this.player = player;
+        }
+        private void InitialzeWakfu()
+        {
+            wakfu = 0;
+            wakfuUnlock = 3;
+        }
+        private void InitializeGameBoard()
+        {
+            gameBoard = new GameBoard(player.Deck);
+            gameBoard.ShuffleDeck();
+        }
+        #endregion
+
+        #region Cards
+        private void TrySpawnCards()
         {
             if (gameBoard.IsDeckNull)
             {
@@ -216,47 +210,53 @@ namespace OMG.Battle
                 return;
             }
 
-            bool haveToExit = false;
-            while (gameBoard.CountCardOnBoard < 6 && !haveToExit)
+            SpawnCards();
+        }
+        private void SpawnCards()
+        {
+            while (gameBoard.CountCardOnBoard < 6)
             {
                 CardData cardToSpawn = gameBoard.GetNextCard();
 
                 if (cardToSpawn == null)
                 {
-                    haveToExit = true;
-                    continue;
+                    return;
                 }
 
                 PlayableCard newPlayableCard = CardSpawner.OnSpawnCard?.Invoke(cardToSpawn);
                 newPlayableCard.RegisterOnClick(() => UseCard(newPlayableCard));
                 gameBoard.AddCardOnBoard(newPlayableCard);
             }
-
-            gameBoard.TryDisableCardOnBoard(maxWakfu - wakfuUsed);
         }
-
-        private IEnumerator Action()
-        {
-            SpawnCardFromDeck();
-
-            Debug.Log($"Wait For Action");
-            yield return null;
-        }
-
         private void UseCard(PlayableCard card)
         {
             if (card.IsDisable)
                 return;
 
-            wakfuUsed += card.Wakfu;
-            wakfuUsed = Mathf.Max(wakfuUsed, 0);
-
-            UpdateWakfuHUD();
-
-            gameBoard.RemoveCardOnBoard(card);
-            gameBoard.TryDisableCardOnBoard(maxWakfu - wakfuUsed);
+            if (UseWakfu(card.Wakfu))
+            {
+                gameBoard.RemoveCardOnBoard(card);
+                gameBoard.TryDisableCardOnBoard(wakfuUnlock - wakfu);
+            }
         }
+        #endregion
 
-        private void UpdateWakfuHUD() => OnWakfuUse?.Invoke(wakfuUsed, maxWakfu);
+        #region Wakfu
+        private void UnlockWakfu()
+        {
+            wakfu = 0;
+            wakfuUnlock = Mathf.Min(wakfuUnlock + 1, maxWakfu);
+        }
+        private bool UseWakfu(int amount)
+        {
+            if (wakfu + amount > maxWakfu)
+            {
+                return false;
+            }
+
+            wakfu += amount;
+            return true;
+        }
+        #endregion
     }
 }

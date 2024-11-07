@@ -1,4 +1,5 @@
 using OMG.Card.UI;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,11 +38,9 @@ namespace OMG.Battle
             {
                 button.onClick.AddListener(EndTurnButtonClicked);
                 UpdateTurnButton(false, BattleSystem.TurnIndex, TurnText.Enemy);
-
-                BattleSystem.OnPlayerTurn += OnPlayerTurn;
             }
 
-            private void OnPlayerTurn(PlayerBattleState state)
+            private void OnPlayerTurn()
             {
                 UpdateTurnButton(true, BattleSystem.TurnIndex, TurnText.Player);
             }
@@ -76,8 +75,6 @@ namespace OMG.Battle
                 slider.minValue = 0;
                 slider.maxValue = maxWakfuBar;
                 slider.wholeNumbers = true;
-
-                PlayerBattleSystem.OnWakfuUse += UpdateWakfuBar;
             }
 
             public void UpdateWakfuBar(int totalAmount, int maxWakfu)
@@ -120,8 +117,6 @@ namespace OMG.Battle
                 slider.minValue = 0;
                 slider.maxValue = maxWakfuBar;
                 slider.wholeNumbers = true;
-
-                PlayerBattleSystem.OnOverCard += UpdatePreviewWakfuBar;
             }
 
             public void UpdatePreviewWakfuBar(PlayableCard card, int wakfuUsed, MouseState state)

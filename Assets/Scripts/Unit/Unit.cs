@@ -1,41 +1,69 @@
 namespace OMG.Unit
 {
-    public abstract class Unit : IUnit
+    using System.Linq;
+    using UnityEngine;
+    using OMG.Unit.Status;
+
+    public abstract class Unit : ScriptableObject, IUnit
     {
+        [SerializeField] protected UnitData unitData;
+
         public abstract string GetName();
 
         #region IUnit
-        public void AddArmor(int armor)
+        public virtual void AddArmor(int armor)
         {
-            throw new System.NotImplementedException();
+            unitData.armor += armor;
         }
-        public void AddStatus(Status status, int nbTurn)
+        public virtual void AddStatus(StatusType statusType, int nbTurn)
         {
-            throw new System.NotImplementedException();
+            UnitStatus status = unitData.status.Where(x => x.status == statusType).FirstOrDefault();
+            if (status != null)
+            {
+                status.turn += nbTurn;
+            }
+            else
+            {
+                unitData.status.Add(new UnitStatus(statusType, nbTurn));
+            }
         }
-        public void ClearAllStatus()
+        public virtual void ClearAllStatus()
         {
-            throw new System.NotImplementedException();
+            unitData.status.Clear();
         }
-        public void ClearArmor()
+        public virtual void ClearArmor()
         {
-            throw new System.NotImplementedException();
+            unitData.armor = 0;
         }
-        public void ClearStatus(Status status)
+        public virtual void ClearStatus(StatusType statusType)
         {
-            throw new System.NotImplementedException();
+            UnitStatus status = unitData.status.Where(x => x.status == statusType).FirstOrDefault();
+            if (status != null)
+            {
+                unitData.status.Remove(status);
+            }
         }
-        public void Damage(int damage)
+        public virtual void Damage(int damage)
         {
-            throw new System.NotImplementedException();
+            int damageToDeal = unitData.armor - damage;
+
+            if (damageToDeal < 0)
+            {
+                unitData.hp += damageToDeal;
+                unitData.armor = 0;
+            }
+            else
+            {
+                unitData.armor -= damage;
+            }
         }
-        public void Heal(int life)
+        public virtual void Heal(int life)
         {
-            throw new System.NotImplementedException();
+            unitData.hp = Mathf.Min(unitData.hp + life, unitData.maxHp);
         }
-        public void PiercingDamage(int damage)
+        public virtual void PiercingDamage(int damage)
         {
-            throw new System.NotImplementedException();
+            unitData.hp -= damage;
         }
         #endregion
     }

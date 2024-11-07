@@ -1,5 +1,7 @@
 namespace OMG.Unit
 {
+    using OMG.Unit.Status;
+
     public interface IUnit
     {
         public void Damage(int damage);
@@ -7,19 +9,8 @@ namespace OMG.Unit
         public void Heal(int life);
         public void AddArmor(int armor);
         public void ClearArmor();
-        public void AddStatus(Status status, int nbTurn);
-        public void ClearStatus(Status status);
+        public void AddStatus(StatusType status, int nbTurn);
+        public void ClearStatus(StatusType status);
         public void ClearAllStatus();
-    }
-
-    public enum Status
-    {
-        Poison,
-        Plaie,
-        Shield,
-        Tenacite,
-        Sacrifice,
-        Bousculade,
-        Eveil,
     }
 }
