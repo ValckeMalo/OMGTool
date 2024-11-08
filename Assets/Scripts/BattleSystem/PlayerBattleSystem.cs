@@ -156,6 +156,7 @@ namespace OMG.Battle
         [SerializeField, ReadOnly] private int wakfuUnlock;
         private const int maxWakfu = 6;
         private bool haveToRemovePadLock = false;
+        private int WakfuRemain { get => wakfuUnlock - wakfu; }
 
         public virtual void Awake()
         {
@@ -180,6 +181,7 @@ namespace OMG.Battle
             HUDBattle.EndTurnButton.PlayerTurnButton();
             TryBreakPadLock();
             TrySpawnCards();
+            TryDisableCardOnBoard(WakfuRemain);
         }
 
         #region Initialize
@@ -202,6 +204,7 @@ namespace OMG.Battle
         {
             wakfu = 0;
             wakfuUnlock = 3;
+            HUDBattle.PlayerWakfuGauge.ResetPadLock();
         }
         private void InitializeGameBoard()
         {
@@ -245,8 +248,26 @@ namespace OMG.Battle
             if (UseWakfu(card.Wakfu))
             {
                 gameBoard.RemoveCardOnBoard(card);
-                gameBoard.TryDisableCardOnBoard(wakfuUnlock - wakfu);
+                TryDisableCardOnBoard(WakfuRemain);
+                TrySpawnFinishers();
             }
+        }
+        private void TrySpawnFinishers()
+        {
+            if (wakfu == maxWakfu)
+            {
+                SpawnFinishers();
+            }
+        }
+        private void SpawnFinishers()
+        {
+            Debug.LogWarning("Bosse plus t'a pas implémenté les finisher boulet");
+
+            EndTurn();
+        }
+        private void TryDisableCardOnBoard(int wakfuRemain)
+        {
+            gameBoard.TryDisableCardOnBoard(wakfuRemain);
         }
         #endregion
 
@@ -257,18 +278,26 @@ namespace OMG.Battle
         }
         private void UnlockWakfu()
         {
-            wakfu = 0;
-            wakfuUnlock++;
-
-            //if the wakfu unlock havn't already exceed max possible break a pad lock
-            if (wakfuUnlock <= maxWakfu)
+            //if finisher spawn reset the wakfu bar to initial state
+            if (wakfu == maxWakfu)
             {
-                HUDBattle.PlayerWakfuGauge.BreakPadLock();
-                haveToRemovePadLock = true;
+                InitialzeWakfu();
             }
+            else // else reset wakfu and try to unlock pad lock
+            {
+                wakfu = 0;
+                wakfuUnlock++;
 
-            //to ensure that the wakfu usable don't exceed the max possible
-            wakfuUnlock = Mathf.Min(wakfuUnlock, maxWakfu);
+                //if the wakfu unlock havn't already exceed max possible break a pad lock
+                if (wakfuUnlock <= maxWakfu)
+                {
+                    HUDBattle.PlayerWakfuGauge.BreakPadLock();
+                    haveToRemovePadLock = true;
+                }
+
+                //to ensure that the wakfu usable don't exceed the max possible
+                wakfuUnlock = Mathf.Min(wakfuUnlock, maxWakfu);
+            }
 
             //reset the ui for the gauge and the preview gauge
             HUDBattle.PlayerWakfuGauge.ResetGauges();

@@ -1,7 +1,7 @@
 namespace OMG.Card.UI
 {
     using MaloProduction.CustomAttributes;
-
+    using MaloProduction.Tween.DoTween.Module;
     using OMG.Battle;
     using OMG.Battle.UI;
 
@@ -24,6 +24,7 @@ namespace OMG.Card.UI
         private CardData data;
         private RectTransform rect;
         private const float ratioScale = 1.5f;
+        private static Vector2 size;
 
         public void DisableCard() => disableImage.enabled = true;
         public void EnableCard() => disableImage.enabled = false;
@@ -51,6 +52,8 @@ namespace OMG.Card.UI
 
             data = cardData;
             rect = GetComponent<RectTransform>();
+            size = rect.sizeDelta;
+            Debug.Log(size);
         }
 
         /// <summary>
@@ -73,14 +76,12 @@ namespace OMG.Card.UI
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
         {
-            rect.sizeDelta = rect.sizeDelta * ratioScale;
-            //TODO add tween
+            rect.DoScale(size * ratioScale, 0.1f);
             PlayerBattleSystem.UpdatePreviewGauge(Wakfu);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
-            rect.sizeDelta = rect.sizeDelta / ratioScale;
-            //TODO add tween
+            rect.DoScale(size, 0.1f);
             HUDBattle.PlayerWakfuGauge.ResetPreviewBar();
         }
         #endregion

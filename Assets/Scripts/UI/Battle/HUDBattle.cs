@@ -1,5 +1,6 @@
 namespace OMG.Battle.UI
 {
+    using MaloProduction.Tween.DoTween.Module;
     using System;
     using TMPro;
     using UnityEngine;
@@ -60,14 +61,12 @@ namespace OMG.Battle.UI
             #region Slider
             public void UpdateWakfuBar(int wakfu)
             {
-                wakfuSlider.value = wakfu;
-                //TODO module de tween pour les sliders
+                wakfuSlider.DoValue(wakfu, 0.2f);
             }
 
             public void UpdatePreviewBar(int previewWakfu)
             {
-                previewWakfuSlider.value = previewWakfu;
-                //TODO module de tween pour les sliders
+                previewWakfuSlider.DoValue(previewWakfu, 0.2f);
             }
             public void ResetPreviewBar()
             {
