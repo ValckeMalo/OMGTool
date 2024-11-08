@@ -661,10 +661,42 @@ PrefabInstance:
       propertyPath: previewWakfuBar.slider
       value: 
       objectReference: {fileID: 1270344833}
+    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
+        type: 3}
+      propertyPath: wakfuGauge.wakfuSlider
+      value: 
+      objectReference: {fileID: 1561921685}
+    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
+        type: 3}
+      propertyPath: wakfuGauge.padLocksContainer
+      value: 
+      objectReference: {fileID: 1561921684}
+    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
+        type: 3}
+      propertyPath: wakfuGauge.previewWakfuSlider
+      value: 
+      objectReference: {fileID: 1270344833}
+    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
+        type: 3}
+      propertyPath: 'wakfuGauge.padLockSprite.Array.data[0]'
+      value: 
+      objectReference: {fileID: 21300000, guid: e35bcafc114f5f74eb39c117a186ce40,
+        type: 3}
+    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
+        type: 3}
+      propertyPath: 'wakfuGauge.padLockSprite.Array.data[1]'
+      value: 
+      objectReference: {fileID: 21300000, guid: e35bcafc114f5f74eb39c117a186ce40,
+        type: 3}
     - target: {fileID: 6981646066731945110, guid: 1c0675cc3f9bd7c408df7d2991293698,
         type: 3}
       propertyPath: m_Name
       value: HUDCombat
+      objectReference: {fileID: 0}
+    - target: {fileID: 7002539372881010682, guid: 1c0675cc3f9bd7c408df7d2991293698,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7636307230137190937, guid: 1c0675cc3f9bd7c408df7d2991293698,
         type: 3}
@@ -790,6 +822,24 @@ PrefabInstance:
       addedObject: {fileID: 1270344832}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c0675cc3f9bd7c408df7d2991293698, type: 3}
+--- !u!224 &1561921684 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1450051935652026952, guid: 1c0675cc3f9bd7c408df7d2991293698,
+    type: 3}
+  m_PrefabInstance: {fileID: 1561921683}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1561921685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7851722527079217289, guid: 1c0675cc3f9bd7c408df7d2991293698,
+    type: 3}
+  m_PrefabInstance: {fileID: 1561921683}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1564751252
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,18 +6,18 @@ namespace OMG.Battle
     using System.Collections;
     using UnityEngine;
 
-    public enum StateTurn
+    public enum BattleState
     {
         Initialize,
         Player,
-        Ennemi,
+        Monsters,
         Won,
         Lose,
     }
 
     public class BattleSystem : MonoBehaviour
     {
-        public delegate void EventNextTurn(StateTurn nextState);
+        public delegate void EventNextTurn(BattleState nextState);
         public static EventNextTurn OnNextTurn;
 
         [SerializeField] private Player player;
@@ -27,29 +27,29 @@ namespace OMG.Battle
         public static int TurnIndex { get => turnIndex; }
 
         private void Awake() => OnNextTurn += NextTurn;
-        private void Start() => NextTurn(StateTurn.Initialize);
+        private void Start() => NextTurn(BattleState.Initialize);
 
-        private void NextTurn(StateTurn nextState)
+        private void NextTurn(BattleState nextState)
         {
             switch (nextState)
             {
-                case StateTurn.Initialize:
+                case BattleState.Initialize:
                     StartCoroutine(InitializeCombat());
                     break;
 
-                case StateTurn.Player:
+                case BattleState.Player:
                     PlayerBattleSystem.OnUnitTurn?.Invoke();
                     break;
 
-                case StateTurn.Ennemi:
+                case BattleState.Monsters:
                     turnIndex++;
                     MonstersBattleSystem.OnUnitTurn?.Invoke();
                     break;
 
-                case StateTurn.Won:
+                case BattleState.Won:
                     break;
 
-                case StateTurn.Lose:
+                case BattleState.Lose:
                     break;
 
                 default:
@@ -63,7 +63,7 @@ namespace OMG.Battle
             yield return new WaitUntil(() => InitializeCallBack(PlayerBattleSystem.OnInitialize, player));
             yield return new WaitUntil(() => InitializeCallBack(MonstersBattleSystem.OnInitialize, monsters));
 
-            NextTurn(StateTurn.Player);
+            NextTurn(BattleState.Player);
         }
 
         private bool InitializeCallBack(UnitBattleSystem.EventInitialize eventInitialize, params IUnit[] units)

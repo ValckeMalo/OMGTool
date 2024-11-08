@@ -1,12 +1,15 @@
 namespace OMG.Battle
 {
+    using MaloProduction.CustomAttributes;
+
     using OMG.Card.Data;
     using OMG.Card.UI;
     using OMG.Unit;
     using OMG.Unit.Player;
+    using OMG.Battle.UI;
+
     using System.Collections.Generic;
     using UnityEngine;
-    using MaloProduction.CustomAttributes;
 
     public class PlayerBattleSystem : UnitBattleSystem
     {
@@ -146,17 +149,22 @@ namespace OMG.Battle
         public static EventInitialize OnInitialize;
         public static EventUnitTurn OnUnitTurn;
 
-        [SerializeField,ReadOnly] private Player player;
-        [SerializeField,ReadOnly] private GameBoard gameBoard;
+        [SerializeField, ReadOnly] private Player player;
+        [SerializeField, ReadOnly] private GameBoard gameBoard;
 
-        [SerializeField,ReadOnly] private int wakfu;
-        [SerializeField,ReadOnly] private int wakfuUnlock;
+        [SerializeField, ReadOnly] private static int wakfu;
+        [SerializeField, ReadOnly] private int wakfuUnlock;
         private const int maxWakfu = 6;
+        private bool haveToRemovePadLock = false;
 
         public virtual void Awake()
         {
             OnInitialize += Initialize;
             OnUnitTurn += UnitTurn;
+        }
+        private void Start()
+        {
+            HUDBattle.EndTurnButton.AddCallback(EndTurn);
         }
 
         protected override bool Initialize(params IUnit[] units)
@@ -169,8 +177,9 @@ namespace OMG.Battle
         }
         protected override void UnitTurn()
         {
+            HUDBattle.EndTurnButton.PlayerTurnButton();
+            TryBreakPadLock();
             TrySpawnCards();
-            UnlockWakfu();
         }
 
         #region Initialize
@@ -242,10 +251,27 @@ namespace OMG.Battle
         #endregion
 
         #region Wakfu
+        public static void UpdatePreviewGauge(int wakfuCost)
+        {
+            HUDBattle.PlayerWakfuGauge.UpdatePreviewBar(wakfu + wakfuCost);
+        }
         private void UnlockWakfu()
         {
             wakfu = 0;
-            wakfuUnlock = Mathf.Min(wakfuUnlock + 1, maxWakfu);
+            wakfuUnlock++;
+
+            //if the wakfu unlock havn't already exceed max possible break a pad lock
+            if (wakfuUnlock <= maxWakfu)
+            {
+                HUDBattle.PlayerWakfuGauge.BreakPadLock();
+                haveToRemovePadLock = true;
+            }
+
+            //to ensure that the wakfu usable don't exceed the max possible
+            wakfuUnlock = Mathf.Min(wakfuUnlock, maxWakfu);
+
+            //reset the ui for the gauge and the preview gauge
+            HUDBattle.PlayerWakfuGauge.ResetGauges();
         }
         private bool UseWakfu(int amount)
         {
@@ -255,7 +281,27 @@ namespace OMG.Battle
             }
 
             wakfu += amount;
+            UpdateWakfuGauge();
+
             return true;
+        }
+        private void UpdateWakfuGauge() => HUDBattle.PlayerWakfuGauge.UpdateWakfuBar(wakfu);
+        private void TryBreakPadLock()
+        {
+            if (haveToRemovePadLock)
+            {
+                HUDBattle.PlayerWakfuGauge.RemovePadLock();
+                haveToRemovePadLock = false;
+            }
+        }
+        #endregion
+
+        #region End Turn
+        private void EndTurn()
+        {
+            UnlockWakfu();
+            HUDBattle.EndTurnButton.MonstersTurnButton();
+            BattleSystem.OnNextTurn?.Invoke(BattleState.Monsters);
         }
         #endregion
     }

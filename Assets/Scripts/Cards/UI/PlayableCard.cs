@@ -1,12 +1,15 @@
-using MaloProduction.CustomAttributes;
-using OMG.Battle;
-using System;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
 namespace OMG.Card.UI
 {
+    using MaloProduction.CustomAttributes;
+
+    using OMG.Battle;
+    using OMG.Battle.UI;
+
+    using System;
+    using UnityEngine;
+    using UnityEngine.EventSystems;
+    using UnityEngine.UI;
+
     public enum MouseState
     {
         BeginOver,
@@ -56,6 +59,7 @@ namespace OMG.Card.UI
         /// <returns></returns>
         public bool Use()
         {
+            //TODO rework of the function
             bool returnValue = false;
             if (data.cardType == CardType.Divine || data.cardType == CardType.Curse)
             {
@@ -70,10 +74,14 @@ namespace OMG.Card.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             rect.sizeDelta = rect.sizeDelta * ratioScale;
+            //TODO add tween
+            PlayerBattleSystem.UpdatePreviewGauge(Wakfu);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
             rect.sizeDelta = rect.sizeDelta / ratioScale;
+            //TODO add tween
+            HUDBattle.PlayerWakfuGauge.ResetPreviewBar();
         }
         #endregion
     }

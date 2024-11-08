@@ -30,6 +30,7 @@ namespace OMG.Battle
         {
             PlayAction();
             ChooseNextAction();
+            BattleSystem.OnNextTurn?.Invoke(BattleState.Player);
         }
 
         private void InitializeMonster(IUnit[] newMonsters)
