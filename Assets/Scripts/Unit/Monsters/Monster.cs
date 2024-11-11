@@ -1,14 +1,31 @@
 namespace OMG.Unit.Monster
 {
+    using MaloProduction.CustomAttributes;
+
     using OMG.Unit;
     using OMG.Unit.Monster.Brain;
+    using UnityEngine;
 
-    public abstract class Monster : Unit
+    [CreateAssetMenu(fileName = "NewMonster", menuName = "Unit/Monster/Monster", order = 0)]
+    public class Monster : Unit
     {
-        [UnityEngine.SerializeField] private MonsterBrain brain;
+        [Title("Monster")]
+        [SerializeField] private MonsterBrain brain;
 
-        public abstract void Action();
-        public abstract void SearchNextAction();
-        public override abstract string GetName();
+        public void Action(IUnit player, IUnit[] monsters)
+        {
+            if (brain != null)
+            {
+                brain.Action(player, this, monsters);
+            }
+        }
+
+        public void SearchNextAction(IUnit player, IUnit[] monsters)
+        {
+            if (brain != null)
+            {
+                brain.SearchAction(player, this, monsters);
+            }
+        }
     }
 }

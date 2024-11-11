@@ -2,27 +2,30 @@ namespace OMG.Unit.Monster.Brain
 {
     using OMG.Unit.Action;
     using OMG.Unit;
-    using OMG.Unit.Monster.Brain.Tree;
 
-    public abstract class MonsterBrain
+    using UnityEngine;
+
+    using MaloProduction.BehaviourTree;
+
+    [CreateAssetMenu(fileName = "NewMonsterBrain", menuName = "Unit/Monster/Brain", order = 1)]
+    public class MonsterBrain : ScriptableObject
     {
-        protected RootNode brainRoot;
-        protected UnitAction nextAction;
-        protected System.Action<UnitAction> setter;
+        [SerializeField] private BehaviourTree behaviour;
+        [SerializeField] private UnitAction nextAction;
 
-        public MonsterBrain()
-        {
-            setter = (action) => nextAction = action;
-        }
-
-        public virtual void ExecuteNextAction(IUnit player, IUnit monster, IUnit[] monsters)
+        public void Action(IUnit player, IUnit monster, IUnit[] monsters)
         {
             nextAction.Execute(player, monster, monsters);
         }
 
-        public virtual void SearchNextAction(IUnit player, IUnit monster, IUnit[] monsters)
+        public void SearchAction()
         {
-            brainRoot.Evaluate(player, monster, monsters);
+            behaviour.Update();
+        }
+
+        public void SetAction(UnitAction unitAction)
+        {
+            nextAction = unitAction;
         }
     }
 }

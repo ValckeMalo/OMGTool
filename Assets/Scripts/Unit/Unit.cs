@@ -3,12 +3,18 @@ namespace OMG.Unit
     using System.Linq;
     using UnityEngine;
     using OMG.Unit.Status;
+    using MaloProduction.CustomAttributes;
 
     public abstract class Unit : ScriptableObject, IUnit
     {
+        [Title("Unit")]
         [SerializeField] protected UnitData unitData;
+        [SerializeField] protected string unitName;
 
-        public abstract string GetName();
+        public virtual string GetName()
+        {
+            return unitName;
+        }
 
         #region IUnit
         public virtual void AddArmor(int armor)

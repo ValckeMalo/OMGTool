@@ -1,13 +1,10 @@
 namespace OMG.Unit.Monster.Brain.Tree
 {
+    using UnityEngine;
+
     public class SequencerNode : Node
     {
-        private Node[] childrens;
-
-        public SequencerNode(params Node[] childrens)
-        {
-            this.childrens = childrens;
-        }
+        [SerializeField] private Node[] childrens;
 
         public override NodeResult Evaluate(IUnit player, IUnit monster, IUnit[] monsters)
         {

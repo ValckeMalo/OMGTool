@@ -10,6 +10,7 @@ namespace OMG.Battle
 
     using System.Collections.Generic;
     using UnityEngine;
+    using OMG.Battle.Data;
 
     public class PlayerBattleSystem : UnitBattleSystem
     {
@@ -168,15 +169,15 @@ namespace OMG.Battle
             HUDBattle.EndTurnButton.AddCallback(EndTurn);
         }
 
-        protected override bool Initialize(params IUnit[] units)
+        protected override bool Initialize(BattleData battleData)
         {
-            InitializePlayer(units[0]);
+            InitializePlayer(battleData.PlayerData);
             InitialzeWakfu();
             InitializeGameBoard();
 
             return true;
         }
-        protected override void UnitTurn()
+        protected override void UnitTurn(BattleData battleData)
         {
             HUDBattle.EndTurnButton.PlayerTurnButton();
             TryBreakPadLock();

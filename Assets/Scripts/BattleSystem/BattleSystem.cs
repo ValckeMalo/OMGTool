@@ -1,8 +1,7 @@
 namespace OMG.Battle
 {
-    using OMG.Unit;
-    using OMG.Unit.Monster;
-    using OMG.Unit.Player;
+    using OMG.Battle.Data;
+
     using System.Collections;
     using UnityEngine;
 
@@ -20,8 +19,7 @@ namespace OMG.Battle
         public delegate void EventNextTurn(BattleState nextState);
         public static EventNextTurn OnNextTurn;
 
-        [SerializeField] private Player player;
-        [SerializeField] private Monster[] monsters = new Monster[3];
+        [SerializeField] private BattleData battleData;
 
         private static int turnIndex = 1;
         public static int TurnIndex { get => turnIndex; }
@@ -38,12 +36,12 @@ namespace OMG.Battle
                     break;
 
                 case BattleState.Player:
-                    PlayerBattleSystem.OnUnitTurn?.Invoke();
+                    PlayerBattleSystem.OnUnitTurn?.Invoke(battleData);
                     break;
 
                 case BattleState.Monsters:
                     turnIndex++;
-                    MonstersBattleSystem.OnUnitTurn?.Invoke();
+                    MonstersBattleSystem.OnUnitTurn?.Invoke(battleData);
                     break;
 
                 case BattleState.Won:
@@ -60,13 +58,13 @@ namespace OMG.Battle
 
         private IEnumerator InitializeCombat()
         {
-            yield return new WaitUntil(() => InitializeCallBack(PlayerBattleSystem.OnInitialize, player));
-            yield return new WaitUntil(() => InitializeCallBack(MonstersBattleSystem.OnInitialize, monsters));
+            yield return new WaitUntil(() => InitializeCallBack(PlayerBattleSystem.OnInitialize));
+            yield return new WaitUntil(() => InitializeCallBack(MonstersBattleSystem.OnInitialize));
 
             NextTurn(BattleState.Player);
         }
 
-        private bool InitializeCallBack(UnitBattleSystem.EventInitialize eventInitialize, params IUnit[] units)
+        private bool InitializeCallBack(UnitBattleSystem.EventInitialize eventInitialize)
         {
             if (eventInitialize == null)
             {
@@ -74,7 +72,7 @@ namespace OMG.Battle
                 return false;
             }
 
-            eventInitialize.Invoke(units);
+            eventInitialize.Invoke(battleData);
             return true;
         }
     }

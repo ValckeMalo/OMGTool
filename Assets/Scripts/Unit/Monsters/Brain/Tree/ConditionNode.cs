@@ -2,11 +2,13 @@ namespace OMG.Unit.Monster.Brain.Tree
 {
     using OMG.Unit.Action;
 
+    using UnityEngine;
+
     public class ConditionNode : Node
     {
-        private System.Func<IUnit, IUnit, IUnit[], bool> condition;
-        private UnitAction action;
-        private System.Action<UnitAction> setter;
+        [SerializeField] private System.Func<IUnit, IUnit, IUnit[], bool> condition;
+        [SerializeField] private UnitAction action;
+        [SerializeField] private System.Action<UnitAction> setter;
 
         public ConditionNode(System.Func<IUnit, IUnit, IUnit[], bool> condition, UnitAction action, System.Action<UnitAction> setter)
         {
