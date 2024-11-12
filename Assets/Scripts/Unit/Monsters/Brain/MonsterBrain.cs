@@ -5,12 +5,9 @@ namespace OMG.Unit.Monster.Brain
 
     using UnityEngine;
 
-    using MaloProduction.BehaviourTree;
-
     [CreateAssetMenu(fileName = "NewMonsterBrain", menuName = "Unit/Monster/Brain", order = 1)]
     public class MonsterBrain : ScriptableObject
     {
-        [SerializeField] private BehaviourTree behaviour;
         [SerializeField] private UnitAction nextAction;
 
         public void Action(IUnit player, IUnit monster, IUnit[] monsters)
@@ -20,7 +17,6 @@ namespace OMG.Unit.Monster.Brain
 
         public void SearchAction()
         {
-            behaviour.Update();
         }
 
         public void SetAction(UnitAction unitAction)

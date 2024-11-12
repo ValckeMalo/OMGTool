@@ -24,7 +24,7 @@ namespace OMG.Unit.Monster
         {
             if (brain != null)
             {
-                brain.SearchAction(player, this, monsters);
+                brain.SearchAction();
             }
         }
     }

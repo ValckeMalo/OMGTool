@@ -3,7 +3,7 @@ namespace OMG.Unit.Action
     using OMG.Unit;
     using OMG.Unit.Status;
 
-    public abstract class UnitAction
+    public abstract class UnitAction : UnityEngine.ScriptableObject
     {
         public abstract void Execute(IUnit player, IUnit monster, IUnit[] monsters);
 

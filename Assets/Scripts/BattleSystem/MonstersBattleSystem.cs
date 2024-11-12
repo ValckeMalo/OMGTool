@@ -5,7 +5,6 @@ namespace OMG.Battle
     using OMG.Battle.Data;
 
     using MaloProduction.CustomAttributes;
-    using MaloProduction.BehaviourTree.Blackboard;
 
     using UnityEngine;
 
@@ -17,8 +16,6 @@ namespace OMG.Battle
         [SerializeField, ReadOnly] private Monster[] monsters = new Monster[3];
         [SerializeField, ReadOnly] private int nbMonsters = 0;
 
-        private Blackboard sharedBlackboard;
-
         public virtual void Awake()
         {
             OnInitialize += Initialize;
@@ -29,11 +26,6 @@ namespace OMG.Battle
         {
             InitializeMonster(battleData.MonstersData);
             ChooseNextAction(battleData.PlayerData);
-
-            sharedBlackboard = ScriptableObject.CreateInstance<Blackboard>();
-            sharedBlackboard.GetBlackboardValues.Add(new("Player", battleData.PlayerData));
-            sharedBlackboard.GetBlackboardValues.Add(new("Monsters", battleData.MonstersData));
-            sharedBlackboard.GetBlackboardValues.Add(new("Monster", null));
 
             return true;
         }
