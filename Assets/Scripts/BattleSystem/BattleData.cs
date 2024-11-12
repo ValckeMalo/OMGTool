@@ -2,6 +2,7 @@ namespace OMG.Battle.Data
 {
     using OMG.Unit.Monster;
     using OMG.Unit.Player;
+
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "NewBattleData", menuName = "Battle/Data", order = 0)]

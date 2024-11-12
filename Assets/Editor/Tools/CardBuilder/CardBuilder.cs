@@ -1,5 +1,6 @@
 namespace MaloProduction
 {
+    using Unity.Behavior;
     using UnityEditor;
     using UnityEngine;
 
@@ -22,12 +23,6 @@ namespace MaloProduction
             GodPositive = CardType.Divine,
             GodNegative = CardType.Curse,
             Finisher = CardType.Finisher,
-        }
-        private enum Comparison
-        {
-            GreaterOrEqual,
-            Equal,
-            LessOrEqual,
         }
         private enum TargetFilter
         {
