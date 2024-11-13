@@ -1,8 +1,10 @@
 namespace OMG.Battle
 {
     using OMG.Battle.Data;
-
+    using OMG.Unit;
     using System.Collections;
+    using System.Linq;
+    using Unity.Behavior;
     using UnityEngine;
 
     public enum BattleState
@@ -20,11 +22,17 @@ namespace OMG.Battle
         public static EventNextTurn OnNextTurn;
 
         [SerializeField] private BattleData battleData;
+        [SerializeField] private RuntimeBlackboardAsset blackboardAsset;
 
         private static int turnIndex = 1;
         public static int TurnIndex { get => turnIndex; }
 
-        private void Awake() => OnNextTurn += NextTurn;
+        private void Awake()
+        {
+            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleData.PlayerData.Data;
+            OnNextTurn += NextTurn;
+        }
+
         private void Start() => NextTurn(BattleState.Initialize);
 
         private void NextTurn(BattleState nextState)
@@ -72,7 +80,7 @@ namespace OMG.Battle
                 return false;
             }
 
-            eventInitialize.Invoke(battleData);
+            eventInitialize.Invoke(battleData, blackboardAsset.Blackboard);
             return true;
         }
     }

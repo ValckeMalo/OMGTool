@@ -39,7 +39,7 @@ MonoBehaviour:
           m_Value0: 16781932822171378270
           m_Value1: 2962609670584224884
         Name: MonsterBrain
-        m_Value: {fileID: 0}
+        m_Value: {fileID: 11400000, guid: bf01257400f2da645a01aaed6303121c, type: 2}
     - rid: 7488679422381261480
       type: {class: 'BlackboardVariable`1[[OMG.Unit.UnitData, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
@@ -48,7 +48,7 @@ MonoBehaviour:
           m_Value0: 16216448333467710884
           m_Value1: 2179938643838323209
         Name: Player
-        m_Value: {fileID: 0}
+        m_Value: {fileID: 11400000, guid: fab8fb9a1c74b7e4389e5bdbe6f96855, type: 2}
     - rid: 7488679422381261481
       type: {class: 'BlackboardVariable`1[[OMG.Unit.UnitData, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
@@ -57,7 +57,7 @@ MonoBehaviour:
           m_Value0: 4138838649991657799
           m_Value1: 3559750433162881171
         Name: Monster
-        m_Value: {fileID: 0}
+        m_Value: {fileID: 11400000, guid: 96276f35bc10d8249ab2136f65a30e67, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

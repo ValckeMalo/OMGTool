@@ -9,6 +9,7 @@ namespace OMG.Unit
     {
         [Title("Unit")]
         [SerializeField] protected UnitData unitData;
+        public UnitData Data { get => unitData; }
         [SerializeField] protected string unitName;
 
         public virtual string GetName()

@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8695fbeacb95900499827f639895fa9d, type: 3}
-  m_Name: Player
+  m_Script: {fileID: 11500000, guid: 84b6cf2b568211a4e811aed400fbec9a, type: 3}
+  m_Name: Bouftou
   m_EditorClassIdentifier: 
-  unitData: {fileID: 11400000, guid: fab8fb9a1c74b7e4389e5bdbe6f96855, type: 2}
-  unitName: Player
-  deck: {fileID: 11400000, guid: c9d8199f24a039b448bb47b45e6c39ff, type: 2}
+  unitData: {fileID: 11400000, guid: ee2413b236b66984fb3f132e48cb422b, type: 2}
+  unitName: Bouftou
+  brain: {fileID: 11400000, guid: 8faad3f309b5a9449aacb085a9bf87d1, type: 2}

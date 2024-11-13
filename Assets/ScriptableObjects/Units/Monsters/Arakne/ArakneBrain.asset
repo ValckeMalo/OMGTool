@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a09043a04fd23a45a69941368811c4a, type: 3}
   m_Name: ArakneBrain
   m_EditorClassIdentifier: 
+  behaviourTree: {fileID: -8451780081324324993, guid: f899663517676dd48aa21376509602d3,
+    type: 2}
+  nextAction: {fileID: 0}

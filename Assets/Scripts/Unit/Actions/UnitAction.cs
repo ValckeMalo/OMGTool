@@ -5,13 +5,14 @@ namespace OMG.Unit.Action
 
     public abstract class UnitAction : UnityEngine.ScriptableObject
     {
-        public abstract void Execute(IUnit player, IUnit monster, IUnit[] monsters);
+        public abstract void Execute(IUnit unit);
+        public abstract void Execute(IUnit[] units);
 
         protected void Attack(int damage, IUnit unit)
         {
             unit.Damage(damage);
         }
-        protected void Attack(int damage, params IUnit[] units)
+        protected void Attack(int damage, IUnit[] units)
         {
             foreach (IUnit unit in units)
             {
@@ -19,11 +20,11 @@ namespace OMG.Unit.Action
             }
         }
 
-        protected void PiecringAttack(int damage, IUnit unit)
+        protected void PiercingAttack(int damage, IUnit unit)
         {
             unit.PiercingDamage(damage);
         }
-        protected void PiercingAttack(int damage, params IUnit[] units)
+        protected void PiercingAttack(int damage, IUnit[] units)
         {
             foreach (IUnit unit in units)
             {
@@ -35,7 +36,7 @@ namespace OMG.Unit.Action
         {
             unit.Heal(heal);
         }
-        protected void Heal(int heal, params IUnit[] units)
+        protected void Heal(int heal, IUnit[] units)
         {
             foreach (IUnit unit in units)
             {
@@ -47,7 +48,7 @@ namespace OMG.Unit.Action
         {
             unit.AddArmor(armor);
         }
-        protected void AddArmor(int armor, params IUnit[] units)
+        protected void AddArmor(int armor, IUnit[] units)
         {
             foreach (IUnit unit in units)
             {
@@ -71,7 +72,7 @@ namespace OMG.Unit.Action
         {
             unit.AddStatus(status, nbTurn);
         }
-        protected void AddStatus(int nbTurn, StatusType status, params IUnit[] units)
+        protected void AddStatus(int nbTurn, StatusType status, IUnit[] units)
         {
             foreach (IUnit unit in units)
             {
@@ -83,7 +84,7 @@ namespace OMG.Unit.Action
         {
             unit.ClearStatus(status);
         }
-        protected void ClearStatus(StatusType status, params IUnit[] units)
+        protected void ClearStatus(StatusType status, IUnit[] units)
         {
             foreach (IUnit unit in units)
             {
@@ -95,7 +96,7 @@ namespace OMG.Unit.Action
         {
             unit.ClearAllStatus();
         }
-        protected void ClearAllStatus(params IUnit[] units)
+        protected void ClearAllStatus(IUnit[] units)
         {
             foreach (IUnit unit in units)
             {

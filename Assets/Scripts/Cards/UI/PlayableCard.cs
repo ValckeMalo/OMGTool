@@ -53,7 +53,6 @@ namespace OMG.Card.UI
             data = cardData;
             rect = GetComponent<RectTransform>();
             size = rect.sizeDelta;
-            Debug.Log(size);
         }
 
         /// <summary>

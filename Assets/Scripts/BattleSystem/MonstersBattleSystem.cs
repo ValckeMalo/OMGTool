@@ -7,6 +7,9 @@ namespace OMG.Battle
     using MaloProduction.CustomAttributes;
 
     using UnityEngine;
+    using Unity.Behavior;
+    using System.Linq;
+    using OMG.Unit.Monster.Brain;
 
     public class MonstersBattleSystem : UnitBattleSystem
     {
@@ -15,6 +18,7 @@ namespace OMG.Battle
 
         [SerializeField, ReadOnly] private Monster[] monsters = new Monster[3];
         [SerializeField, ReadOnly] private int nbMonsters = 0;
+        private Blackboard blackboard;
 
         public virtual void Awake()
         {
@@ -22,8 +26,9 @@ namespace OMG.Battle
             OnUnitTurn += UnitTurn;
         }
 
-        protected override bool Initialize(BattleData battleData)
+        protected override bool Initialize(BattleData battleData, Blackboard blackboard)
         {
+            this.blackboard = blackboard;
             InitializeMonster(battleData.MonstersData);
             ChooseNextAction(battleData.PlayerData);
 
@@ -61,6 +66,8 @@ namespace OMG.Battle
         {
             for (int i = 0; i < nbMonsters; i++)
             {
+                blackboard.Variables.Where(x => x.Type == typeof(MonsterBrain)).First().ObjectValue = monsters[i].Brain;
+                blackboard.Variables.Where(x => x.Name == "Monster").First().ObjectValue = monsters[i].Data;
                 monsters[i].SearchNextAction(player, monsters);
             }
         }

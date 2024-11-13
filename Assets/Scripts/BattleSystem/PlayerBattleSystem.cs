@@ -7,10 +7,11 @@ namespace OMG.Battle
     using OMG.Unit;
     using OMG.Unit.Player;
     using OMG.Battle.UI;
+    using OMG.Battle.Data;
 
     using System.Collections.Generic;
     using UnityEngine;
-    using OMG.Battle.Data;
+    using Unity.Behavior;
 
     public class PlayerBattleSystem : UnitBattleSystem
     {
@@ -164,12 +165,12 @@ namespace OMG.Battle
             OnInitialize += Initialize;
             OnUnitTurn += UnitTurn;
         }
-        private void Start()
+        public void Start()
         {
             HUDBattle.EndTurnButton.AddCallback(EndTurn);
         }
 
-        protected override bool Initialize(BattleData battleData)
+        protected override bool Initialize(BattleData battleData, Blackboard blackboard)
         {
             InitializePlayer(battleData.PlayerData);
             InitialzeWakfu();

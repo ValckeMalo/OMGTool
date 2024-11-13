@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594851b5fcb314e40a93988d6f9f9336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleData: {fileID: 11400000, guid: 87682ff53469164449e0479371aaa6f1, type: 2}
+  blackboardAsset: {fileID: -3147317653788516802, guid: 93f04e303299659469839533f75d777d,
+    type: 2}

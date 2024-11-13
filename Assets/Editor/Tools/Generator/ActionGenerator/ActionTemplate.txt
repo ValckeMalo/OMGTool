@@ -1,0 +1,17 @@
+namespace OMG.Unit.Action
+{
+    using OMG.Unit;
+    using UnityEngine;
+
+    [CreateAssetMenu(fileName = "{0}Action",menuName = "Action/{0}Action")]
+    public class {0}Action : UnitAction
+    {
+        public override void Execute(IUnit unit)
+        {
+        }
+
+        public override void Execute(IUnit[] units)
+        {
+        }
+    }
+}

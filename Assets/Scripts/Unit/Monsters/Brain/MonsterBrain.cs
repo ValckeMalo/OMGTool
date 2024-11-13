@@ -12,16 +12,23 @@ namespace OMG.Unit.Monster.Brain
     public class MonsterBrain : ScriptableObject
     {
         [Title("Barin")]
-        [SerializeField] private BehaviorGraph behaviourTree;
-        [SerializeField] private UnitAction nextAction;
+        [SerializeReference] private BehaviorGraph behaviourTree;
+        [SerializeField, ReadOnly] private UnitAction nextAction;
 
         public void Action(IUnit player, IUnit monster, IUnit[] monsters)
         {
-            nextAction.Execute(player, monster, monsters);
+            nextAction.Execute(player);
+            nextAction = null;
         }
 
         public void SearchAction()
         {
+            behaviourTree.Start();
+
+            if (nextAction == null)
+            {
+                Debug.LogError($"The beahaviour tree cannot found any action to play in {behaviourTree.name}.");
+            }
         }
 
         public bool SetAction(UnitAction unitAction)
