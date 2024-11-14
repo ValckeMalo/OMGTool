@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b6cf2b568211a4e811aed400fbec9a, type: 3}
   m_Name: Arakne
   m_EditorClassIdentifier: 
-  unitData: {fileID: 11400000, guid: 96276f35bc10d8249ab2136f65a30e67, type: 2}
+  unitData:
+    hp: 150
+    maxHp: 150
+    armor: 0
+    status: []
   unitName: Arakne
-  brain: {fileID: 11400000, guid: bf01257400f2da645a01aaed6303121c, type: 2}
+  brain:
+    behaviourTree: {fileID: -4012961712313718202, guid: f899663517676dd48aa21376509602d3,
+      type: 2}
+    nextAction: {fileID: 11400000, guid: 329aadaf58c4b6c458bf2ffb28b7c7cc, type: 2}

@@ -6,7 +6,7 @@ namespace OMG.Unit.Action
     [CreateAssetMenu(fileName = "PiercingDamageAction", menuName = "Action/PiercingDamageAction")]
     public class PiercingDamageAction : UnitAction
     {
-        int PiercingDamage = 0;
+        [SerializeField] private int PiercingDamage = 0;
 
         public override void Execute(IUnit unit)
         {

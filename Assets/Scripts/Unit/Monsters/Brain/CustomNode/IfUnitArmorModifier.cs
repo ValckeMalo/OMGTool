@@ -6,8 +6,8 @@ using Modifier = Unity.Behavior.Modifier;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "If Unit Life ", story: "If [Unit] Life is [Comparison] [Value]", category: "Flow/Conditional", id: "5a15c5aa2e3ee8aab074872246bb5cf5")]
-public partial class IfUnitLifeModifier : Modifier
+[NodeDescription(name: "If Unit Armor", story: "If [Unit] Armor is [Comparison] [Value]", category: "Action/Conditional", id: "c8b733c0b5f6320d113b9c29865dc9aa")]
+public partial class IfUnitArmorModifier : Modifier
 {
     [SerializeReference] public BlackboardVariable<Unit> Unit;
     [SerializeReference] public BlackboardVariable<Comparison> Comparison;
@@ -17,7 +17,7 @@ public partial class IfUnitLifeModifier : Modifier
     {
         if (Unit.Value == null || Child == null)
         {
-            return LifeComparison(Unit.Value.Data.hp, Value, Comparison) ? StartNode(Child) : Status.Failure;
+            return LifeComparison(Unit.Value.Data.armor, Value, Comparison) ? StartNode(Child) : Status.Failure;
         }
 
         return Status.Failure;
@@ -47,4 +47,5 @@ public partial class IfUnitLifeModifier : Modifier
                 return false;
         }
     }
+
 }

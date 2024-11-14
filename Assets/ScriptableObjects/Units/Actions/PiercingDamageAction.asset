@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6051a26f5d33cc4d8453cacb9eb22bd, type: 3}
   m_Name: PiercingDamageAction
   m_EditorClassIdentifier: 
+  PiercingDamage: 15

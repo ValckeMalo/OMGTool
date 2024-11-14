@@ -9,7 +9,6 @@ namespace OMG.Battle
     using UnityEngine;
     using Unity.Behavior;
     using System.Linq;
-    using OMG.Unit.Monster.Brain;
 
     public class MonstersBattleSystem : UnitBattleSystem
     {
@@ -66,8 +65,8 @@ namespace OMG.Battle
         {
             for (int i = 0; i < nbMonsters; i++)
             {
-                blackboard.Variables.Where(x => x.Type == typeof(MonsterBrain)).First().ObjectValue = monsters[i].Brain;
-                blackboard.Variables.Where(x => x.Name == "Monster").First().ObjectValue = monsters[i].Data;
+                blackboard.Variables.Where(x => x.Name == "ThisMonsterBrain").First().ObjectValue = monsters[i];
+                blackboard.Variables.Where(x => x.Name == "ThisMonster").First().ObjectValue = monsters[i];
                 monsters[i].SearchNextAction(player, monsters);
             }
         }

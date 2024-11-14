@@ -71,6 +71,7 @@ namespace OMG.Unit
         public virtual void PiercingDamage(int damage)
         {
             unitData.hp -= damage;
+            Debug.Log(unitData.hp);
         }
         #endregion
     }

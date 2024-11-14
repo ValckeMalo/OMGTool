@@ -12,52 +12,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: SharedBlackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638670170719334052
+  VersionTimestamp: 638671840727254340
   AssetID:
     m_Value0: 10693121331099005075
     m_Value1: 9040798093273301865
   m_Blackboard:
     m_Variables:
-    - rid: 7488679422381261479
-    - rid: 7488679422381261480
-    - rid: 7488679422381261481
+    - rid: 7488679466447143638
+    - rid: 7488679466447143639
+    - rid: 7488679466447143640
   m_SharedBlackboardVariableGuids:
-  - m_Value0: 16781932822171378270
-    m_Value1: 2962609670584224884
-  - m_Value0: 16216448333467710884
-    m_Value1: 2179938643838323209
-  - m_Value0: 4138838649991657799
-    m_Value1: 3559750433162881171
+  - m_Value0: 12804617045084788335
+    m_Value1: 16643772405632326405
+  - m_Value0: 964012268383096185
+    m_Value1: 2893856987471292152
+  - m_Value0: 15846586263390859510
+    m_Value1: 678786376553606521
   references:
     version: 2
     RefIds:
-    - rid: 7488679422381261479
-      type: {class: 'BlackboardVariable`1[[OMG.Unit.Monster.Brain.MonsterBrain, Assembly-CSharp]]',
-        ns: Unity.Behavior, asm: Unity.Behavior}
+    - rid: 7488679466447143638
+      type: {class: 'BlackboardVariable`1[[OMG.Unit.Unit, Assembly-CSharp]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 16781932822171378270
-          m_Value1: 2962609670584224884
-        Name: MonsterBrain
-        m_Value: {fileID: 11400000, guid: bf01257400f2da645a01aaed6303121c, type: 2}
-    - rid: 7488679422381261480
-      type: {class: 'BlackboardVariable`1[[OMG.Unit.UnitData, Assembly-CSharp]]',
-        ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 16216448333467710884
-          m_Value1: 2179938643838323209
+          m_Value0: 12804617045084788335
+          m_Value1: 16643772405632326405
         Name: Player
-        m_Value: {fileID: 11400000, guid: fab8fb9a1c74b7e4389e5bdbe6f96855, type: 2}
-    - rid: 7488679422381261481
-      type: {class: 'BlackboardVariable`1[[OMG.Unit.UnitData, Assembly-CSharp]]',
+        m_Value: {fileID: 11400000, guid: 2433c5dd1868ced4490a84039273ee40, type: 2}
+    - rid: 7488679466447143639
+      type: {class: 'BlackboardVariable`1[[OMG.Unit.Unit, Assembly-CSharp]]', ns: Unity.Behavior,
+        asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 964012268383096185
+          m_Value1: 2893856987471292152
+        Name: ThisMonster
+        m_Value: {fileID: 11400000, guid: 938e6e8b7e65224448365890e9200727, type: 2}
+    - rid: 7488679466447143640
+      type: {class: 'BlackboardVariable`1[[OMG.Unit.Monster.Monster, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
-          m_Value0: 4138838649991657799
-          m_Value1: 3559750433162881171
-        Name: Monster
-        m_Value: {fileID: 11400000, guid: 96276f35bc10d8249ab2136f65a30e67, type: 2}
+          m_Value0: 15846586263390859510
+          m_Value1: 678786376553606521
+        Name: ThisMonsterBrain
+        m_Value: {fileID: 11400000, guid: 938e6e8b7e65224448365890e9200727, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,46 +74,46 @@ MonoBehaviour:
     m_Value0: 10693121331099005075
     m_Value1: 9040798093273301865
   m_Variables:
-  - rid: 7488679421101998697
-  - rid: 7488679422381261220
-  - rid: 7488679422381261221
-  m_VersionTimestamp: 638670170719334052
+  - rid: 7488679466447143520
+  - rid: 7488679466447143521
+  - rid: 7488679466447143637
+  m_VersionTimestamp: 638671840727254340
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -3147317653788516802}
   references:
     version: 2
     RefIds:
-    - rid: 7488679421101998697
-      type: {class: 'TypedVariableModel`1[[OMG.Unit.Monster.Brain.MonsterBrain, Assembly-CSharp]]',
-        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+    - rid: 7488679466447143520
+      type: {class: 'TypedVariableModel`1[[OMG.Unit.Unit, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
       data:
         ID:
-          m_Value0: 16781932822171378270
-          m_Value1: 2962609670584224884
-        Name: MonsterBrain
-        IsExposed: 0
-        m_IsShared: 1
-        m_Value: {fileID: 0}
-    - rid: 7488679422381261220
-      type: {class: 'TypedVariableModel`1[[OMG.Unit.UnitData, Assembly-CSharp]]',
-        ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 16216448333467710884
-          m_Value1: 2179938643838323209
+          m_Value0: 12804617045084788335
+          m_Value1: 16643772405632326405
         Name: Player
         IsExposed: 0
         m_IsShared: 1
         m_Value: {fileID: 0}
-    - rid: 7488679422381261221
-      type: {class: 'TypedVariableModel`1[[OMG.Unit.UnitData, Assembly-CSharp]]',
+    - rid: 7488679466447143521
+      type: {class: 'TypedVariableModel`1[[OMG.Unit.Unit, Assembly-CSharp]]', ns: Unity.Behavior.GraphFramework,
+        asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 964012268383096185
+          m_Value1: 2893856987471292152
+        Name: ThisMonster
+        IsExposed: 0
+        m_IsShared: 1
+        m_Value: {fileID: 0}
+    - rid: 7488679466447143637
+      type: {class: 'TypedVariableModel`1[[OMG.Unit.Monster.Monster, Assembly-CSharp]]',
         ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
         ID:
-          m_Value0: 4138838649991657799
-          m_Value1: 3559750433162881171
-        Name: Monster
+          m_Value0: 15846586263390859510
+          m_Value1: 678786376553606521
+        Name: ThisMonsterBrain
         IsExposed: 0
         m_IsShared: 1
         m_Value: {fileID: 0}

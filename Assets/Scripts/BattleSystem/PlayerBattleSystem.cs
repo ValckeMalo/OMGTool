@@ -312,6 +312,7 @@ namespace OMG.Battle
             }
 
             wakfu += amount;
+            wakfu = Mathf.Max(wakfu, 0);
             UpdateWakfuGauge();
 
             return true;

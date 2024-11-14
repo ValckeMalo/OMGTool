@@ -5,13 +5,12 @@ using Unity.Behavior;
 using UnityEngine;
 using Modifier = Unity.Behavior.Modifier;
 using Unity.Properties;
-using Unity.VisualScripting;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Is Unit Not Affect Status", story: "Is [Unit] Not Affect By [StatusType]", category: "Flow/Conditional", id: "181bb95cd7b94c604e2531b9b576d8f0")]
 public partial class IsUnitNotAffectStatusModifier : Modifier
 {
-    [SerializeReference] public BlackboardVariable<UnitData> Unit;
+    [SerializeReference] public BlackboardVariable<Unit> Unit;
     [SerializeReference] public BlackboardVariable<StatusType> StatusType;
 
     protected override Status OnStart()
@@ -22,7 +21,7 @@ public partial class IsUnitNotAffectStatusModifier : Modifier
             return Status.Failure;
         }
 
-        if (Unit.Value.HaveStatus(StatusType.Value))
+        if (!Unit.Value.Data.HaveStatus(StatusType.Value))
         {
             return StartNode(Child);
         }
@@ -32,7 +31,7 @@ public partial class IsUnitNotAffectStatusModifier : Modifier
 
     protected override Status OnUpdate()
     {
-        return Status.Failure;
+        return Status.Running;
     }
 
     protected override void OnEnd()

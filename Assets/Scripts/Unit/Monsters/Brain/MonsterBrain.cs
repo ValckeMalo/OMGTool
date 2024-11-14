@@ -8,8 +8,8 @@ namespace OMG.Unit.Monster.Brain
 
     using MaloProduction.CustomAttributes;
 
-    [CreateAssetMenu(fileName = "NewMonsterBrain", menuName = "Unit/Monster/Brain", order = 1)]
-    public class MonsterBrain : ScriptableObject
+    [System.Serializable]
+    public class MonsterBrain
     {
         [Title("Barin")]
         [SerializeReference] private BehaviorGraph behaviourTree;

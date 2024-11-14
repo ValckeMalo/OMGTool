@@ -3,13 +3,12 @@ namespace OMG.Unit
     using MaloProduction.CustomAttributes;
 
     using System.Collections.Generic;
-    using UnityEngine;
     using System.Linq;
 
     using OMG.Unit.Status;
 
-    [CreateAssetMenu(fileName = "NewUnitData", menuName = "Unit/UnitData", order = 0)]
-    public class UnitData : ScriptableObject
+    [System.Serializable]
+    public class UnitData
     {
         [Title("Data")]
         public int hp;

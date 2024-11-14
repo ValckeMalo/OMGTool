@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b6cf2b568211a4e811aed400fbec9a, type: 3}
   m_Name: Bouftou
   m_EditorClassIdentifier: 
-  unitData: {fileID: 11400000, guid: ee2413b236b66984fb3f132e48cb422b, type: 2}
+  unitData:
+    hp: 150
+    maxHp: 150
+    armor: 0
+    status: []
   unitName: Bouftou
-  brain: {fileID: 11400000, guid: 8faad3f309b5a9449aacb085a9bf87d1, type: 2}
+  brain:
+    behaviourTree: {fileID: -4679343116063080700, guid: 1261e08fb70137241aa807a6a41ef972,
+      type: 2}
+    nextAction: {fileID: 0}

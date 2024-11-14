@@ -1,9 +1,10 @@
 namespace OMG.Battle
 {
     using OMG.Battle.Data;
-    using OMG.Unit;
+
     using System.Collections;
     using System.Linq;
+
     using Unity.Behavior;
     using UnityEngine;
 
@@ -27,13 +28,14 @@ namespace OMG.Battle
         private static int turnIndex = 1;
         public static int TurnIndex { get => turnIndex; }
 
-        private void Awake()
+        public void Awake()
         {
-            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleData.PlayerData.Data;
+            battleData = Instantiate<BattleData>(battleData);
+            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleData.PlayerData;
             OnNextTurn += NextTurn;
         }
 
-        private void Start() => NextTurn(BattleState.Initialize);
+        public void Start() => NextTurn(BattleState.Initialize);
 
         private void NextTurn(BattleState nextState)
         {

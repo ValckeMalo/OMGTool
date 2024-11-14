@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8695fbeacb95900499827f639895fa9d, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  unitData: {fileID: 11400000, guid: fab8fb9a1c74b7e4389e5bdbe6f96855, type: 2}
+  unitData:
+    hp: 150
+    maxHp: 150
+    armor: 0
+    status: []
   unitName: Player
   deck: {fileID: 11400000, guid: c9d8199f24a039b448bb47b45e6c39ff, type: 2}
