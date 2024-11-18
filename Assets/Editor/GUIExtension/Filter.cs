@@ -1,9 +1,11 @@
 namespace MaloProduction
 {
     using System.Collections.Generic;
+    using System.Drawing.Printing;
     using System.Linq;
     using UnityEditor;
     using UnityEngine;
+    using UnityEngine.UIElements;
 
     public static class FilterStringFormatter
     {
@@ -214,12 +216,11 @@ namespace MaloProduction
             this.filterLines = filterLines;
         }
 
-        public void FilterBox(Rect rect)
+        public void FilterBox(Rect rect, Texture2D background)
         {
             using (new GUI.GroupScope(rect, EditorStyles.helpBox))
             {
                 Rect filterLineRect = new Rect(Vector2.zero, new Vector2(rect.width, 20f));
-
                 foreach (FilterLine filterLine in filterLines)
                 {
                     filterLine.DrawFilterLine(filterLineRect, 5f);

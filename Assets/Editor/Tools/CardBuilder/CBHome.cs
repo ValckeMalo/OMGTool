@@ -1,8 +1,11 @@
+using UnityEditor;
+
 namespace MaloProduction
 {
     using System.Collections.Generic;
     using System.Linq;
     using UnityEditor;
+    using UnityEditor.Experimental.GraphView;
     using UnityEngine;
 
     public partial class CardBuilder : EditorWindow
@@ -15,6 +18,8 @@ namespace MaloProduction
         private bool isFilterBoxOpen = false;
         private string nameFilter = string.Empty;
         private CardTypeFilter typeFilter = CardTypeFilter.All;
+        private Rect filterBoxRect;
+
         private Filter filter = new Filter
             (new List<FilterLine>()
                 {
@@ -54,6 +59,7 @@ namespace MaloProduction
             FilterBar();
             UpdateBody();
             GUI.enabled = true;
+            DrawFilterBox();
         }
 
         #region Header Bar
@@ -116,6 +122,14 @@ namespace MaloProduction
         #endregion
 
         #region Filter Bar
+        private void DrawFilterBox()
+        {
+            if (isFilterBoxOpen)
+            {
+                GUI.DrawTexture(new Rect(filterBoxRect.x, filterBoxRect.y, filterBoxRect.width, filterBoxRect.height), OpaqueBackgroundTexture);
+                filter.FilterBox(filterBoxRect, OpaqueBackgroundTexture);
+            }
+        }
         private void FilterBar()
         {
             //Filter bar scope
@@ -161,7 +175,7 @@ namespace MaloProduction
                     GUILayout.FlexibleSpace();
 
                     //Filter Box Header Scope
-                    using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
+                    using (EditorGUILayout.HorizontalScope headerFilterBox = new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true)))
                     {
                         EditorGUILayout.LabelField("Other : ", GUILayout.MaxWidth(50f));
 
@@ -173,16 +187,13 @@ namespace MaloProduction
                             isFilterBoxOpen = isFilterBoxOpen.Invert();
                         }
 
-                    }
-
-                    if (isFilterBoxOpen)
-                    {
-                        Rect headerFilterBoxRect = GUILayoutUtility.GetLastRect();
-                        Vector2 filterBoxPosition = new Vector2(headerFilterBoxRect.x, headerFilterBoxRect.y + headerFilterBoxRect.height + Spacing);
-                        Vector2 filterBoxSize = new Vector2(headerFilterBoxRect.width, HeightFilterBox);
-                        Rect filterBoxRect = new Rect(filterBoxPosition, filterBoxSize);
-
-                        filter.FilterBox(filterBoxRect);
+                        if (isFilterBoxOpen)
+                        {
+                            Rect headerFilterBoxRect = headerFilterBox.rect;
+                            Vector2 filterBoxPosition = new Vector2(headerFilterBoxRect.x, headerFilterBoxRect.y + headerFilterBoxRect.height + Spacing);
+                            Vector2 filterBoxSize = new Vector2(headerFilterBoxRect.width, HeightFilterBox);
+                            filterBoxRect = new Rect(filterBoxPosition, filterBoxSize);
+                        }
                     }
 
                     GUILayout.FlexibleSpace();
@@ -193,7 +204,10 @@ namespace MaloProduction
 
                 if (LooseFocus())
                 {
-                    isFilterBoxOpen = false;
+                    if (isFilterBoxOpen && !filterBoxRect.Contains(Event.current.mousePosition))
+                    {
+                        isFilterBoxOpen = false;
+                    }
                 }
                 GUI.enabled = !isFilterBoxOpen;
             }
@@ -292,7 +306,7 @@ namespace MaloProduction
 
                 //draw invisible button on the top of the preview and name of the card
                 Rect temp = GUILayoutUtility.GetLastRect();
-                if (GUI.Button(temp, "", new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } }))
+                if (!isFilterBoxOpen && GUI.Button(temp, "", new GUIStyle() { hover = new GUIStyleState() { background = hoverButtonTexture } }))
                 {
                     ChangeState(WindowState.Modify);
                     UpdateSerializedCard(FindIndexInLibrary(listFiltered[i]));

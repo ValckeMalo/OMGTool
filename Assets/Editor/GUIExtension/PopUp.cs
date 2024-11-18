@@ -164,7 +164,7 @@ namespace MaloProduction
 
         private static void Background(Rect popUpRect)
         {
-            float margin = 1f;
+            const float margin = 1f;
             Rect backgroundRect = new Rect(margin, margin, popUpRect.width - (margin * 2f), popUpRect.height - (margin * 2f));
 
             if (Settings.backgroundTexture != null)

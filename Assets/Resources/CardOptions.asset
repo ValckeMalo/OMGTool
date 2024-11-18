@@ -15,7 +15,7 @@ MonoBehaviour:
   cardsTypeTexture:
   - type: 0
     background: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
-    iconCard: {fileID: 0}
+    iconCard: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   - type: 1
     background: {fileID: 1397210691, guid: d6e0229eebccb144ba09ebb047d54212, type: 3}
     iconCard: {fileID: 0}

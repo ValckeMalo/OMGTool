@@ -1,6 +1,5 @@
 namespace MaloProduction
 {
-    using Unity.Behavior;
     using UnityEditor;
     using UnityEngine;
 
