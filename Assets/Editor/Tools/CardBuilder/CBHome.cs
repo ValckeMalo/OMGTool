@@ -7,6 +7,7 @@ namespace MaloProduction
     using UnityEditor;
     using UnityEditor.Experimental.GraphView;
     using UnityEngine;
+    using OMG.Tools.PreviewCard;
 
     public partial class CardBuilder : EditorWindow
     {
@@ -299,7 +300,7 @@ namespace MaloProduction
 
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(buttonWidth), GUILayout.Height(120)))
                 {
-                    PreviewCard(listFiltered[i], (int)buttonWidth);
+                    PreviewCardEditor.PreviewCard(listFiltered[i], cardSettings, (int)buttonWidth);
 
                     EditorGUILayout.LabelField(listFiltered[i].cardName, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.Width(buttonWidth));
                 }

@@ -1,4 +1,4 @@
-namespace OMG.Tool.ModuleGenerator
+namespace OMG.Tools.ModuleGenerator
 {
     using System.IO;
     using UnityEditor;

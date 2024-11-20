@@ -21,4 +21,4 @@ MonoBehaviour:
   wakfuCost: 2
   cardValue: 0
   cardName: Defense
-  iconCard: {fileID: 0}
+  iconCard: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}

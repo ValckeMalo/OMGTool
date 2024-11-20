@@ -21,7 +21,7 @@ MonoBehaviour:
   - initiative: 1
     spell: 2
     amount: 20
-  wakfuCost: 1
+  wakfuCost: 0
   cardValue: 58
   cardName: Attack
-  iconCard: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  iconCard: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}

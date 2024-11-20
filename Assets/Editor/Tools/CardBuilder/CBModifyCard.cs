@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEditor;
-
 namespace MaloProduction
 {
+    using UnityEngine;
+    using UnityEditor;
+    using OMG.Tools.PreviewCard;
+
     public partial class CardBuilder : EditorWindow
     {
         //SerializedObject var
@@ -26,7 +27,8 @@ namespace MaloProduction
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
                 CardDataField();
-                PreviewCard(currentCard.targetObject as CardData, 500);
+                //PreviewCard(currentCard.targetObject as CardData, 500);
+                PreviewCardEditor.PreviewCard(currentCard.targetObject as CardData, cardSettings, 500f);
             }
 
             ModifyCardToolBar();

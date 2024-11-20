@@ -1,4 +1,4 @@
-namespace OMG.Tool.ModuleGenerator
+namespace OMG.Tools.ModuleGenerator
 {
     using MaloProduction;
     using System.IO;
