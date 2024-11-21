@@ -10,7 +10,7 @@ namespace OMG.Card.Data
     {
         [Title("Deck Card")]
         [SerializeField] private CardData[] cards = new CardData[14];
-        [SerializeField] private CardData[] finishers = new CardData[5];
+        [SerializeField] private List<CardData> finishers = new List<CardData>();
 
         [SerializeField] private List<CardData> curses = new List<CardData>();
         [SerializeField] private List<CardData> divine = new List<CardData>();
@@ -63,6 +63,6 @@ namespace OMG.Card.Data
             return true;
         }
 
-        public CardData[] Finishers { get => finishers; }
+        public List<CardData> Finishers { get => finishers; }
     }
 }

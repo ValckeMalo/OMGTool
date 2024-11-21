@@ -1,12 +1,11 @@
-using UnityEditor;
-
 namespace MaloProduction
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using UnityEditor;
-    using UnityEditor.Experimental.GraphView;
     using UnityEngine;
+
     using OMG.Tools.PreviewCard;
 
     public partial class CardBuilder : EditorWindow

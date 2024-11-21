@@ -28,6 +28,8 @@ namespace OMG.Card.UI
 
         public void DisableCard() => disableImage.enabled = true;
         public void EnableCard() => disableImage.enabled = false;
+        public void HideCard() => gameObject.SetActive(false);
+        public void ShowCard() => gameObject.SetActive(true);
 
         public bool RegisterOnClick(Action action)
         {
@@ -45,6 +47,7 @@ namespace OMG.Card.UI
         public int Wakfu { get => data.wakfuCost; }
         public bool IsDisable { get => disableImage.enabled; }
         public CardData Data { get => data; }
+        public CardType Type { get => data.cardType; }
 
         public override void Init(CardData cardData, CardOptions options)
         {

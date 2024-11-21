@@ -120,6 +120,20 @@ namespace OMG.Battle
                     }
                 }
             }
+            public void HideAllCard()
+            {
+                foreach (PlayableCard playableCard in cardsOnBoard)
+                {
+                    playableCard.HideCard();
+                }
+            }
+            public void ShowAllCard()
+            {
+                foreach (PlayableCard playableCard in cardsOnBoard)
+                {
+                    playableCard.ShowCard();
+                }
+            }
 
             private void ReintroduceCard(CardData card)
             {
@@ -144,6 +158,8 @@ namespace OMG.Battle
                     deckShuffle[previousIndex] = card;
                 }
             }
+
+            public List<CardData> Finishers { get => deck.Finishers; }
         }
         #endregion
         #endregion
@@ -237,15 +253,26 @@ namespace OMG.Battle
                     return;
                 }
 
-                PlayableCard newPlayableCard = CardSpawner.OnSpawnCard?.Invoke(cardToSpawn);
-                newPlayableCard.RegisterOnClick(() => UseCard(newPlayableCard));
-                gameBoard.AddCardOnBoard(newPlayableCard);
+                SpawnCard(cardToSpawn);
             }
+        }
+        private void SpawnCard(CardData cardToSpawn)
+        {
+            PlayableCard newPlayableCard = CardSpawner.OnSpawnCard?.Invoke(cardToSpawn);
+            newPlayableCard.RegisterOnClick(() => UseCard(newPlayableCard));
+            gameBoard.AddCardOnBoard(newPlayableCard);
         }
         private void UseCard(PlayableCard card)
         {
             if (card.IsDisable)
                 return;
+
+            if (card.Type == CardType.Finisher)
+            {
+                gameBoard.ShowAllCard();
+                EndTurn();
+                return;
+            }
 
             if (UseWakfu(card.Wakfu))
             {
@@ -263,9 +290,18 @@ namespace OMG.Battle
         }
         private void SpawnFinishers()
         {
-            Debug.LogWarning("Bosse plus t'a pas implémenté les finisher boulet");
+            gameBoard.HideAllCard();
+            HUDBattle.EndTurnButton.DisableButton();
 
-            EndTurn();
+            foreach (CardData finisher in gameBoard.Finishers)
+            {
+                if (finisher == null)
+                {
+                    continue;
+                }
+
+                SpawnCard(finisher);
+            }
         }
         private void TryDisableCardOnBoard(int wakfuRemain)
         {

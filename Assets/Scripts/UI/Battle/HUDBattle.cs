@@ -35,6 +35,10 @@ namespace OMG.Battle.UI
             {
                 Update(true, BattleSystem.TurnIndex, TurnText.Monster);
             }
+            public void DisableButton()
+            {
+                button.interactable = false;
+            }
 
             private void Update(bool isInteractible, int turnIndex, TurnText turnText)
             {

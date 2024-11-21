@@ -14,13 +14,13 @@ namespace MaloProduction
         }
         private enum CardTypeFilter
         {
-            All,
+            All = -1,
             Attack = CardType.Attack,
             Defense = CardType.Defense,
             Boost = CardType.Boost,
             Neutral = CardType.Neutral,
-            GodPositive = CardType.Divine,
-            GodNegative = CardType.Curse,
+            Divine = CardType.Divine,
+            Curse = CardType.Curse,
             Finisher = CardType.Finisher,
         }
         private enum TargetFilter

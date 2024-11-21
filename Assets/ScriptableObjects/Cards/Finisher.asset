@@ -15,7 +15,7 @@ MonoBehaviour:
   cardType: 6
   target: 0
   spells: []
-  wakfuCost: -1
+  wakfuCost: 0
   cardValue: 0
   cardName: Finisher
   iconCard: {fileID: 0}
