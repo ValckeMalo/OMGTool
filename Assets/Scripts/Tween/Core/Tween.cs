@@ -29,7 +29,7 @@ namespace MaloProduction.Tween.Core
         public bool isComplete = false;
         public bool isDelayComplete = true;
 
-        public abstract bool AppplyTween();
+        public abstract bool ApplyTween();
         public abstract bool Startup();
 
         public virtual void Reset()
@@ -101,7 +101,7 @@ namespace MaloProduction.Tween.Core
             }
 
             bool wasPlaying = tween.isPlaying;
-            if (tween.AppplyTween())
+            if (tween.ApplyTween())
             {
                 return true;
             }

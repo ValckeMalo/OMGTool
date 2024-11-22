@@ -14,7 +14,7 @@ namespace MaloProduction.Tween.Core
 
         public ABSPlugin<T1, T2> plugin;
 
-        public override bool AppplyTween()
+        public override bool ApplyTween()
         {
             if (plugin == null)
                 return true;
