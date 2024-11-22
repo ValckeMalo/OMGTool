@@ -2,168 +2,17 @@ namespace OMG.Battle
 {
     using MaloProduction.CustomAttributes;
 
-    using OMG.Card.Data;
     using OMG.Card.UI;
     using OMG.Unit;
     using OMG.Unit.Player;
     using OMG.Battle.UI;
     using OMG.Battle.Data;
 
-    using System.Collections.Generic;
     using UnityEngine;
     using Unity.Behavior;
 
     public class PlayerBattleSystem : UnitBattleSystem
     {
-        #region Class
-        #region Game Board
-        [System.Serializable]
-        private class GameBoard
-        {
-            [Header("Deck")]
-            [SerializeField] private CardDeck deck;
-
-            [Header("Deck shuffle")]
-            [SerializeField] private CardData[] deckShuffle;
-            [SerializeField] private List<CardData> discardCard = new List<CardData>();
-            [SerializeField] private int indexShuffle = 0;
-
-            [Header("Card On Board")]
-            [SerializeField] private List<PlayableCard> cardsOnBoard = new List<PlayableCard>();
-
-            public int CountCardOnBoard { get => cardsOnBoard.Count; }
-
-            public bool IsDeckNull { get => deck == null; }
-
-            public GameBoard(CardDeck deck)
-            {
-                this.deck = deck;
-            }
-
-            /// <summary>
-            /// Return the next card to come in the shuffle array
-            /// Return null if none Card is inside
-            /// </summary>
-            /// <returns></returns>
-            public CardData GetNextCard()
-            {
-                indexShuffle = (indexShuffle + 1) % deckShuffle.Length;
-                int indexEntry = indexShuffle;
-
-                if (deckShuffle == null || deckShuffle.Length <= 0)
-                {
-                    Debug.LogError($"The deck Shuffle doesn't exist");
-                    return null;
-                }
-
-                CardData nextCard = deckShuffle[indexShuffle];
-                bool hasRemainCard = true;
-
-                while (nextCard == null && hasRemainCard)
-                {
-                    indexShuffle = (indexShuffle + 1) % deckShuffle.Length;
-                    nextCard = deckShuffle[indexShuffle];
-
-                    if (indexShuffle == indexEntry)
-                        hasRemainCard = false;
-                }
-
-                //if a card his found add it to the discard array
-                //and nullify it in the shuffle array
-                if (nextCard != null)
-                {
-                    discardCard.Add(nextCard);
-                    deckShuffle[indexShuffle] = null;
-                }
-
-                return nextCard;
-            }
-
-            public void ShuffleDeck() => deckShuffle = deck.ShuffleCard();
-
-            public bool AddCardOnBoard(PlayableCard playableCard)
-            {
-                if (playableCard == null || cardsOnBoard == null)
-                {
-                    return false;
-                }
-
-                cardsOnBoard.Add(playableCard);
-                return true;
-            }
-            public bool RemoveCardOnBoard(PlayableCard playableCard)
-            {
-                if (playableCard == null || !cardsOnBoard.Contains(playableCard))
-                    return false;
-
-                cardsOnBoard.Remove(playableCard);
-                CardData cardData = playableCard.Data;
-
-                //TODO not working fine find a better way
-                bool hasToBeRemoved = playableCard.Use();
-                if (!hasToBeRemoved)
-                    ReintroduceCard(cardData);
-
-                return true;
-            }
-            public void TryDisableCardOnBoard(int wakfuRemain)
-            {
-                foreach (PlayableCard playableCard in cardsOnBoard)
-                {
-                    if (playableCard.Wakfu <= wakfuRemain)
-                    {
-                        playableCard.EnableCard();
-                    }
-                    else
-                    {
-                        playableCard.DisableCard();
-                    }
-                }
-            }
-            public void HideAllCard()
-            {
-                foreach (PlayableCard playableCard in cardsOnBoard)
-                {
-                    playableCard.HideCard();
-                }
-            }
-            public void ShowAllCard()
-            {
-                foreach (PlayableCard playableCard in cardsOnBoard)
-                {
-                    playableCard.ShowCard();
-                }
-            }
-
-            private void ReintroduceCard(CardData card)
-            {
-                discardCard.Remove(card);
-                int entryIndex = indexShuffle;
-                int previousIndex = indexShuffle;
-
-                CardData previousCard = deckShuffle[previousIndex];
-
-                bool noPlaces = false;
-                while (!noPlaces && previousCard != null)
-                {
-                    previousIndex = (previousIndex - 1 + deckShuffle.Length) % deckShuffle.Length;
-                    previousCard = deckShuffle[previousIndex];
-
-                    if (entryIndex == previousIndex)
-                        noPlaces = true;
-                }
-
-                if (!noPlaces)
-                {
-                    deckShuffle[previousIndex] = card;
-                }
-            }
-
-            public List<CardData> Finishers { get => deck.Finishers; }
-        }
-        #endregion
-        #endregion
-
         public static EventInitialize OnInitialize;
         public static EventUnitTurn OnUnitTurn;
 
@@ -181,10 +30,7 @@ namespace OMG.Battle
             OnInitialize += Initialize;
             OnUnitTurn += UnitTurn;
         }
-        public void Start()
-        {
-            HUDBattle.EndTurnButton.AddCallback(EndTurn);
-        }
+        public void Start() => HUDBattle.EndTurnButton.AddCallback(EndTurn);
 
         protected override bool Initialize(BattleData battleData, Blackboard blackboard)
         {
@@ -198,7 +44,7 @@ namespace OMG.Battle
         {
             HUDBattle.EndTurnButton.PlayerTurnButton();
             TryBreakPadLock();
-            TrySpawnCards();
+            gameBoard.TrySpawnCards();
             TryDisableCardOnBoard(WakfuRemain);
         }
 
@@ -226,87 +72,50 @@ namespace OMG.Battle
         }
         private void InitializeGameBoard()
         {
-            gameBoard = new GameBoard(player.Deck);
+            gameBoard = new GameBoard(player.Deck, UseCard);
             gameBoard.ShuffleDeck();
         }
         #endregion
 
         #region Cards
-        private void TrySpawnCards()
-        {
-            if (gameBoard.IsDeckNull)
-            {
-                Debug.Log($"Player doesn't have a Deck in {GetType().Name}.");
-                return;
-            }
-
-            SpawnCards();
-        }
-        private void SpawnCards()
-        {
-            while (gameBoard.CountCardOnBoard < 6)
-            {
-                CardData cardToSpawn = gameBoard.GetNextCard();
-
-                if (cardToSpawn == null)
-                {
-                    return;
-                }
-
-                SpawnCard(cardToSpawn);
-            }
-        }
-        private void SpawnCard(CardData cardToSpawn)
-        {
-            PlayableCard newPlayableCard = CardSpawner.OnSpawnCard?.Invoke(cardToSpawn);
-            newPlayableCard.RegisterOnClick(() => UseCard(newPlayableCard));
-            gameBoard.AddCardOnBoard(newPlayableCard);
-        }
-        private void UseCard(PlayableCard card)
+        private bool UseCard(PlayableCard card)
         {
             if (card.IsDisable)
-                return;
+                return false;
 
             if (card.Type == CardType.Finisher)
             {
-                gameBoard.ShowAllCard();
+
+                gameBoard.DestroyFinishers();
                 EndTurn();
-                return;
+                return true;
             }
 
             if (UseWakfu(card.Wakfu))
             {
                 gameBoard.RemoveCardOnBoard(card);
                 TryDisableCardOnBoard(WakfuRemain);
-                TrySpawnFinishers();
+
+                if (CanSpawnFinishers())
+                {
+                    SpawnFinishers();
+                }
+
+                return true;
             }
+
+            return false;
         }
-        private void TrySpawnFinishers()
+        private bool CanSpawnFinishers()
         {
-            if (wakfu == maxWakfu)
-            {
-                SpawnFinishers();
-            }
+            return wakfu == maxWakfu;
         }
         private void SpawnFinishers()
         {
-            gameBoard.HideAllCard();
-            HUDBattle.EndTurnButton.DisableButton();
-
-            foreach (CardData finisher in gameBoard.Finishers)
-            {
-                if (finisher == null)
-                {
-                    continue;
-                }
-
-                SpawnCard(finisher);
-            }
+            gameBoard.SpawnFinishers();
+            DisableEndTurn();
         }
-        private void TryDisableCardOnBoard(int wakfuRemain)
-        {
-            gameBoard.TryDisableCardOnBoard(wakfuRemain);
-        }
+        private void TryDisableCardOnBoard(int wakfuRemain) => gameBoard.TryDisableCardOnBoard(wakfuRemain);
         #endregion
 
         #region Wakfu
@@ -370,6 +179,10 @@ namespace OMG.Battle
             UnlockWakfu();
             HUDBattle.EndTurnButton.MonstersTurnButton();
             BattleSystem.OnNextTurn?.Invoke(BattleState.Monsters);
+        }
+        private void DisableEndTurn()
+        {
+            HUDBattle.EndTurnButton.DisableButton();
         }
         #endregion
     }

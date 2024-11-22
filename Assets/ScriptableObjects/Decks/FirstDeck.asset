@@ -29,5 +29,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5e7a41e7b96bfbe4d849a5d9ccc66b66, type: 2}
   finishers:
   - {fileID: 11400000, guid: cde6c9ff3ebe07c40a2809b3ca5f84e7, type: 2}
+  - {fileID: 11400000, guid: 37022b6a9f3be9247b72bd8e4f8a187f, type: 2}
   curses: []
   divine: []

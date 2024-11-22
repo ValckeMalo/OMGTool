@@ -1,6 +1,7 @@
 namespace OMG.Battle
 {
     using OMG.Battle.Data;
+    using OMG.Battle.UI;
 
     using System.Collections;
     using System.Linq;
@@ -25,13 +26,24 @@ namespace OMG.Battle
         [SerializeField] private BattleData battleData;
         [SerializeField] private RuntimeBlackboardAsset blackboardAsset;
 
+        public Transform[] unitHUDPos;
+
         private static int turnIndex = 1;
         public static int TurnIndex { get => turnIndex; }
 
         public void Awake()
         {
-            battleData = Instantiate<BattleData>(battleData);
+            //DATA
+            battleData = ScriptableObject.Instantiate<BattleData>(battleData);
+            battleData.Duplicate();
             blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleData.PlayerData;
+
+            //HUD
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[0].position, battleData.PlayerData);
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[1].position, battleData.MonstersData[0]);
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[2].position, battleData.MonstersData[1]);
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[3].position, battleData.MonstersData[2]);
+
             OnNextTurn += NextTurn;
         }
 

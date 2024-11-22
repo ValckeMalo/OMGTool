@@ -1,7 +1,11 @@
 namespace OMG.Battle.UI
 {
+    using MaloProduction.CustomAttributes;
     using MaloProduction.Tween.DoTween.Module;
-    using System;
+
+    using OMG.Unit;
+    using OMG.Unit.HUD;
+
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
@@ -23,7 +27,7 @@ namespace OMG.Battle.UI
             [SerializeField] private TextMeshProUGUI stateTurnText;
             [SerializeField] private TextMeshProUGUI turnIndexText;
 
-            public void AddCallback(Action action)
+            public void AddCallback(System.Action action)
             {
                 button.onClick.AddListener(() => action());
             }
@@ -50,7 +54,7 @@ namespace OMG.Battle.UI
         #endregion
 
         #region WakfuGauge
-        [Serializable]
+        [System.Serializable]
         public class WakfuGauge
         {
             [SerializeField] private Slider wakfuSlider;
@@ -132,6 +136,29 @@ namespace OMG.Battle.UI
         }
         #endregion
 
+        #region Unit HUD
+        [System.Serializable]
+        public class UnitsHUD
+        {
+            [Title("Unit HUD")]
+            [SerializeField] private RectTransform parent;
+            [SerializeField] private RectTransform canvasTransform;
+            [SerializeField] private GameObject prefabUnitHUD;
+
+            public void SpawnUnitHUD(Vector3 unitPosition, Unit unit)
+            {
+                Vector3 viewportPosition = Camera.main.WorldToViewportPoint(unitPosition);
+                Vector2 worldObjectScreenPosition = new Vector2(
+                                        ((viewportPosition.x * canvasTransform.sizeDelta.x) - (canvasTransform.sizeDelta.x * 0.5f)),
+                                        ((viewportPosition.y * canvasTransform.sizeDelta.y) - (canvasTransform.sizeDelta.y * 0.5f)));
+
+                GameObject unitHUD = Instantiate(prefabUnitHUD, parent);
+                unitHUD.GetComponent<RectTransform>().anchoredPosition = worldObjectScreenPosition;
+                unitHUD.GetComponent<UnitHUD>().Initialize(unit);
+            }
+        }
+        #endregion
+
         #region Singleton
         private static HUDBattle instance = null;
         private static HUDBattle GetInstance()
@@ -159,8 +186,10 @@ namespace OMG.Battle.UI
         [Header("UI Class")]
         [SerializeField] private TurnButton turnButton;
         [SerializeField] private WakfuGauge wakfuGauge;
+        [SerializeField] private UnitsHUD unitsHUD;
 
         public static TurnButton EndTurnButton { get => GetInstance().turnButton; }
         public static WakfuGauge PlayerWakfuGauge { get => GetInstance().wakfuGauge; }
+        public static UnitsHUD UnitHUD { get => GetInstance().unitsHUD; }
     }
 }

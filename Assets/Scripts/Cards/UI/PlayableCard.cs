@@ -10,12 +10,6 @@ namespace OMG.Card.UI
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
-    public enum MouseState
-    {
-        BeginOver,
-        ExitOver,
-    }
-
     public class PlayableCard : UICard, IPointerEnterHandler, IPointerExitHandler
     {
         [Title("Playbale Card")]
@@ -73,6 +67,11 @@ namespace OMG.Card.UI
 
             Destroy(gameObject);
             return returnValue;
+        }
+
+        public void Destroy()
+        {
+            Destroy(gameObject);
         }
 
         #region IPointer

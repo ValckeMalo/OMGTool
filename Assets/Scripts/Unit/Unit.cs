@@ -7,6 +7,9 @@ namespace OMG.Unit
 
     public abstract class Unit : ScriptableObject, IUnit
     {
+        public delegate void EventUnitDataModified(UnitData unitData);
+        public EventUnitDataModified OnUnitDataModified;
+
         [Title("Unit")]
         [SerializeField] protected UnitData unitData;
         public UnitData Data { get => unitData; }
@@ -17,10 +20,16 @@ namespace OMG.Unit
             return unitName;
         }
 
+        private void CallDataModified()
+        {
+            OnUnitDataModified?.Invoke(unitData);
+        }
+
         #region IUnit
         public virtual void AddArmor(int armor)
         {
             unitData.armor += armor;
+            CallDataModified();
         }
         public virtual void AddStatus(StatusType statusType, int nbTurn)
         {
@@ -33,14 +42,17 @@ namespace OMG.Unit
             {
                 unitData.status.Add(new UnitStatus(statusType, nbTurn));
             }
+            CallDataModified();
         }
         public virtual void ClearAllStatus()
         {
             unitData.status.Clear();
+            CallDataModified();
         }
         public virtual void ClearArmor()
         {
             unitData.armor = 0;
+            CallDataModified();
         }
         public virtual void ClearStatus(StatusType statusType)
         {
@@ -49,6 +61,7 @@ namespace OMG.Unit
             {
                 unitData.status.Remove(status);
             }
+            CallDataModified();
         }
         public virtual void Damage(int damage)
         {
@@ -63,15 +76,17 @@ namespace OMG.Unit
             {
                 unitData.armor -= damage;
             }
+            CallDataModified();
         }
         public virtual void Heal(int life)
         {
             unitData.hp = Mathf.Min(unitData.hp + life, unitData.maxHp);
+            CallDataModified();
         }
         public virtual void PiercingDamage(int damage)
         {
             unitData.hp -= damage;
-            Debug.Log(unitData.hp);
+            CallDataModified();
         }
         #endregion
     }
