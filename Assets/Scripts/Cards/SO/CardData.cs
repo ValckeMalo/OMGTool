@@ -56,7 +56,7 @@ public enum Target
     FirstEnemy,
     LastEnemy,
     AllEnemy,
-    Me,
+    Player,
     Count,
 }
 

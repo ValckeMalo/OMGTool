@@ -28,7 +28,7 @@ namespace MaloProduction
             FirstEnemy = Target.FirstEnemy,
             LastEnemy = Target.LastEnemy,
             AllEnemy = Target.AllEnemy,
-            Me = Target.Me,
+            Me = Target.Player,
         }
         private enum CardNavigation
         {

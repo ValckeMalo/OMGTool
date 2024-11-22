@@ -42,6 +42,7 @@ namespace OMG.Battle
         }
         protected override void UnitTurn(BattleData battleData)
         {
+            TryClearArmor();
             HUDBattle.EndTurnButton.PlayerTurnButton();
             TryBreakPadLock();
             gameBoard.TrySpawnCards();
@@ -85,7 +86,6 @@ namespace OMG.Battle
 
             if (card.Type == CardType.Finisher)
             {
-
                 gameBoard.DestroyFinishers();
                 EndTurn();
                 return true;
@@ -93,6 +93,7 @@ namespace OMG.Battle
 
             if (UseWakfu(card.Wakfu))
             {
+                UseCardOnTarget(card.Data);
                 gameBoard.RemoveCardOnBoard(card);
                 TryDisableCardOnBoard(WakfuRemain);
 
@@ -105,6 +106,16 @@ namespace OMG.Battle
             }
 
             return false;
+        }
+        private void UseCardOnTarget(CardData cardData)
+        {
+            if (cardData.target == Target.Player)
+            {
+                if (cardData.cardType == CardType.Defense)
+                {
+                    player.AddArmor(cardData.cardValue);
+                }
+            }
         }
         private bool CanSpawnFinishers()
         {
@@ -183,6 +194,16 @@ namespace OMG.Battle
         private void DisableEndTurn()
         {
             HUDBattle.EndTurnButton.DisableButton();
+        }
+        #endregion
+
+        #region Player
+        private void TryClearArmor()
+        {
+            if (!player.Data.HaveStatus(OMG.Unit.Status.StatusType.Tenacite))
+            {
+                player.ClearArmor();
+            }
         }
         #endregion
     }

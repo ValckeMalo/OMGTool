@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Defense
   m_EditorClassIdentifier: 
   cardType: 1
-  target: 0
+  target: 3
   spells:
   - initiative: 0
     spell: 1
     amount: 2
-  wakfuCost: 2
-  cardValue: 0
+  wakfuCost: 0
+  cardValue: 134
   cardName: Defense
   iconCard: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
