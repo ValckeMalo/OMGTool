@@ -32,9 +32,9 @@ public static class TargetStringProvider
     /// </summary>
     public static string[] TargetDescriptions = new string[(int)Target.Count]
     {
-        "premier ennemi",
-        "dernier ennemi",
-        "tous les ennemis",
+        "first monster",
+        "last monster",
+        "all monsters",
         "Oropo"
     };
 }

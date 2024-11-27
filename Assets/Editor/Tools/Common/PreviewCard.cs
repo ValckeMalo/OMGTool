@@ -10,10 +10,12 @@ namespace OMG.Tools.PreviewCard
         private const int BaseValueFontSize = 19;
         private const int BaseTitleFontSize = 22;
         private const int BaseSpellFontSize = 16;
+        private const int BaseTargetFontSize = 12;
 
         private static GUIStyle ValueStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = BaseValueFontSize };
         private static GUIStyle TitleStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = BaseTitleFontSize };
         private static GUIStyle SpellsStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = BaseSpellFontSize };
+        private static GUIStyle TargetStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = BaseTargetFontSize };
 
         private const float BaseMargin = 10f;
         private static float margin = BaseMargin;
@@ -66,7 +68,7 @@ namespace OMG.Tools.PreviewCard
                 Rect topRect = TopCard(cardData.cardValue, (cardTexture.iconCard != null) ? cardTexture.iconCard.texture : null,
                                        cardData.wakfuCost, (settings.wakfu != null) ? settings.wakfu.texture : null, backgroundRect);
                 Rect centerRect = CenterCard((cardData.iconCard != null) ? cardData.iconCard.texture : null, topRect, backgroundRect);
-                BottomCard(cardData.cardName, cardData.spells, centerRect, backgroundRect);
+                BottomCard(cardData.cardName, cardData.target ,cardData.spells, centerRect, backgroundRect);
 
                 GUI.contentColor = Color.white;
             }
@@ -77,6 +79,7 @@ namespace OMG.Tools.PreviewCard
             ValueStyle.fontSize = (int)(BaseValueFontSize * ratioScale);
             TitleStyle.fontSize = (int)(BaseTitleFontSize * ratioScale);
             SpellsStyle.fontSize = (int)(BaseSpellFontSize * ratioScale);
+            TargetStyle.fontSize = (int)(BaseSpellFontSize * ratioScale);
             margin = BaseMargin * ratioScale;
         }
 
@@ -168,7 +171,7 @@ namespace OMG.Tools.PreviewCard
 
             return iconCardRect;
         }
-        private static void BottomCard(string cardName, List<CardData.SpellsBonus> spells, Rect centerRect, Rect backgroundRect)
+        private static void BottomCard(string cardName, Target target, List<CardData.SpellsBonus> spells, Rect centerRect, Rect backgroundRect)
         {
             Vector2 bottomSize = new Vector2(backgroundRect.width, backgroundRect.height * bottompPercent);
             Vector2 bottomPosition = new Vector2(backgroundRect.x, centerRect.y + centerRect.height);
@@ -179,6 +182,13 @@ namespace OMG.Tools.PreviewCard
             Vector2 titleSize = new Vector2(bottomSize.x, TitleStyle.CalcHeight(titleContent, bottomSize.x));
             Rect titleRect = new Rect(bottomPosition, titleSize);
             GUI.Label(titleRect, titleContent, TitleStyle);
+
+            //TARGET
+            GUIContent targetContent = new GUIContent("Target : " + TargetStringProvider.TargetDescriptions[(int)target]);
+            Vector2 targetSize = new Vector2(bottomSize.x, TargetStyle.CalcHeight(titleContent, bottomSize.x));
+            Vector2 targetPosition = new Vector2(titleRect.x, titleRect.y + titleRect.height);
+            Rect targetRect = new Rect(targetPosition, targetSize);
+            GUI.Label(targetRect, targetContent, TargetStyle);
 
             Spells(spells, bottomRect, titleRect);
         }
@@ -221,7 +231,7 @@ namespace OMG.Tools.PreviewCard
             }
         }
 
-        private static void LogError(string message,bool isShow = false)
+        private static void LogError(string message, bool isShow = false)
         {
             if (isShow)
             {
