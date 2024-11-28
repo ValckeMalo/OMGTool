@@ -171,7 +171,7 @@ namespace OMG.Tools.PreviewCard
 
             return iconCardRect;
         }
-        private static void BottomCard(string cardName, Target target, List<CardData.SpellsBonus> spells, Rect centerRect, Rect backgroundRect)
+        private static void BottomCard(string cardName, Target target, List<CardData.Spell> spells, Rect centerRect, Rect backgroundRect)
         {
             Vector2 bottomSize = new Vector2(backgroundRect.width, backgroundRect.height * bottompPercent);
             Vector2 bottomPosition = new Vector2(backgroundRect.x, centerRect.y + centerRect.height);
@@ -192,7 +192,7 @@ namespace OMG.Tools.PreviewCard
 
             Spells(spells, bottomRect, titleRect);
         }
-        private static void Spells(List<CardData.SpellsBonus> spells, Rect bottomRect, Rect titleRect)
+        private static void Spells(List<CardData.Spell> spells, Rect bottomRect, Rect titleRect)
         {
             if (spells != null)
             {
@@ -204,19 +204,19 @@ namespace OMG.Tools.PreviewCard
                     Rect spellsRect = new Rect(spellsPosition, spellsSize);
                     string spellsText = string.Empty;
 
-                    foreach (CardData.SpellsBonus spellBonus in spells)
+                    foreach (CardData.Spell spellBonus in spells)
                     {
                         if (spellBonus != null)
                         {
-                            if (spellBonus.initiative)
+                            if (spellBonus.isInitiative)
                             {
                                 spellsText += "Initiative : ";
                                 spellsText += spellBonus.amount >= 0 ? "+ " : "- ";
-                                spellsText += Mathf.Abs(spellBonus.amount).ToString() + " " + spellBonus.spell.ToString();
+                                spellsText += Mathf.Abs(spellBonus.amount).ToString() + " " + spellBonus.spellType.ToString();
                             }
                             else
                             {
-                                spellsText += spellBonus.spell.ToString() + " : ";
+                                spellsText += spellBonus.spellType.ToString() + " : ";
                                 spellsText += spellBonus.amount >= 0 ? "+ " : "- ";
                                 spellsText += Mathf.Abs(spellBonus.amount).ToString();
                             }

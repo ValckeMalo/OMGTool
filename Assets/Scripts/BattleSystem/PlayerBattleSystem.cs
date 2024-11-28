@@ -10,6 +10,7 @@ namespace OMG.Battle
 
     using UnityEngine;
     using Unity.Behavior;
+    using OMG.Card;
 
     public class PlayerBattleSystem : UnitBattleSystem
     {
@@ -24,6 +25,8 @@ namespace OMG.Battle
         private const int maxWakfu = 6;
         private bool haveToRemovePadLock = false;
         private int WakfuRemain { get => wakfuUnlock - wakfu; }
+
+        private bool playedFirst = true;
 
         public virtual void Awake()
         {
@@ -93,7 +96,8 @@ namespace OMG.Battle
 
             if (UseWakfu(card.Wakfu))
             {
-                UseCardOnTarget(card.Data);
+                CardUtils.ProcessCard(card.Data, playedFirst);
+                playedFirst = false;
                 gameBoard.RemoveCardOnBoard(card);
                 TryDisableCardOnBoard(WakfuRemain);
 
@@ -106,16 +110,6 @@ namespace OMG.Battle
             }
 
             return false;
-        }
-        private void UseCardOnTarget(CardData cardData)
-        {
-            if (cardData.target == Target.Player)
-            {
-                if (cardData.cardType == CardType.Defense)
-                {
-                    player.AddArmor(cardData.cardValue);
-                }
-            }
         }
         private bool CanSpawnFinishers()
         {
@@ -187,6 +181,7 @@ namespace OMG.Battle
         #region End Turn
         private void EndTurn()
         {
+            playedFirst = true;
             UnlockWakfu();
             HUDBattle.EndTurnButton.MonstersTurnButton();
             BattleSystem.OnNextTurn?.Invoke(BattleState.Monsters);

@@ -40,7 +40,7 @@ namespace MaloProduction
                     new FilterLine(new List<FilterElement>()
                     {
                         new FilterElement("Target :"),
-                        new FilterElement(TargetFilter.FirstEnemy),
+                        new FilterElement(Target.FirstMonster),
                     }),
 
                     new FilterLine(new List<FilterElement>()
@@ -245,7 +245,7 @@ namespace MaloProduction
                                 new FilterLine(new List<FilterElement>()
                                 {
                                     new FilterElement("Target :"),
-                                    new FilterElement(TargetFilter.FirstEnemy),
+                                    new FilterElement(Target.FirstMonster),
                                 }),
 
                                 new FilterLine(new List<FilterElement>()
@@ -434,7 +434,7 @@ namespace MaloProduction
         }
         private bool TryEnumTarget(FilterElement element)
         {
-            return (element.Type == FilterElementType.Enum && element.EnumValue is TargetFilter);
+            return (element.Type == FilterElementType.Enum && element.EnumValue is Target);
         }
         private bool TryEnumSpell(FilterElement element)
         {
@@ -475,15 +475,15 @@ namespace MaloProduction
             {
                 case Comparison.GreaterOrEqual:
                     return filteredList
-                            .Where(card => card.spells.Any(spells => spells.spell == spell && spells.amount >= intValue))
+                            .Where(card => card.spells.Any(spells => spells.spellType == spell && spells.amount >= intValue))
                             .ToList();
                 case Comparison.Equal:
                     return filteredList
-                            .Where(card => card.spells.Any(spells => spells.spell == spell && spells.amount == intValue))
+                            .Where(card => card.spells.Any(spells => spells.spellType == spell && spells.amount == intValue))
                             .ToList();
                 case Comparison.LessOrEqual:
                     return filteredList
-                            .Where(card => card.spells.Any(spells => spells.spell == spell && spells.amount <= intValue))
+                            .Where(card => card.spells.Any(spells => spells.spellType == spell && spells.amount <= intValue))
                             .ToList();
                 default:
                     return filteredList;

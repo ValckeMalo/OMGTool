@@ -23,13 +23,6 @@ namespace MaloProduction
             Curse = CardType.Curse,
             Finisher = CardType.Finisher,
         }
-        private enum TargetFilter
-        {
-            FirstEnemy = Target.FirstEnemy,
-            LastEnemy = Target.LastEnemy,
-            AllEnemy = Target.AllEnemy,
-            Me = Target.Player,
-        }
         private enum CardNavigation
         {
             Previous,

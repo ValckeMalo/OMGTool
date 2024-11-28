@@ -9,16 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
-  m_Name: Boost
+  m_Script: {fileID: 11500000, guid: 8695fbeacb95900499827f639895fa9d, type: 3}
+  m_Name: Oropo
   m_EditorClassIdentifier: 
-  cardType: 2
-  target: 0
-  spells:
-  - initiative: 0
-    spell: 6
-    amount: -1
-  wakfuCost: -2
-  cardValue: 0
-  cardName: Boost
-  iconCard: {fileID: 0}
+  unitData:
+    hp: 150
+    maxHp: 150
+    armor: 10
+    status: []
+  unitName: Player
+  deck: {fileID: 11400000, guid: c9d8199f24a039b448bb47b45e6c39ff, type: 2}

@@ -15,10 +15,10 @@ MonoBehaviour:
   cardType: 1
   target: 3
   spells:
-  - initiative: 0
-    spell: 1
-    amount: 2
-  wakfuCost: 0
-  cardValue: 134
+  - isInitiative: 1
+    spellType: 3
+    amount: 1
+  wakfuCost: 2
+  cardValue: 100
   cardName: Defense
   iconCard: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}

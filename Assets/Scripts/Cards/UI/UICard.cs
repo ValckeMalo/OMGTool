@@ -52,12 +52,12 @@ namespace OMG.Card.UI
             CreateSpellsText(cardData.spells);
         }
 
-        private void CreateSpellsText(List<CardData.SpellsBonus> spellsBonus)
+        private void CreateSpellsText(List<CardData.Spell> spellsBonus)
         {
             string spellsLineText = string.Empty;
-            foreach (CardData.SpellsBonus spellBonus in spellsBonus)
+            foreach (CardData.Spell spellBonus in spellsBonus)
             {
-                spellsLineText += spellBonus.spell.ToString(); // get the name of the spell by to string the enum
+                spellsLineText += spellBonus.spellType.ToString(); // get the name of the spell by to string the enum
                 spellsLineText += " : "; // separator
                 spellsLineText += spellBonus.amount.ToString(); // value
                 spellsLineText += "\n"; // line break

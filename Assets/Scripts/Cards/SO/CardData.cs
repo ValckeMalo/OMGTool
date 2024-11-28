@@ -5,17 +5,17 @@ using UnityEngine;
 public class CardData : ScriptableObject
 {
     [System.Serializable]
-    public class SpellsBonus
+    public class Spell
     {
-        public bool initiative;
-        public Spells spell;
+        public bool isInitiative;
+        public Spells spellType;
         public int amount;
     }
 
     public CardType cardType;
     public Target target;
 
-    public List<SpellsBonus> spells = new List<SpellsBonus>();
+    public List<Spell> spells = new List<Spell>();
 
     public int wakfuCost;
     public int cardValue;
@@ -53,10 +53,10 @@ public enum Spells
 
 public enum Target
 {
-    FirstEnemy,
-    LastEnemy,
-    AllEnemy,
-    Player,
+    FirstMonster,
+    LastMonster,
+    AllMonsters,
+    Oropo,
     Count,
 }
 

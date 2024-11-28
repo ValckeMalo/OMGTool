@@ -15,10 +15,10 @@ MonoBehaviour:
   cardType: 3
   target: 0
   spells:
-  - initiative: 0
-    spell: 0
-    amount: 2
-  wakfuCost: 1
-  cardValue: 0
+  - isInitiative: 0
+    spellType: 6
+    amount: 1
+  wakfuCost: -1
+  cardValue: 1
   cardName: Neutral
   iconCard: {fileID: 0}

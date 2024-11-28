@@ -23,7 +23,10 @@ namespace OMG.Battle
         public delegate void EventNextTurn(BattleState nextState);
         public static EventNextTurn OnNextTurn;
 
+        private static BattleSystem instance = null;
+
         [SerializeField] private BattleData battleData;
+        public static BattleData BattleData { get => instance.battleData; }
         [SerializeField] private RuntimeBlackboardAsset blackboardAsset;
 
         public Transform[] unitHUDPos;
@@ -33,6 +36,14 @@ namespace OMG.Battle
 
         public void Awake()
         {
+            //Singleton
+            if (instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            instance = this;
+
             //DATA
             battleData = ScriptableObject.Instantiate<BattleData>(battleData);
             battleData.Duplicate();
