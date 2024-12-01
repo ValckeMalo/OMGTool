@@ -29,14 +29,14 @@ namespace OMG.Battle
         {
             this.blackboard = blackboard;
             InitializeMonster(battleData.MonstersData);
-            ChooseNextAction(battleData.PlayerData);
+            ChooseNextAction(battleData.OropoData);
 
             return true;
         }
         protected override void UnitTurn(BattleData battleData)
         {
-            PlayAction(battleData.PlayerData);
-            ChooseNextAction(battleData.PlayerData);
+            PlayAction(battleData.OropoData);
+            ChooseNextAction(battleData.OropoData);
             BattleSystem.OnNextTurn?.Invoke(BattleState.Player);
         }
 

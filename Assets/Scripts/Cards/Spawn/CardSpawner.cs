@@ -50,14 +50,5 @@ namespace OMG.Card.UI
 
             return newCardUI;
         }
-
-        [Button("Clear Children")]
-        private void ResetChildren()
-        {
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                Destroy(transform.GetChild(i).gameObject);
-            }
-        }
     }
 }

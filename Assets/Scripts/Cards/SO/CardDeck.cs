@@ -9,7 +9,7 @@ namespace OMG.Card.Data
     public class CardDeck : ScriptableObject
     {
         [Title("Deck Card")]
-        [SerializeField] private CardData[] cards = new CardData[14];
+        [SerializeField] public CardData[] cards = new CardData[14];
         [SerializeField] private List<CardData> finishers = new List<CardData>();
 
         [SerializeField] private List<CardData> curses = new List<CardData>();

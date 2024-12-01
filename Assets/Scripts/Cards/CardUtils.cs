@@ -10,11 +10,12 @@ namespace OMG.Card
 
 	public static class CardUtils
 	{
-		public static void ProcessCard(CardData card, bool playedFirst)
+		public static bool ProcessCard(CardData card, bool playedFirst)
 		{
 			IUnit[] unitsTarget = GetUnitsTarget(card.target);
 			ProcessCardType(card.cardType, card.cardValue, unitsTarget);
 			ProcessCardSpells(BattleSystem.BattleData.GetOropo(), BattleSystem.BattleData.GetAllMonsters(), unitsTarget, card.spells, playedFirst);
+            return true;
 		}
 
 		private static void ProcessCardType(CardType type, int cardValue, IUnit[] units)

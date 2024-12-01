@@ -37,7 +37,7 @@ namespace OMG.Battle
 
         protected override bool Initialize(BattleData battleData, Blackboard blackboard)
         {
-            InitializePlayer(battleData.PlayerData);
+            InitializePlayer(battleData.OropoData);
             InitialzeWakfu();
             InitializeGameBoard();
 
@@ -72,7 +72,7 @@ namespace OMG.Battle
         {
             wakfu = 0;
             wakfuUnlock = 3;
-            HUDBattle.PlayerWakfuGauge.ResetPadLock();
+            HUDBattle.OropoWakfuGauge.ResetPadLock();
         }
         private void InitializeGameBoard()
         {
@@ -126,7 +126,7 @@ namespace OMG.Battle
         #region Wakfu
         public static void UpdatePreviewGauge(int wakfuCost)
         {
-            HUDBattle.PlayerWakfuGauge.UpdatePreviewBar(wakfu + wakfuCost);
+            HUDBattle.OropoWakfuGauge.UpdatePreviewBar(wakfu + wakfuCost);
         }
         private void UnlockWakfu()
         {
@@ -143,7 +143,7 @@ namespace OMG.Battle
                 //if the wakfu unlock havn't already exceed max possible break a pad lock
                 if (wakfuUnlock <= maxWakfu)
                 {
-                    HUDBattle.PlayerWakfuGauge.BreakPadLock();
+                    HUDBattle.OropoWakfuGauge.BreakPadLock();
                     haveToRemovePadLock = true;
                 }
 
@@ -152,7 +152,7 @@ namespace OMG.Battle
             }
 
             //reset the ui for the gauge and the preview gauge
-            HUDBattle.PlayerWakfuGauge.ResetGauges();
+            HUDBattle.OropoWakfuGauge.ResetGauges();
         }
         private bool UseWakfu(int amount)
         {
@@ -167,12 +167,12 @@ namespace OMG.Battle
 
             return true;
         }
-        private void UpdateWakfuGauge() => HUDBattle.PlayerWakfuGauge.UpdateWakfuBar(wakfu);
+        private void UpdateWakfuGauge() => HUDBattle.OropoWakfuGauge.UpdateWakfuBar(wakfu);
         private void TryBreakPadLock()
         {
             if (haveToRemovePadLock)
             {
-                HUDBattle.PlayerWakfuGauge.RemovePadLock();
+                HUDBattle.OropoWakfuGauge.RemovePadLock();
                 haveToRemovePadLock = false;
             }
         }

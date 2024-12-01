@@ -12,7 +12,7 @@ namespace OMG.Battle.Data
         [SerializeField] private Player oropo;
         [SerializeField] private Monster[] monsters = new Monster[3];
 
-        public Player PlayerData { get => oropo; }
+        public Player OropoData { get => oropo; }
         public Monster[] MonstersData { get => monsters; }
 
         public void Duplicate()

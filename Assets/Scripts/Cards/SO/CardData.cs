@@ -16,6 +16,7 @@ public class CardData : ScriptableObject
     public Target target;
 
     public List<Spell> spells = new List<Spell>();
+    public bool needSacrifice = false;
 
     public int wakfuCost;
     public int cardValue;

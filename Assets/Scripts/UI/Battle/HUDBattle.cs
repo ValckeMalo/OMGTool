@@ -189,7 +189,7 @@ namespace OMG.Battle.UI
         [SerializeField] private UnitsHUD unitsHUD;
 
         public static TurnButton EndTurnButton { get => GetInstance().turnButton; }
-        public static WakfuGauge PlayerWakfuGauge { get => GetInstance().wakfuGauge; }
+        public static WakfuGauge OropoWakfuGauge { get => GetInstance().wakfuGauge; }
         public static UnitsHUD UnitHUD { get => GetInstance().unitsHUD; }
     }
 }

@@ -47,10 +47,10 @@ namespace OMG.Battle
             //DATA
             battleData = ScriptableObject.Instantiate<BattleData>(battleData);
             battleData.Duplicate();
-            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleData.PlayerData;
+            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleData.OropoData;
 
             //HUD
-            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[0].position, battleData.PlayerData);
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[0].position, battleData.OropoData);
             HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[1].position, battleData.MonstersData[0]);
             HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[2].position, battleData.MonstersData[1]);
             HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[3].position, battleData.MonstersData[2]);

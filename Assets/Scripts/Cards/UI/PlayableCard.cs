@@ -83,7 +83,7 @@ namespace OMG.Card.UI
         public void OnPointerExit(PointerEventData eventData)
         {
             rect.DoScale(size, 0.1f);
-            HUDBattle.PlayerWakfuGauge.ResetPreviewBar();
+            HUDBattle.OropoWakfuGauge.ResetPreviewBar();
         }
         #endregion
     }
