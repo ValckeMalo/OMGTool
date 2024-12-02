@@ -29,7 +29,7 @@ namespace OMG.Battle.Manager
         public void PreviewWakfu(int amount)
         {
             int preivewWakfu = Mathf.Clamp(wakfu + amount, 0, MaxWakfu);
-            HUDBattle.OropoWakfuGauge.UpdatePreviewBar(wakfu + preivewWakfu);
+            HUDBattle.OropoWakfuGauge.UpdatePreviewBar(preivewWakfu);
         }
 
         public bool CanAddWakfu(int amount)
@@ -73,6 +73,11 @@ namespace OMG.Battle.Manager
                 HUDBattle.OropoWakfuGauge.RemovePadLock();
                 hasToRemovePadlock = false;
             }
+        }
+
+        public void ResetPreviewBar()
+        {
+            HUDBattle.OropoWakfuGauge.ResetPreviewBar();
         }
     }
 }

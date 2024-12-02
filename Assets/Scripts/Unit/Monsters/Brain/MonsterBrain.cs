@@ -22,6 +22,13 @@ namespace OMG.Unit.Monster.Brain
             nextAction.Execute(player);
             nextAction = null;
         }
+        public void Action(IUnit player, IUnit monster)
+        {
+            if (nextAction == null) return;
+
+            nextAction.Execute(player);
+            nextAction = null;
+        }
 
         public void SearchAction()
         {

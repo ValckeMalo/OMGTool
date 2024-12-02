@@ -21,7 +21,23 @@ namespace OMG.Unit.Monster
             }
         }
 
+        public void Action(IUnit player)
+        {
+            if (brain != null)
+            {
+                brain.Action(player, this);
+            }
+        }
+
         public void SearchNextAction(IUnit player, IUnit[] monsters)
+        {
+            if (brain != null)
+            {
+                brain.SearchAction();
+            }
+        }
+
+        public void SearchNextAction()
         {
             if (brain != null)
             {

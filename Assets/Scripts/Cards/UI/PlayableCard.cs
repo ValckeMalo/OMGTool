@@ -33,12 +33,12 @@ namespace OMG.Card.UI
                 return false;
             }
 
-            cardButton.onClick.AddListener(() => action());
+            //cardButton.onClick.AddListener(() => action());
 
             return true;
         }
 
-        public int Wakfu { get => data.wakfuCost; }
+        public int WakfuCost { get => data.wakfuCost; }
         public bool IsDisable { get => disableImage.enabled; }
         public CardData Data { get => data; }
         public CardType Type { get => data.cardType; }
@@ -46,6 +46,8 @@ namespace OMG.Card.UI
         public override void Init(CardData cardData, CardOptions options)
         {
             base.Init(cardData, options);
+
+            cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCard(this));
 
             data = cardData;
             rect = GetComponent<RectTransform>();
@@ -78,12 +80,12 @@ namespace OMG.Card.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             rect.DoScale(size * ratioScale, 0.1f);
-            PlayerBattleSystem.UpdatePreviewGauge(Wakfu);
+            BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
             rect.DoScale(size, 0.1f);
-            HUDBattle.OropoWakfuGauge.ResetPreviewBar();
+            BattleSystem.Instance.GameBoard.ResetPreviewBar();
         }
         #endregion
     }

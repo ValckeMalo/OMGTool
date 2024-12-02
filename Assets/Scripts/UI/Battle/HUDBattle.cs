@@ -33,11 +33,11 @@ namespace OMG.Battle.UI
             }
             public void PlayerTurnButton()
             {
-                Update(true, BattleSystem.TurnIndex, TurnText.Player);
+                Update(true, BattleSystem.Instance.TurnIndex, TurnText.Player);
             }
             public void MonstersTurnButton()
             {
-                Update(true, BattleSystem.TurnIndex, TurnText.Monster);
+                Update(true, BattleSystem.Instance.TurnIndex, TurnText.Monster);
             }
             public void DisableButton()
             {

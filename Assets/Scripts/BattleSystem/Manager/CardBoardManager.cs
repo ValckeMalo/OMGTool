@@ -4,6 +4,7 @@ namespace OMG.Battle.Manager
 
     using UnityEngine;
     using System.Collections.Generic;
+    using System;
 
     public class CardBoardManager
     {
@@ -47,7 +48,7 @@ namespace OMG.Battle.Manager
         {
             foreach (PlayableCard playableCard in cardsOnBoard)
             {
-                if (playableCard.Wakfu <= wakfuRemain)
+                if (playableCard.WakfuCost <= wakfuRemain)
                 {
                     playableCard.EnableCard();
                 }
@@ -56,6 +57,11 @@ namespace OMG.Battle.Manager
                     playableCard.DisableCard();
                 }
             }
+        }
+
+        public void DestroyPlayableCard(PlayableCard playableCard)
+        {
+            playableCard.Destroy();
         }
     }
 }

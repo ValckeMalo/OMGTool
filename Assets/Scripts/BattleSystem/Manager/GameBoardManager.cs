@@ -4,7 +4,7 @@ namespace OMG.Battle.Manager
     using OMG.Card;
     using OMG.Card.Data;
     using OMG.Card.UI;
-
+    using System;
     using UnityEngine;
 
     public class GameBoardManager
@@ -72,16 +72,24 @@ namespace OMG.Battle.Manager
                 wakfuManager.AddWakfu(card.wakfuCost);
                 cardBoardManager.RemoveCardOnBoard(playableCard);
                 cardDeckManager.ReintroduceCard(card);
-
+                cardBoardManager.DestroyPlayableCard(playableCard);
                 cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
 
                 /*FINISHERS*/
                 //TODO try if the condition are good to spawn the finishers
                 /*\FINISHERS*/
+
+                return;
             }
 
             //just to help for debug
             Debug.LogWarning($"Card canno't be process");
+        }
+
+        public void UpdatePreviewGauge(int amount) => wakfuManager.PreviewWakfu(amount);
+        public void ResetPreviewBar()
+        {
+            wakfuManager.ResetPreviewBar();
         }
     }
 }
