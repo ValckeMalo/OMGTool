@@ -1,7 +1,7 @@
 namespace OMG.Battle.Data
 {
     using OMG.Unit.Monster;
-    using OMG.Unit.Player;
+    using OMG.Unit.Oropo;
     using System.Linq;
     using UnityEngine;
 

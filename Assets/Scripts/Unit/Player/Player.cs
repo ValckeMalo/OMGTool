@@ -1,4 +1,4 @@
-namespace OMG.Unit.Player
+namespace OMG.Unit.Oropo
 {
     using OMG.Card.Data;
     using UnityEngine;

@@ -47,7 +47,6 @@ public enum Spells
     Plaie,
     Shield,
     Tenacite,
-    Sacrifice,
     Bousculade,
     Eveil,
 }

@@ -5,26 +5,35 @@ namespace OMG.Card
     using OMG.Unit.Status;
     using static CardData;
     using OMG.Battle.Data;
+    using OMG.Unit.Oropo;
+    using OMG.Unit.Monster;
 
     using System.Collections.Generic;
     using UnityEngine;
 
     public static class CardUtils
     {
+        private static BattleData BattleData;
+
+        private static Player Oropo => BattleData.GetOropo();
+        private static Monster FirstMonster => BattleData.GetFirstMonster();
+        private static Monster LastMonster => BattleData.GetLastMonster();
+        private static Monster[] Monsters => BattleData.GetAllMonsters();
+
         public static bool ProcessCard(CardData card, bool playedFirst)
         {
-            if (card == null)
-                return false;
+            if (!UnitTest(card)) return false; //Failed Unit Test
 
             if (card.needSacrifice && card.cardType == CardType.Boost)
+            {
+                Debug.LogError($"The card send need a sacrifice or is a boost card and it's not implemented yet");
                 return false;
+            }
 
-            BattleData battleData = BattleSystem.Instance.BattleData;
-
-            IUnit[] unitsTarget = GetUnitsTarget(card.target, battleData);
+            IUnit[] unitsTarget = GetUnitsTarget(card.target);
 
             ProcessCardType(card.cardType, card.cardValue, unitsTarget);
-            ProcessCardSpells(battleData.GetOropo(), battleData.GetAllMonsters(), unitsTarget, card.spells, playedFirst);
+            ProcessCardSpells(unitsTarget, card.spells, playedFirst);
 
             return true;
         }
@@ -84,69 +93,46 @@ namespace OMG.Card
                     return;
             }
         }
-
-        private static void ProcessCardSpells(IUnit oropo, IUnit[] monsters, IUnit[] unitsTarget, List<Spell> spells, bool playedFirst)
+        private static void ProcessCardSpells(IUnit[] unitsTarget, List<Spell> spells, bool playedFirst)
         {
+            if (unitsTarget == null)
+            {
+                Debug.LogError($"Can't find Units Target : {unitsTarget}.");
+                return;
+            }
+
             foreach (Spell spell in spells)
             {
-                ProcessSpell(oropo, monsters, unitsTarget, spell, playedFirst);
+                ProcessSpell(unitsTarget, spell, playedFirst);
             }
         }
-
-        private static void ProcessSpell(IUnit oropo, IUnit[] monsters, IUnit[] unitsTarget, Spell spell, bool playedFirst)
+        private static void ProcessSpell(IUnit[] unitsTarget, Spell spell, bool playedFirst)
         {
-            bool CanDoSpell()
+            if (!playedFirst && spell.isInitiative)
             {
-                return (playedFirst && spell.isInitiative) || !spell.isInitiative;
+                Debug.Log($"The card have a spell in initiative but the cards was not played first.");
+                return;
             }
 
             switch (spell.spellType)
             {
                 case Spells.Poison:
-                    if (CanDoSpell())
+                    foreach (IUnit unit in unitsTarget)
                     {
-                        foreach (IUnit unit in unitsTarget)
-                        {
-                            if (unit != null)
-                            {
-                                unit.AddStatus(StatusType.Poison, spell.amount);
-                            }
-                        }
+                        unit.AddStatus(StatusType.Poison, spell.amount);
                     }
                     return;
 
                 case Spells.Plaie:
-                    if (CanDoSpell())
-                    {
-                        if (oropo != null)
-                        {
-                            oropo.AddStatus(StatusType.Plaie, spell.amount);
-                        }
-                    }
+                    Oropo.AddStatus(StatusType.Plaie, spell.amount);
                     return;
 
                 case Spells.Shield:
-                    if (CanDoSpell())
-                    {
-                        if (oropo != null)
-                        {
-                            oropo.AddArmor(spell.amount);
-                        }
-                    }
+                    Oropo.AddArmor(spell.amount);
                     return;
 
                 case Spells.Tenacite:
-                    if (CanDoSpell())
-                    {
-                        if (oropo != null)
-                        {
-                            oropo.AddStatus(StatusType.Tenacite, spell.amount);
-                        }
-                    }
-                    return;
-
-                case Spells.Sacrifice:
-                    Debug.LogError("Sacrifice n'est pas un spell");
+                    Oropo.AddStatus(StatusType.Tenacite, spell.amount);
                     return;
 
                 case Spells.Bousculade:
@@ -154,13 +140,7 @@ namespace OMG.Card
                     return;
 
                 case Spells.Eveil:
-                    if (CanDoSpell())
-                    {
-                        if (oropo != null)
-                        {
-                            oropo.AddStatus(StatusType.Eveil, spell.amount);
-                        }
-                    }
+                    Oropo.AddStatus(StatusType.Eveil, spell.amount);
                     break;
 
                 default:
@@ -168,32 +148,25 @@ namespace OMG.Card
                     break;
             }
         }
-
-        private static IUnit[] GetUnitsTarget(Target target, BattleData battleData)
+        private static IUnit[] GetUnitsTarget(Target target)
         {
-            if (battleData == null)
-            {
-                Debug.LogError($"The BattleData is equal to null");
-                return null;
-            }
-
             List<IUnit> units = new List<IUnit>();
 
             switch (target)
             {
                 case Target.FirstMonster:
-                    units.Add(battleData.GetFirstMonster());
+                    units.Add(FirstMonster);
                     break;
 
                 case Target.LastMonster:
-                    units.Add(battleData.GetLastMonster());
+                    units.Add(LastMonster);
                     break;
 
                 case Target.AllMonsters:
-                    return battleData.GetAllMonsters();
+                    return Monsters;
 
                 case Target.Oropo:
-                    units.Add(battleData.GetOropo());
+                    units.Add(Oropo);
                     break;
 
                 default:
@@ -209,5 +182,54 @@ namespace OMG.Card
 
             return units.ToArray();
         }
+
+        #region Unit Test
+        private static bool UnitTest(CardData card)
+        {
+            if (card == null)
+            {
+                Debug.LogError($"The card send is null : {card}");
+                return false;
+            }
+
+            if (BattleData == null) BattleData = BattleSystem.Instance.BattleData;
+
+            return UnitTestBattleData();
+        }
+        private static bool UnitTestBattleData()
+        {
+            if (BattleData == null)
+            {
+                Debug.LogError($"The {BattleData.name} is equal to null in The Card Utils : {BattleData}");
+                return false;
+            }
+
+            if (Oropo == null)
+            {
+                Debug.LogError($"The {Oropo.name} is equal to null in The Card Utils : {Oropo}");
+                return false;
+            }
+
+            if (FirstMonster == null)
+            {
+                Debug.LogError($"The {FirstMonster.name} is equal to null in The Card Utils : {FirstMonster}");
+                return false;
+            }
+
+            if (LastMonster == null)
+            {
+                Debug.LogError($"The {LastMonster.name} is equal to null in The Card Utils : {LastMonster}");
+                return false;
+            }
+
+            if (Monsters == null)
+            {
+                Debug.LogError($"The Monsters is equal to null in The Card Utils : {Monsters}");
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }
