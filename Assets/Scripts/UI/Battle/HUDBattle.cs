@@ -81,7 +81,6 @@ namespace OMG.Battle.UI
                     TweenManager.Despawn(tweenSlider);
                 }
 
-                print(previewWakfu);
                 tweenSlider = previewWakfuSlider.DoValue(previewWakfu, 0.2f);
             }
             public void ResetPreviewBar()

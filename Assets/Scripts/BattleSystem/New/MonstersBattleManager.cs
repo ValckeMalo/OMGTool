@@ -27,6 +27,7 @@ namespace OMG.Battle.Manager
             {
                 if (monster == null) continue;
 
+                monster.UpdateUnit();
                 PlayAction(monster, oropo);
                 ChooseAction(monster, blackboard);
             }

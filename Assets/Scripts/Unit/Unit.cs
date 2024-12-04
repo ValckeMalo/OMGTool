@@ -13,11 +13,10 @@ namespace OMG.Unit
         [Title("Unit")]
         [SerializeField] protected UnitData unitData;
         public UnitData Data { get => unitData; }
-        [SerializeField] protected string unitName;
 
         public virtual string GetName()
         {
-            return unitName;
+            return unitData.unitName;
         }
 
         private void CallDataModified()
@@ -88,6 +87,24 @@ namespace OMG.Unit
             unitData.hp -= damage;
             CallDataModified();
         }
+        public virtual void UpdateUnit()
+        {
+            if (!HaveStatus(StatusType.Tenacite)) ClearArmor(); //Update Armor
+
+            if (HaveStatus(StatusType.Poison)) Damage(GetStatusValue(StatusType.Poison)); //Update Poison
+
+            UpdateAllStatus();
+            CallDataModified();
+        }
+        private bool HaveStatus(StatusType statusType)
+        {
+            return unitData.HaveStatus(statusType);
+        }
+        private int GetStatusValue(StatusType statusType)
+        {
+            return unitData.GetStatusValue(statusType);
+        }
+        private void UpdateAllStatus() => unitData.UpdateAllStatus();
         #endregion
     }
 }

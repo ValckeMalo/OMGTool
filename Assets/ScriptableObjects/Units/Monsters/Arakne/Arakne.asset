@@ -17,7 +17,7 @@ MonoBehaviour:
     maxHp: 150
     armor: 0
     status: []
-  unitName: Arakne
+    unitName: Arakne
   brain:
     behaviourTree: {fileID: -4012961712313718202, guid: f899663517676dd48aa21376509602d3,
       type: 2}

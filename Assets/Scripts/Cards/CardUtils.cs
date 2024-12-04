@@ -45,20 +45,14 @@ namespace OMG.Card
                 case CardType.Attack:
                     foreach (IUnit unit in units)
                     {
-                        if (unit != null)
-                        {
-                            unit.Damage(cardValue);
-                        }
+                        unit.Damage(cardValue);
                     }
                     return;
 
                 case CardType.Defense:
                     foreach (IUnit unit in units)
                     {
-                        if (unit != null)
-                        {
-                            unit.AddArmor(cardValue);
-                        }
+                        unit.AddArmor(cardValue);
                     }
                     return;
 
@@ -67,13 +61,7 @@ namespace OMG.Card
                     return;
 
                 case CardType.Neutral:
-                    foreach (IUnit unit in units)
-                    {
-                        if (unit != null)
-                        {
-                            BattleSystem.Instance.GameBoard.SpawnCards(cardValue);
-                        }
-                    }
+                    BattleSystem.Instance.GameBoard.SpawnCards(cardValue);
                     return;
 
                 case CardType.Divine:

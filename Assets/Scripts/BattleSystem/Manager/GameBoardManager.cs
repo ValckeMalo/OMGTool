@@ -33,6 +33,7 @@ namespace OMG.Battle.Manager
             HUDBattle.EndTurnButton.MonstersTurnButton();
         }
 
+        #region Cards
         public void SpawnCards(int nbCardToSpawn)
         {
             if (cardDeckManager == null || cardDeckManager.IsDeckEmpty || cardBoardManager == null)
@@ -51,6 +52,7 @@ namespace OMG.Battle.Manager
             PlayableCard playableCard = CardSpawner.OnSpawnCard?.Invoke(cardToSpawn);
             cardBoardManager.AddCardOnBoard(playableCard);
         }
+        #endregion
 
         public void UseCard(PlayableCard playableCard)
         {

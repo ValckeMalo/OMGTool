@@ -17,5 +17,5 @@ MonoBehaviour:
     maxHp: 150
     armor: 10
     status: []
-  unitName: Player
+    unitName: Oropo
   deck: {fileID: 11400000, guid: c9d8199f24a039b448bb47b45e6c39ff, type: 2}

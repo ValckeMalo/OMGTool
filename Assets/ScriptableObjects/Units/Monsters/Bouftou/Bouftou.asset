@@ -17,7 +17,7 @@ MonoBehaviour:
     maxHp: 150
     armor: 0
     status: []
-  unitName: Bouftou
+    unitName: Bouftou
   brain:
     behaviourTree: {fileID: -4679343116063080700, guid: 1261e08fb70137241aa807a6a41ef972,
       type: 2}

@@ -94,6 +94,7 @@ namespace OMG.Battle
             switch (newState)
             {
                 case BattleState.Oropo:
+                    battleUnits.GetOropo().UpdateUnit();
                     GameBoard.StartOropoTurn();
                     break;
 

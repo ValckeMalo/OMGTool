@@ -12,5 +12,7 @@ namespace OMG.Unit
         public void AddStatus(StatusType status, int nbTurn);
         public void ClearStatus(StatusType status);
         public void ClearAllStatus();
+
+        public void UpdateUnit();
     }
 }
