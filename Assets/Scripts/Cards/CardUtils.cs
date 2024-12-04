@@ -10,6 +10,7 @@ namespace OMG.Card
 
     using System.Collections.Generic;
     using UnityEngine;
+    using OMG.Card.UI;
 
     public static class CardUtils
     {
@@ -20,20 +21,32 @@ namespace OMG.Card
         private static Monster LastMonster => BattleData.GetLastMonster();
         private static Monster[] Monsters => BattleData.GetAllMonsters();
 
-        public static bool ProcessCard(CardData card, bool playedFirst)
+        private static bool needSecondCard = false;
+        private static PlayableCard firstCard = null;
+
+        public static bool ProcessCard(PlayableCard playableCard, bool playedFirst)
         {
+            CardData card = playableCard.Data;
+
             if (!UnitTest(card)) return false; //Failed Unit Test
 
-            if (card.needSacrifice && card.cardType == CardType.Boost)
+            if (needSecondCard)
             {
-                Debug.LogError($"The card send need a sacrifice or is a boost card and it's not implemented yet");
+                ProcessSecondCard(playedFirst); //For boost and sacrifice card
+                return true;
+            }
+
+            if (IsNeedSecondCard(card))//Test whether the card needs a second click card to work
+            {
+                needSecondCard = true;
+                firstCard = playableCard;
                 return false;
             }
 
-            IUnit[] unitsTarget = GetUnitsTarget(card.target);
+            IUnit[] unitsTarget = GetUnitsTarget(card.target); //Get the targets of the cards
 
-            ProcessCardType(card.cardType, card.cardValue, unitsTarget);
-            ProcessCardSpells(unitsTarget, card.spells, playedFirst);
+            ProcessCardType(card.cardType, card.cardValue, unitsTarget); //Process the card type (do what the base card it seems to do) Attack,Defense,Neutral etc...
+            ProcessCardSpells(unitsTarget, card.spells, playedFirst); //Process the spells of the card
 
             return true;
         }
@@ -169,6 +182,37 @@ namespace OMG.Card
             }
 
             return units.ToArray();
+        }
+
+        private static bool ProcessSecondCard(bool playedFirst)
+        {
+            if (firstCard == null) return false;
+            CardData firstCardData = firstCard.Data;
+
+            if (firstCardData.cardType == CardType.Boost)
+            {
+
+            }
+            else if (firstCardData.needSacrifice)
+            {
+                IUnit[] unitsTarget = GetUnitsTarget(firstCardData.target); //Get the targets of the cards
+
+                ProcessCardType(firstCardData.cardType, firstCardData.cardValue, unitsTarget); //Process the card type (do what the base card it seems to do) Attack,Defense,Neutral etc...
+                ProcessCardSpells(unitsTarget, firstCardData.spells, playedFirst); //Process the spells of the card
+
+                firstCard = null;
+                needSecondCard = false;
+
+                BattleSystem.Instance.GameBoard.RemoveCardOnBoard(firstCard);
+
+                return true;
+            }
+
+            return false;
+        }
+        private static bool IsNeedSecondCard(CardData card)
+        {
+            return card.needSacrifice || card.cardType == CardType.Boost;
         }
 
         #region Unit Test

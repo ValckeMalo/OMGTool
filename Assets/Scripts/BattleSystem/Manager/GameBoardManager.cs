@@ -4,7 +4,7 @@ namespace OMG.Battle.Manager
     using OMG.Card;
     using OMG.Card.Data;
     using OMG.Card.UI;
-
+    using System.Collections;
     using UnityEngine;
 
     public class GameBoardManager
@@ -73,6 +73,12 @@ namespace OMG.Battle.Manager
             PlayableCard playableCard = CardSpawner.OnSpawnCard?.Invoke(card);
             cardBoardManager.AddCardOnBoard(playableCard);
         }
+        public void RemoveCardOnBoard(PlayableCard playableCard)
+        {
+            if (playableCard == null) return;
+
+            cardBoardManager.RemoveCardOnBoard(playableCard);
+        }
 
         public void UseCard(PlayableCard playableCard)
         {
@@ -89,7 +95,7 @@ namespace OMG.Battle.Manager
             CardData card = playableCard.Data;
             //process the card and if can be do the rest
             //the card can possibly need to select other card the test is here for that
-            if (wakfuManager.CanAddWakfu(card.wakfuCost) && CardUtils.ProcessCard(card, true))
+            if (wakfuManager.CanAddWakfu(card.wakfuCost) && CardUtils.ProcessCard(playableCard, true))
             {
                 wakfuManager.AddWakfu(card.wakfuCost);
                 cardBoardManager.RemoveCardOnBoard(playableCard);
@@ -107,6 +113,10 @@ namespace OMG.Battle.Manager
             //just to help for debug
             Debug.LogWarning($"Card canno't be process");
         }
+
+        #region Boost & Sacrifice
+
+        #endregion
         #endregion
 
         #region Wakfu

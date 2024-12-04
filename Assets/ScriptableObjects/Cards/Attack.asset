@@ -18,6 +18,7 @@ MonoBehaviour:
   - isInitiative: 0
     spellType: 0
     amount: 26
+  needSacrifice: 1
   wakfuCost: 1
   cardValue: 25
   cardName: Attack
