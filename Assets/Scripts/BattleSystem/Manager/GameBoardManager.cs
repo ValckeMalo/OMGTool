@@ -20,11 +20,12 @@ namespace OMG.Battle.Manager
             wakfuManager = new WakfuManager();
         }
 
+        #region OropoTurn
         public void StartOropoTurn()
         {
             HUDBattle.EndTurnButton.PlayerTurnButton();
             wakfuManager.TryBreakPadLock();
-            SpawnCards(cardBoardManager.NbCardToSpawn);
+            SpawnCardsInHands(cardBoardManager.NbCardToSpawn);
             cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
         }
         public void EndOropoTurn()
@@ -32,9 +33,10 @@ namespace OMG.Battle.Manager
             wakfuManager.UnlockWakfu();
             HUDBattle.EndTurnButton.MonstersTurnButton();
         }
+        #endregion
 
         #region Cards
-        public void SpawnCards(int nbCardToSpawn)
+        public void SpawnCardsInHands(int nbCardToSpawn)
         {
             if (cardDeckManager == null || cardDeckManager.IsDeckEmpty || cardBoardManager == null)
             {
@@ -43,16 +45,34 @@ namespace OMG.Battle.Manager
 
             for (int i = 0; i < nbCardToSpawn; i++)
             {
-                SpawnACard();
+                SpawnACardInHand();
             }
         }
-        private void SpawnACard()
+        public void SpawnSpecificCardsInHand(int nbCardToSpawn,CardData card)
+        {
+            for (int i = 0; i < nbCardToSpawn; i++)
+            {
+                SpawnSpecificCardInHand(card);
+            }
+        }
+        public void AddSpecificCardsInDeck(int nbCardToAdd,CardData card)
+        {
+            for (int i = 0;i < nbCardToAdd;i++)
+            {
+                //TODO
+            }
+        }
+        private void SpawnACardInHand()
         {
             CardData cardToSpawn = cardDeckManager.GetNextCard();
             PlayableCard playableCard = CardSpawner.OnSpawnCard?.Invoke(cardToSpawn);
             cardBoardManager.AddCardOnBoard(playableCard);
         }
-        #endregion
+        private void SpawnSpecificCardInHand(CardData card)
+        {
+            PlayableCard playableCard = CardSpawner.OnSpawnCard?.Invoke(card);
+            cardBoardManager.AddCardOnBoard(playableCard);
+        }
 
         public void UseCard(PlayableCard playableCard)
         {
@@ -87,11 +107,14 @@ namespace OMG.Battle.Manager
             //just to help for debug
             Debug.LogWarning($"Card canno't be process");
         }
+        #endregion
 
+        #region Wakfu
         public void UpdatePreviewGauge(int amount) => wakfuManager.PreviewWakfu(amount);
         public void ResetPreviewBar()
         {
             wakfuManager.ResetPreviewBar();
         }
+        #endregion
     }
 }

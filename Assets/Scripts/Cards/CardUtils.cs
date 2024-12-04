@@ -61,7 +61,7 @@ namespace OMG.Card
                     return;
 
                 case CardType.Neutral:
-                    BattleSystem.Instance.GameBoard.SpawnCards(cardValue);
+                    BattleSystem.Instance.GameBoard.SpawnCardsInHands(cardValue);
                     return;
 
                 case CardType.Divine:
