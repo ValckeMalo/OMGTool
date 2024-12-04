@@ -154,6 +154,8 @@ namespace MaloProduction.Tween.Core
 
         public static void Despawn(Tween tween)
         {
+            if (tween == null) return;
+
             if (tween.onKill != null)
             {
                 Tween.OnTweenCallback(tween.onKill);

@@ -1,6 +1,5 @@
 namespace OMG.Battle.Data
 {
-    using OMG.Unit;
     using OMG.Unit.Monster;
     using OMG.Unit.Player;
     using System.Linq;
@@ -11,9 +10,6 @@ namespace OMG.Battle.Data
     {
         [SerializeField] private Player oropo;
         [SerializeField] private Monster[] monsters = new Monster[3];
-
-        public Player OropoData { get => oropo; }
-        public Monster[] MonstersData { get => monsters; }
 
         public void Duplicate()
         {
@@ -28,27 +24,27 @@ namespace OMG.Battle.Data
             }
         }
 
-        public IUnit GetOropo()
+        public Player GetOropo()
         {
-            return oropo as IUnit;
+            return oropo;
         }
-        public IUnit GetFirstMonster()
+        public Monster GetFirstMonster()
         {
-            return monsters[0] as IUnit;
+            return monsters[0];
         }
-        public IUnit GetLastMonster()
+        public Monster GetLastMonster()
         {
             for (int i = monsters.Length - 1; i > 0; i--)
             {
                 if (monsters[i] != null)
                 {
-                    return monsters[i] as IUnit;
+                    return monsters[i];
                 }
             }
 
             return null;
         }
-        public IUnit[] GetAllMonsters()
+        public Monster[] GetAllMonsters()
         {
             return monsters.Where(x => x != null).ToArray();
         }

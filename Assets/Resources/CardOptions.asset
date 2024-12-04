@@ -15,16 +15,16 @@ MonoBehaviour:
   cardsTypeTexture:
   - type: 0
     background: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
-    iconCard: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    iconCard: {fileID: 21300000, guid: c06132a5bc006d348881e200ee9de71f, type: 3}
   - type: 1
     background: {fileID: 1397210691, guid: d6e0229eebccb144ba09ebb047d54212, type: 3}
-    iconCard: {fileID: 0}
+    iconCard: {fileID: 21300000, guid: bf7fd971c22658c4bac6a2eccfdc14a2, type: 3}
   - type: 2
     background: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
-    iconCard: {fileID: 0}
+    iconCard: {fileID: 21300000, guid: 90253d2a213d2544c8b9aa27b5b3351a, type: 3}
   - type: 3
     background: {fileID: -1963147090, guid: f24f988aac215a243bcb4e190e63f55e, type: 3}
-    iconCard: {fileID: 0}
+    iconCard: {fileID: 21300000, guid: d0df08988c7562f4e97736a6a96c96ee, type: 3}
   - type: 4
     background: {fileID: -1864520909, guid: 052526c09a3fab242a2b8610f4dcfc22, type: 3}
     iconCard: {fileID: 0}

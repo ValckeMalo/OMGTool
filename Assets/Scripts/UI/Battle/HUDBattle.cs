@@ -1,6 +1,7 @@
 namespace OMG.Battle.UI
 {
     using MaloProduction.CustomAttributes;
+    using MaloProduction.Tween.Core;
     using MaloProduction.Tween.DoTween.Module;
 
     using OMG.Unit;
@@ -59,6 +60,7 @@ namespace OMG.Battle.UI
         {
             [SerializeField] private Slider wakfuSlider;
             [SerializeField] private Slider previewWakfuSlider;
+            private TweenerCore<float, float> tweenSlider;
 
             [SerializeField] private Sprite[] padLockSprite = new Sprite[2];
             [SerializeField] private RectTransform padLocksContainer;
@@ -74,10 +76,21 @@ namespace OMG.Battle.UI
 
             public void UpdatePreviewBar(int previewWakfu)
             {
-                previewWakfuSlider.DoValue(previewWakfu, 0.2f);
+                if (tweenSlider != null)
+                {
+                    TweenManager.Despawn(tweenSlider);
+                }
+
+                print(previewWakfu);
+                tweenSlider = previewWakfuSlider.DoValue(previewWakfu, 0.2f);
             }
             public void ResetPreviewBar()
             {
+                if (tweenSlider != null)
+                {
+                    TweenManager.Despawn(tweenSlider);
+                }
+
                 previewWakfuSlider.value = 0f;
             }
             public void ResetGauges()

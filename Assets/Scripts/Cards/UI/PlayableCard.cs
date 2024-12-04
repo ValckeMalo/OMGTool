@@ -3,7 +3,7 @@ namespace OMG.Card.UI
     using MaloProduction.CustomAttributes;
     using MaloProduction.Tween.DoTween.Module;
     using OMG.Battle;
-    using OMG.Battle.UI;
+    using MaloProduction.Tween.Core;
 
     using System;
     using UnityEngine;
@@ -19,29 +19,16 @@ namespace OMG.Card.UI
         private RectTransform rect;
         private const float ratioScale = 1.5f;
         private static Vector2 size;
+        private TweenerCore<Vector2, Vector2> tweenScale;
 
         public void DisableCard() => disableImage.enabled = true;
         public void EnableCard() => disableImage.enabled = false;
         public void HideCard() => gameObject.SetActive(false);
         public void ShowCard() => gameObject.SetActive(true);
 
-        public bool RegisterOnClick(Action action)
-        {
-            if (cardButton == null)
-            {
-                Debug.LogError($"The button of the card are not assigned");
-                return false;
-            }
-
-            //cardButton.onClick.AddListener(() => action());
-
-            return true;
-        }
-
         public int WakfuCost { get => data.wakfuCost; }
         public bool IsDisable { get => disableImage.enabled; }
         public CardData Data { get => data; }
-        public CardType Type { get => data.cardType; }
 
         public override void Init(CardData cardData, CardOptions options)
         {
@@ -54,36 +41,28 @@ namespace OMG.Card.UI
             size = rect.sizeDelta;
         }
 
-        /// <summary>
-        /// Return if the card has to be removed from the deck
-        /// </summary>
-        /// <returns></returns>
-        public bool Use()
-        {
-            //TODO rework of the function
-            bool returnValue = false;
-            if (data.cardType == CardType.Divine || data.cardType == CardType.Curse)
-            {
-                returnValue = true;
-            }
-
-            Destroy(gameObject);
-            return returnValue;
-        }
-
         public void Destroy()
         {
+            TweenManager.Despawn(tweenScale);
             Destroy(gameObject);
         }
 
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
         {
-            rect.DoScale(size * ratioScale, 0.1f);
+            if (tweenScale != null)
+            {
+                TweenManager.Despawn(tweenScale);
+            }
+            tweenScale = rect.DoScale(size * ratioScale, 0.1f);
             BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
+            if (tweenScale != null)
+            {
+                TweenManager.Despawn(tweenScale);
+            }
             rect.DoScale(size, 0.1f);
             BattleSystem.Instance.GameBoard.ResetPreviewBar();
         }

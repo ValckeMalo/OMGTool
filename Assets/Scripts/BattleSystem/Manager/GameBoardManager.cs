@@ -4,7 +4,7 @@ namespace OMG.Battle.Manager
     using OMG.Card;
     using OMG.Card.Data;
     using OMG.Card.UI;
-    using System;
+
     using UnityEngine;
 
     public class GameBoardManager

@@ -9,7 +9,6 @@ namespace OMG.Battle.Manager
         private int wakfu;
         private int wakfuUnlock;
         private bool hasToRemovePadlock;
-
         private const int MaxWakfu = 6;
 
         public int WakfuRemain => wakfuUnlock - wakfu;

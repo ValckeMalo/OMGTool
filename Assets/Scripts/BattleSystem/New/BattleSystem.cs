@@ -62,16 +62,16 @@ namespace OMG.Battle
             //duplicate the data because it's scriptable objects
             battleUnits = Instantiate(battleUnits);
             battleUnits.Duplicate();
-            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleUnits.OropoData;
+            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleUnits.GetOropo();
 
             //HUD
-            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[0].position, battleUnits.OropoData);
-            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[1].position, battleUnits.MonstersData[0]);
-            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[2].position, battleUnits.MonstersData[1]);
-            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[3].position, battleUnits.MonstersData[2]);
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[0].position, battleUnits.GetOropo());
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[1].position, battleUnits.GetAllMonsters()[0]);
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[2].position, battleUnits.GetAllMonsters()[1]);
+            HUDBattle.UnitHUD.SpawnUnitHUD(unitHUDPos[3].position, battleUnits.GetAllMonsters()[2]);
 
-            gameBoard = new GameBoardManager(battleUnits.OropoData.Deck);
-            monstersBattleManager = new MonstersBattleManager(battleUnits.MonstersData, blackboardAsset.Blackboard);
+            gameBoard = new GameBoardManager(battleUnits.GetOropo().Deck);
+            monstersBattleManager = new MonstersBattleManager(battleUnits.GetAllMonsters(), blackboardAsset.Blackboard);
 
             if (GameBoard == null || MonstersBattleManager == null)
             {
@@ -98,7 +98,7 @@ namespace OMG.Battle
                     break;
 
                 case BattleState.Monsters:
-                    MonstersBattleManager.UpdateMonstersTurn(battleUnits.MonstersData, battleUnits.GetOropo(), blackboardAsset.Blackboard);
+                    MonstersBattleManager.UpdateMonstersTurn(battleUnits.GetAllMonsters(), battleUnits.GetOropo(), blackboardAsset.Blackboard);
                     SwitchBattleSate(BattleState.Oropo);
                     break;
 

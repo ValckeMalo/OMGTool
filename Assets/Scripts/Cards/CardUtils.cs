@@ -13,9 +13,16 @@ namespace OMG.Card
     {
         public static bool ProcessCard(CardData card, bool playedFirst)
         {
+            if (card == null)
+                return false;
+
+            if (card.needSacrifice && card.cardType == CardType.Boost)
+                return false;
+
             BattleData battleData = BattleSystem.Instance.BattleData;
 
             IUnit[] unitsTarget = GetUnitsTarget(card.target, battleData);
+
             ProcessCardType(card.cardType, card.cardValue, unitsTarget);
             ProcessCardSpells(battleData.GetOropo(), battleData.GetAllMonsters(), unitsTarget, card.spells, playedFirst);
 
@@ -51,7 +58,13 @@ namespace OMG.Card
                     return;
 
                 case CardType.Neutral:
-                    Debug.LogWarning("Neutral");
+                    foreach (IUnit unit in units)
+                    {
+                        if (unit != null)
+                        {
+                            BattleSystem.Instance.GameBoard.SpawnCards(cardValue);
+                        }
+                    }
                     return;
 
                 case CardType.Divine:

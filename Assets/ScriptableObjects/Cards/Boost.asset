@@ -10,16 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
-  m_Name: Neutral
+  m_Name: Boost
   m_EditorClassIdentifier: 
-  cardType: 3
+  cardType: 2
   target: 0
-  spells:
-  - isInitiative: 0
-    spellType: 6
-    amount: 1
+  spells: []
   needSacrifice: 0
-  wakfuCost: -1
-  cardValue: 1
-  cardName: Neutral
-  iconCard: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
+  wakfuCost: 1
+  cardValue: 15
+  cardName: Boost
+  iconCard: {fileID: 1151999357, guid: 5cacfb1cc77aeec499c0ddb668baadf4, type: 3}
