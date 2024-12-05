@@ -742,7 +742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1041,11 +1041,11 @@ MonoBehaviour:
     type: 3}
   ratioCard: 0.6
   shaderCards:
-  - cardType: 5
-    shaderMaterial: {fileID: 2100000, guid: 1d5030569a15e3b4ea479f35a7f67a66, type: 2}
-  - cardType: 4
-    shaderMaterial: {fileID: 2100000, guid: 3950fc3d7a43cd743b15feb470f71aff, type: 2}
   - cardType: 6
+    shaderMaterial: {fileID: 2100000, guid: 1d5030569a15e3b4ea479f35a7f67a66, type: 2}
+  - cardType: 5
+    shaderMaterial: {fileID: 2100000, guid: 3950fc3d7a43cd743b15feb470f71aff, type: 2}
+  - cardType: 7
     shaderMaterial: {fileID: 2100000, guid: ee49d31d28c969a49955b3558029d80f, type: 2}
 --- !u!1 &3796426918674266833
 GameObject:
@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1385,6 +1385,11 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e35bcafc114f5f74eb39c117a186ce40, type: 3}
     - {fileID: 21300000, guid: e35bcafc114f5f74eb39c117a186ce40, type: 3}
     padLocksContainer: {fileID: 1450051935652026952}
+  unitsHUD:
+    parent: {fileID: 1564561466083768824}
+    canvasTransform: {fileID: 4548637361485100688}
+    prefabUnitHUD: {fileID: 2084774095859987433, guid: 2256196093fff3e458a4813d6e575103,
+      type: 3}
 --- !u!223 &7002539372881010682
 Canvas:
   m_ObjectHideFlags: 0
@@ -1619,7 +1624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

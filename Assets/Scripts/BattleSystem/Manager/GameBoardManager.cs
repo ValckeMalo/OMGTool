@@ -82,40 +82,8 @@ namespace OMG.Battle.Manager
             cardBoardManager.RemoveCardOnBoard(playableCard);
         }
 
+        //USE CARD
         public void UseCard(PlayableCard playableCard)
-        {
-            if (playableCard.IsDisable)
-            {
-                Debug.LogError($"A card that is disable tried to be played : {playableCard.name}.");
-                return;
-            }
-
-            /*FINISHERS*/
-            //TODO test if the card is a finisher and if it pass the turn and destroy the other finishers
-            /*\FINISHERS*/
-
-            CardData card = playableCard.CardData;
-            //process the card and if can be do the rest
-            //the card can possibly need to select other card the test is here for that
-            if (wakfuManager.CanAddWakfu(card.wakfuCost) && CardUtils.ProcessCard(playableCard, true))
-            {
-                wakfuManager.AddWakfu(card.wakfuCost);
-                cardBoardManager.RemoveCardOnBoard(playableCard);
-                cardDeckManager.ReintroduceCard(card);
-                cardBoardManager.DestroyPlayableCard(playableCard);
-                cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
-
-                /*FINISHERS*/
-                //TODO try if the condition are good to spawn the finishers
-                /*\FINISHERS*/
-
-                return;
-            }
-
-            //just to help for debug
-            Debug.LogWarning($"Card canno't be process");
-        }
-        public void UseCardNew(PlayableCard playableCard)
         {
             if (playableCard == null || playableCard.CardData == null || (firstPlayableCard != null && firstPlayableCard == playableCard)) return; //Check
 
@@ -135,7 +103,7 @@ namespace OMG.Battle.Manager
                 }
                 else
                 {
-                    CardUtils.ProcessCard2(playableCard.CardData, false);
+                    CardUtils.ProcessCard(playableCard.CardData, false);
                     ProcessCard(playableCard);
                 }
             }
@@ -169,7 +137,7 @@ namespace OMG.Battle.Manager
                 DestroyCardOnBoard(secondPlayableCard);
                 cardDeckManager.ReintroduceCard(secondCard);
 
-                CardUtils.ProcessOnlyCardSpells(firstPlayableCard.CardData, false);
+                CardUtils.ProcessCard(firstPlayableCard.CardData, false);
 
                 ProcessCard(firstPlayableCard);
             }
@@ -177,8 +145,8 @@ namespace OMG.Battle.Manager
             {
                 //TODO BOOST
             }
-
         }
+        //
         #endregion
 
         #region Wakfu

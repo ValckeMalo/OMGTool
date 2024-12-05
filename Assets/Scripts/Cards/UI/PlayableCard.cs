@@ -33,7 +33,7 @@ namespace OMG.Card.UI
         {
             base.Init(cardData, options);
 
-            cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCardNew(this));
+            cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCard(this));
 
             data = cardData;
             rect = GetComponent<RectTransform>();
