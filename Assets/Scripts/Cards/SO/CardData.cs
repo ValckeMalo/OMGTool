@@ -7,15 +7,21 @@ public class CardData : ScriptableObject
     [System.Serializable]
     public class Spell
     {
-        public bool isInitiative;
-        public Spells spellType;
-        public int amount;
+        public bool isInitiative = false;
+        public bool showDescOnCard = true;
+
+        public Spells spellType = Spells.Poison;
+        public int amount = 0;
+
+        public CardData cardToSpawn = null;
     }
 
     public CardType cardType;
     public Target target;
 
     public List<Spell> spells = new List<Spell>();
+
+    public bool isBoostable = true;
     public bool needSacrifice = false;
 
     public int wakfuCost;
@@ -64,7 +70,8 @@ public enum CardType
 {
     Attack,
     Defense,
-    Boost,
+    BoostSingle,
+    BoostMultiple,
     Neutral,
     Divine,
     Curse,

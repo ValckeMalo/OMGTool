@@ -26,7 +26,7 @@ namespace OMG.Battle.Manager
                 return null;
 
             cardsOnBoard.Remove(playableCard);
-            return playableCard.Data;
+            return playableCard.CardData;
         }
 
         public void HideAllCards()

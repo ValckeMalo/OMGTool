@@ -68,7 +68,7 @@ namespace OMG.Tools.PreviewCard
                 Rect topRect = TopCard(cardData.cardValue, (cardTexture.iconCard != null) ? cardTexture.iconCard.texture : null,
                                        cardData.wakfuCost, (settings.wakfu != null) ? settings.wakfu.texture : null, backgroundRect);
                 Rect centerRect = CenterCard((cardData.iconCard != null) ? cardData.iconCard.texture : null, topRect, backgroundRect);
-                BottomCard(cardData.cardName, cardData.target ,cardData.spells, centerRect, backgroundRect);
+                BottomCard(cardData, centerRect, backgroundRect);
 
                 GUI.contentColor = Color.white;
             }
@@ -171,42 +171,63 @@ namespace OMG.Tools.PreviewCard
 
             return iconCardRect;
         }
-        private static void BottomCard(string cardName, Target target, List<CardData.Spell> spells, Rect centerRect, Rect backgroundRect)
+        private static void BottomCard(CardData card, Rect centerRect, Rect backgroundRect)
         {
             Vector2 bottomSize = new Vector2(backgroundRect.width, backgroundRect.height * bottompPercent);
             Vector2 bottomPosition = new Vector2(backgroundRect.x, centerRect.y + centerRect.height);
             Rect bottomRect = new Rect(bottomPosition, bottomSize);
 
             //TITLE
-            GUIContent titleContent = new GUIContent(cardName);
+            GUIContent titleContent = new GUIContent(card.cardName);
             Vector2 titleSize = new Vector2(bottomSize.x, TitleStyle.CalcHeight(titleContent, bottomSize.x));
             Rect titleRect = new Rect(bottomPosition, titleSize);
             GUI.Label(titleRect, titleContent, TitleStyle);
 
             //TARGET
-            GUIContent targetContent = new GUIContent("Target : " + TargetStringProvider.TargetDescriptions[(int)target]);
+            GUIContent targetContent;
+            if (card.cardType == CardType.BoostSingle)
+            {
+                targetContent = new GUIContent("Boost a Card");
+            }
+            else if (card.cardType == CardType.BoostMultiple)
+            {
+                targetContent = new GUIContent("Boost all Cards");
+            }
+            else
+            {
+                targetContent = new GUIContent("Target : " + TargetStringProvider.TargetDescriptions[(int)card.target]);
+            }
+
             Vector2 targetSize = new Vector2(bottomSize.x, TargetStyle.CalcHeight(titleContent, bottomSize.x));
             Vector2 targetPosition = new Vector2(titleRect.x, titleRect.y + titleRect.height);
             Rect targetRect = new Rect(targetPosition, targetSize);
             GUI.Label(targetRect, targetContent, TargetStyle);
 
-            Spells(spells, bottomRect, titleRect);
+            Rect spellsRect = Spells(card.spells, targetRect);
+
+            if (card.needSacrifice)
+            {
+                Rect startRect = (spellsRect == Rect.zero) ? targetRect : spellsRect;
+
+                GUIContent sacrificeContent = new GUIContent("SACRIFICE");
+                Vector2 sacrificeSize = new Vector2(bottomSize.x, TargetStyle.CalcHeight(sacrificeContent, bottomSize.x));
+                Vector2 sacrificePosition = new Vector2(startRect.x, startRect.y + startRect.height);
+                Rect sacrificeRect = new Rect(sacrificePosition, sacrificeSize);
+                GUI.Label(sacrificeRect, sacrificeContent, TargetStyle);
+            }
         }
-        private static void Spells(List<CardData.Spell> spells, Rect bottomRect, Rect titleRect)
+        private static Rect Spells(List<CardData.Spell> spells, Rect targetRect)
         {
             if (spells != null)
             {
                 int spellsCount = spells.Count;
                 if (spellsCount > 0)
                 {
-                    Vector2 spellsSize = new Vector2(bottomRect.width, bottomRect.height - titleRect.height);
-                    Vector2 spellsPosition = new Vector2(bottomRect.x, bottomRect.y + titleRect.height);
-                    Rect spellsRect = new Rect(spellsPosition, spellsSize);
                     string spellsText = string.Empty;
 
                     foreach (CardData.Spell spellBonus in spells)
                     {
-                        if (spellBonus != null)
+                        if (spellBonus != null && spellBonus.showDescOnCard)
                         {
                             if (spellBonus.isInitiative)
                             {
@@ -226,9 +247,19 @@ namespace OMG.Tools.PreviewCard
                     }
 
                     GUIContent spellContent = new GUIContent(spellsText);
+                    float heightSpells = (spellsText == string.Empty) ? 0f : SpellsStyle.CalcHeight(spellContent, targetRect.width);
+
+                    Vector2 spellsSize = new Vector2(targetRect.width, heightSpells);
+                    Vector2 spellsPosition = new Vector2(targetRect.x, targetRect.y + targetRect.height);
+                    Rect spellsRect = new Rect(spellsPosition, spellsSize);
+
                     GUI.Label(spellsRect, spellContent, SpellsStyle);
+
+                    return spellsRect;
                 }
             }
+
+            return Rect.zero;
         }
 
         private static void LogError(string message, bool isShow = false)

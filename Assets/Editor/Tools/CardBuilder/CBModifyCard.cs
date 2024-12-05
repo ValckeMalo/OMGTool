@@ -15,6 +15,8 @@ namespace MaloProduction
         private SerializedProperty propCardType;
         private SerializedProperty propCardTarget;
         private SerializedProperty propCardSpells;
+        private SerializedProperty propNeedSacrifice;
+        private SerializedProperty propIsBoostable;
 
         private int indexCard;
         private bool popUpDelete = false;
@@ -27,7 +29,6 @@ namespace MaloProduction
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
                 CardDataField();
-                //PreviewCard(currentCard.targetObject as CardData, 500);
                 PreviewCardEditor.PreviewCard(currentCard.targetObject as CardData, cardSettings, 500f);
             }
 
@@ -131,10 +132,25 @@ namespace MaloProduction
                     EditorGUILayout.PropertyField(propCardType);
                 }
 
-                //TARGET
+                //IS BOOSTABLE
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
-                    EditorGUILayout.PropertyField(propCardTarget);
+                    EditorGUILayout.PropertyField(propIsBoostable);
+                }
+
+                //NEED SACRIFICE
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    EditorGUILayout.PropertyField(propNeedSacrifice);
+                }
+
+                //TARGET
+                if (propCardType.enumValueIndex != (int)CardType.BoostMultiple && propCardType.enumValueIndex != (int)CardType.BoostSingle)
+                {
+                    using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                    {
+                        EditorGUILayout.PropertyField(propCardTarget);
+                    }
                 }
 
                 //SPELLS LIST
@@ -175,6 +191,8 @@ namespace MaloProduction
             propCardType = currentCard.FindProperty("cardType");
             propCardTarget = currentCard.FindProperty("target");
             propCardSpells = currentCard.FindProperty("spells");
+            propIsBoostable = currentCard.FindProperty("isBoostable");
+            propNeedSacrifice = currentCard.FindProperty("needSacrifice");
 
             this.indexCard = indexCard;
         }

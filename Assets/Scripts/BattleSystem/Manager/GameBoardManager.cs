@@ -4,7 +4,6 @@ namespace OMG.Battle.Manager
     using OMG.Card;
     using OMG.Card.Data;
     using OMG.Card.UI;
-    using System.Collections;
     using UnityEngine;
 
     public class GameBoardManager
@@ -12,6 +11,9 @@ namespace OMG.Battle.Manager
         private CardBoardManager cardBoardManager;
         private CardDeckManager cardDeckManager;
         private WakfuManager wakfuManager;
+
+        private PlayableCard firstPlayableCard = null;
+
 
         public GameBoardManager(CardDeck deck)
         {
@@ -48,16 +50,16 @@ namespace OMG.Battle.Manager
                 SpawnACardInHand();
             }
         }
-        public void SpawnSpecificCardsInHand(int nbCardToSpawn,CardData card)
+        public void SpawnSpecificCardsInHand(int nbCardToSpawn, CardData card)
         {
             for (int i = 0; i < nbCardToSpawn; i++)
             {
                 SpawnSpecificCardInHand(card);
             }
         }
-        public void AddSpecificCardsInDeck(int nbCardToAdd,CardData card)
+        public void AddSpecificCardsInDeck(int nbCardToAdd, CardData card)
         {
-            for (int i = 0;i < nbCardToAdd;i++)
+            for (int i = 0; i < nbCardToAdd; i++)
             {
                 //TODO
             }
@@ -92,7 +94,7 @@ namespace OMG.Battle.Manager
             //TODO test if the card is a finisher and if it pass the turn and destroy the other finishers
             /*\FINISHERS*/
 
-            CardData card = playableCard.Data;
+            CardData card = playableCard.CardData;
             //process the card and if can be do the rest
             //the card can possibly need to select other card the test is here for that
             if (wakfuManager.CanAddWakfu(card.wakfuCost) && CardUtils.ProcessCard(playableCard, true))
@@ -113,10 +115,70 @@ namespace OMG.Battle.Manager
             //just to help for debug
             Debug.LogWarning($"Card canno't be process");
         }
+        public void UseCardNew(PlayableCard playableCard)
+        {
+            if (playableCard == null || playableCard.CardData == null || (firstPlayableCard != null && firstPlayableCard == playableCard)) return; //Check
 
-        #region Boost & Sacrifice
+            if (firstPlayableCard != null)
+            {
+                ProcessCardSecondCard(playableCard);
+                firstPlayableCard = null;
+                return;
+            }
 
-        #endregion
+            if (wakfuManager.CanAddWakfu(playableCard.CardData.wakfuCost)) //If there are enough wakfu available
+            {
+                if (DoesCardNeedAnotherCard(playableCard.CardData)) //Search if the card does need another one
+                {
+                    firstPlayableCard = playableCard;
+                    return;
+                }
+                else
+                {
+                    CardUtils.ProcessCard2(playableCard.CardData, false);
+                    ProcessCard(playableCard);
+                }
+            }
+        }
+        private bool DoesCardNeedAnotherCard(CardData card)
+        {
+            return (card.needSacrifice || card.cardType == CardType.BoostSingle);
+        }
+        private void ProcessCard(PlayableCard playableCard)
+        {
+            wakfuManager.AddWakfu(playableCard.CardData.wakfuCost);
+
+            DestroyCardOnBoard(playableCard);
+
+            //TODO IS A TEMP CARD
+            cardDeckManager.ReintroduceCard(playableCard.CardData);
+
+            cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
+        }
+        private void DestroyCardOnBoard(PlayableCard playableCard)
+        {
+            cardBoardManager.RemoveCardOnBoard(playableCard);
+            cardBoardManager.DestroyPlayableCard(playableCard);
+        }
+        private void ProcessCardSecondCard(PlayableCard secondPlayableCard)
+        {
+            CardData secondCard = secondPlayableCard.CardData;
+
+            if (firstPlayableCard.CardData.needSacrifice)
+            {
+                DestroyCardOnBoard(secondPlayableCard);
+                cardDeckManager.ReintroduceCard(secondCard);
+
+                CardUtils.ProcessOnlyCardSpells(firstPlayableCard.CardData, false);
+
+                ProcessCard(firstPlayableCard);
+            }
+            else if (firstPlayableCard.CardData.cardType == CardType.BoostSingle)
+            {
+                //TODO BOOST
+            }
+
+        }
         #endregion
 
         #region Wakfu

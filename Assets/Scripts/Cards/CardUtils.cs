@@ -11,6 +11,7 @@ namespace OMG.Card
     using System.Collections.Generic;
     using UnityEngine;
     using OMG.Card.UI;
+    using System;
 
     public static class CardUtils
     {
@@ -26,7 +27,7 @@ namespace OMG.Card
 
         public static bool ProcessCard(PlayableCard playableCard, bool playedFirst)
         {
-            CardData card = playableCard.Data;
+            CardData card = playableCard.CardData;
 
             if (!UnitTest(card)) return false; //Failed Unit Test
 
@@ -69,7 +70,7 @@ namespace OMG.Card
                     }
                     return;
 
-                case CardType.Boost:
+                case CardType.BoostMultiple:
                     Debug.LogWarning("Boost");
                     return;
 
@@ -187,9 +188,9 @@ namespace OMG.Card
         private static bool ProcessSecondCard(bool playedFirst)
         {
             if (firstCard == null) return false;
-            CardData firstCardData = firstCard.Data;
+            CardData firstCardData = firstCard.CardData;
 
-            if (firstCardData.cardType == CardType.Boost)
+            if (firstCardData.cardType == CardType.BoostMultiple)
             {
 
             }
@@ -212,7 +213,7 @@ namespace OMG.Card
         }
         private static bool IsNeedSecondCard(CardData card)
         {
-            return card.needSacrifice || card.cardType == CardType.Boost;
+            return card.needSacrifice || card.cardType == CardType.BoostMultiple;
         }
 
         #region Unit Test
@@ -261,6 +262,142 @@ namespace OMG.Card
             }
 
             return true;
+        }
+        #endregion
+
+
+        #region NEW PORCESS
+        public static void ProcessCard2(CardData card, bool playedFirst)
+        {
+            if (!UnitTest(card)) return; //Failed Unit Test
+
+            IUnit[] targets = GetTargets2(card.target);
+            ProcessCardType2(card.cardType, card.cardValue, targets);
+            ProcessCardSpells2(card.spells, playedFirst, targets);
+        }
+        public static void ProcessOnlyCardSpells(CardData card, bool playedFirst)
+        {
+            if (!UnitTest(card)) return; //Failed Unit Test
+
+            IUnit[] targets = GetTargets2(card.target);
+            ProcessCardSpells2(card.spells, playedFirst, targets);
+        }
+
+
+        private static IUnit[] GetTargets2(Target target)
+        {
+            IUnit[] targets = new IUnit[1] { Oropo };
+            switch (target)
+            {
+                case Target.FirstMonster:
+                    return new IUnit[1] { FirstMonster };
+
+                case Target.LastMonster:
+                    return new IUnit[1] { LastMonster };
+
+                case Target.AllMonsters:
+                    return Monsters;
+
+                case Target.Oropo:
+                    return new IUnit[1] { Oropo };
+
+                default:
+                    Debug.LogError("PB");
+                    return null;
+            }
+        }
+
+        private static void ProcessCardType2(CardType type, int cardValue, IUnit[] targets)
+        {
+            switch (type)
+            {
+                case CardType.Attack:
+                    foreach (IUnit unit in targets)
+                    {
+                        unit.Damage(cardValue);
+                    }
+                    break;
+
+                case CardType.Defense:
+                    foreach (IUnit unit in targets)
+                    {
+                        unit.AddArmor(cardValue);
+                    }
+                    break;
+
+                case CardType.BoostSingle:
+                    Debug.LogError("PB");
+                    break;
+
+                case CardType.BoostMultiple:
+                    Debug.LogError("PB");
+                    break;
+
+                case CardType.Neutral:
+                    BattleSystem.Instance.GameBoard.SpawnCardsInHands(cardValue);
+                    break;
+
+                case CardType.Divine:
+                    Debug.LogError("PB");
+                    break;
+
+                case CardType.Curse:
+                    Debug.LogError("PB");
+                    break;
+
+                case CardType.Finisher:
+                    Debug.LogError("PB");
+                    break;
+
+                default:
+                    Debug.LogError("PB");
+                    break;
+            }
+        }
+        private static void ProcessCardSpells2(List<Spell> spells, bool playedFirst, IUnit[] targets)
+        {
+            foreach (Spell spell in spells)
+            {
+                if (!playedFirst && spell.isInitiative) continue;
+
+                ProcessACardSpell2(spell, targets);
+            }
+        }
+        private static void ProcessACardSpell2(Spell spell, IUnit[] targets)
+        {
+            switch (spell.spellType)
+            {
+                case Spells.Poison:
+                    foreach (IUnit unit in targets)
+                    {
+                        unit.AddStatus(StatusType.Poison, spell.amount);
+                    }
+                    return;
+
+                case Spells.Plaie:
+                    Oropo.AddStatus(StatusType.Plaie, spell.amount);
+                    return;
+
+                case Spells.Shield:
+                    Oropo.AddArmor(spell.amount);
+                    return;
+
+                case Spells.Tenacite:
+                    Oropo.AddStatus(StatusType.Tenacite, spell.amount);
+                    return;
+
+                case Spells.Bousculade:
+                    Debug.LogError("Bousculade pas implémenter");
+                    return;
+
+                case Spells.Eveil:
+                    Oropo.AddStatus(StatusType.Eveil, spell.amount);
+                    break;
+
+                default:
+                    Debug.LogError($"Spell is not recognize or not implemented {spell.spellType}.");
+                    break;
+            }
         }
         #endregion
     }

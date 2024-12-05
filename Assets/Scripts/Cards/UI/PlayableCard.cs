@@ -5,7 +5,6 @@ namespace OMG.Card.UI
     using OMG.Battle;
     using MaloProduction.Tween.Core;
 
-    using System;
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
@@ -28,13 +27,13 @@ namespace OMG.Card.UI
 
         public int WakfuCost { get => data.wakfuCost; }
         public bool IsDisable { get => disableImage.enabled; }
-        public CardData Data { get => data; }
+        public CardData CardData { get => data; }
 
         public override void Init(CardData cardData, CardOptions options)
         {
             base.Init(cardData, options);
 
-            cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCard(this));
+            cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCardNew(this));
 
             data = cardData;
             rect = GetComponent<RectTransform>();

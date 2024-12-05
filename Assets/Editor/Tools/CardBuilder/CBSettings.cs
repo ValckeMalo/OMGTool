@@ -81,7 +81,7 @@ namespace MaloProduction
             cardsType = settings.FindProperty("cardsTypeTexture");
 
             ReloadSettingsLine();
-            ReloadSettingsWakfu();
+            //ReloadSettingsWakfu();
         }
         private void ReloadSettingsLine()
         {
@@ -95,8 +95,6 @@ namespace MaloProduction
 
                 for (int j = 0; j < nbSectionCardsType; j++)
                 {
-                    if (j == 1 && i == 3)
-                        return;
 
                     SerializedProperty fieldProp = cardsType.GetArrayElementAtIndex(indexArray);
                     SerializedProperty enumProp = fieldProp.FindPropertyRelative("type");
@@ -104,7 +102,7 @@ namespace MaloProduction
                     linesSettings[i].section[j] = new SettingsSection(enumProp.enumDisplayNames[enumProp.enumValueIndex], new SettingsField[nbFieldCardsType]);
 
                     linesSettings[i].section[j].field[0] = new SettingsField(fieldProp.FindPropertyRelative("background"), "Background");
-                    linesSettings[i].section[j].field[1] = new SettingsField(fieldProp.FindPropertyRelative("iconCard"), "Background");
+                    linesSettings[i].section[j].field[1] = new SettingsField(fieldProp.FindPropertyRelative("iconCard"), "Icon");
 
                     indexArray++;
                 }
@@ -112,8 +110,8 @@ namespace MaloProduction
         }
         private void ReloadSettingsWakfu()
         {
-            linesSettings[3].section[1] = new SettingsSection("Wakfu", new SettingsField[1]);
-            linesSettings[3].section[1].field[0] = new SettingsField(wakfuIcon, "Icon");
+            linesSettings[4].section[0] = new SettingsSection("Wakfu", new SettingsField[1]);
+            linesSettings[4].section[0].field[0] = new SettingsField(wakfuIcon, "Icon");
         }
         #endregion
 
