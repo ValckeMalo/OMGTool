@@ -98,7 +98,8 @@ namespace OMG.Battle.Manager
             {
                 if (DoesCardNeedAnotherCard(playableCard.CardData)) //Search if the card does need another one
                 {
-                    playableCard.SwitchState(CardState.Hover);
+                    playableCard.FixHover(); //Let it in hover mode
+                    cardBoardManager.ToggleSacrificiableCard();
                     firstPlayableCard = playableCard;
                     return;
                 }
@@ -151,9 +152,14 @@ namespace OMG.Battle.Manager
         #endregion
 
         #region Wakfu
-        public void UpdatePreviewGauge(int amount) => wakfuManager.PreviewWakfu(amount);
+        public void UpdatePreviewGauge(int amount)
+        {
+            if (firstPlayableCard != null) return;
+            wakfuManager.PreviewWakfu(amount);
+        }
         public void ResetPreviewBar()
         {
+            if (firstPlayableCard != null) return;
             wakfuManager.ResetPreviewBar();
         }
         #endregion

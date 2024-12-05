@@ -10,7 +10,7 @@ namespace OMG.Battle.Manager
     {
         private List<PlayableCard> cardsOnBoard = new List<PlayableCard>();
         private const int MaxCardOnBoard = 6;
-        public int NbCardToSpawn => Mathf.Max(0,MaxCardOnBoard - cardsOnBoard.Count);
+        public int NbCardToSpawn => Mathf.Max(0, MaxCardOnBoard - cardsOnBoard.Count);
 
         public bool AddCardOnBoard(PlayableCard playableCard)
         {
@@ -50,12 +50,20 @@ namespace OMG.Battle.Manager
             {
                 if (playableCard.WakfuCost <= wakfuRemain)
                 {
-                    playableCard.EnableCard();
+                    playableCard.UsableCard();
                 }
                 else
                 {
-                    playableCard.DisableCard();
+                    playableCard.UnusableCard();
                 }
+            }
+        }
+
+        public void ToggleSacrificiableCard()
+        {
+            foreach (PlayableCard playableCard in cardsOnBoard)
+            {
+                playableCard.UsableCard();
             }
         }
 

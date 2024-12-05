@@ -2,21 +2,12 @@ namespace OMG.Card.UI
 {
     using MaloProduction.CustomAttributes;
     using MaloProduction.Tween.DoTween.Module;
-    using OMG.Battle;
     using MaloProduction.Tween.Core;
+    using OMG.Battle;
 
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
-
-    public enum CardState
-    {
-        Normal,
-        Hover,
-        Unusable,
-        Destroy,
-        Hide,
-    }
 
     public class PlayableCard : UICard, IPointerEnterHandler, IPointerExitHandler
     {
@@ -26,47 +17,49 @@ namespace OMG.Card.UI
 
         private CardData data;
         private RectTransform rect;
+
         private const float ratioScale = 1.5f;
-        private static Vector2 size;
-        private TweenerCore<Vector2, Vector2> tweenScale;
-        private CardState state = CardState.Normal;
+        private static Vector2 BaseSize = Vector2.zero;
 
-        public void DisableCard() => disableImage.enabled = true;
-        public void EnableCard() => disableImage.enabled = false;
-        public void HideCard() => gameObject.SetActive(false);
-        public void ShowCard() => gameObject.SetActive(true);
+        private TweenerCore<Vector2, Vector2> tweenScale = null;
 
-        public void SwitchState(CardState newState)
+        private bool isHoverFixed = false;
+
+        public int WakfuCost => data.wakfuCost;
+        public CardData CardData => data;
+
+        #region Card State
+        public void UnusableCard()
         {
-            state = newState;
-            switch (newState)
-            {
-                case CardState.Normal:
-                    ScaleDown();
-                    break;
-
-                case CardState.Hover:
-                    ScaleUp();
-                    break;
-
-                case CardState.Unusable:
-                    DisableCard();
-                    break;
-
-                case CardState.Destroy:
-                    break;
-
-                case CardState.Hide:
-                    HideCard();
-                    break;
-
-                default:
-                    break;
-            }
+            disableImage.enabled = true;
+            cardButton.enabled = false;
+        }
+        public void UsableCard()
+        {
+            disableImage.enabled = false;
+            cardButton.enabled = true;
         }
 
-        public int WakfuCost { get => data.wakfuCost; }
-        public CardData CardData { get => data; }
+        public void FixHover()
+        {
+            isHoverFixed = true;
+            ScaleUp();
+        }
+        public void UnFixHover()
+        {
+            isHoverFixed = false;
+            ScaleDown();
+        }
+
+        public void HideCard()
+        {
+            gameObject.SetActive(false);
+        }
+        public void ShowCard()
+        {
+            gameObject.SetActive(true);
+        }
+        #endregion
 
         public override void Init(CardData cardData, CardOptions options)
         {
@@ -76,7 +69,7 @@ namespace OMG.Card.UI
 
             data = cardData;
             rect = GetComponent<RectTransform>();
-            size = rect.sizeDelta;
+            BaseSize = rect.sizeDelta;
         }
 
         public void Destroy()
@@ -91,29 +84,27 @@ namespace OMG.Card.UI
             {
                 TweenManager.Despawn(tweenScale);
             }
-            tweenScale = rect.DoScale(size * ratioScale, 0.1f);
+            tweenScale = rect.DoScale(BaseSize * ratioScale, 0.1f);
         }
         private void ScaleDown()
         {
+            if (isHoverFixed) return;
+
             if (tweenScale != null)
             {
                 TweenManager.Despawn(tweenScale);
             }
-            rect.DoScale(size, 0.1f);
+            rect.DoScale(BaseSize, 0.1f);
         }
 
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (state == CardState.Hover) return;
-
             ScaleUp();
             BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);
         }
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (state == CardState.Hover) return;
-
             ScaleDown();
             BattleSystem.Instance.GameBoard.ResetPreviewBar();
         }
