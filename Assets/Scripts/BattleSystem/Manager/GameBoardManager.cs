@@ -98,6 +98,7 @@ namespace OMG.Battle.Manager
             {
                 if (DoesCardNeedAnotherCard(playableCard.CardData)) //Search if the card does need another one
                 {
+                    playableCard.SwitchState(CardState.Hover);
                     firstPlayableCard = playableCard;
                     return;
                 }
@@ -146,7 +147,7 @@ namespace OMG.Battle.Manager
                 //TODO BOOST
             }
         }
-        //
+        /////////////
         #endregion
 
         #region Wakfu

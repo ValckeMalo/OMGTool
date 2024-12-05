@@ -902,12 +902,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1435054809 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1564561466083768824, guid: 1c0675cc3f9bd7c408df7d2991293698,
-    type: 3}
-  m_PrefabInstance: {fileID: 1561921683}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1561921683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -916,19 +910,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2011003612}
     m_Modifications:
-    - target: {fileID: 303522513093525901, guid: 1c0675cc3f9bd7c408df7d2991293698,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 744121966500392354, guid: 1c0675cc3f9bd7c408df7d2991293698,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2874565019922435834, guid: 1c0675cc3f9bd7c408df7d2991293698,
-        type: 3}
-      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4548637361485100688, guid: 1c0675cc3f9bd7c408df7d2991293698,
@@ -1031,11 +1015,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5580126651275771114, guid: 1c0675cc3f9bd7c408df7d2991293698,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5677260025521194276, guid: 1c0675cc3f9bd7c408df7d2991293698,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1066,22 +1045,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
-        type: 3}
-      propertyPath: unitsHUD.parent
-      value: 
-      objectReference: {fileID: 1435054809}
-    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
-        type: 3}
-      propertyPath: unitsHUD.prefabUnitHUD
-      value: 
-      objectReference: {fileID: 2084774095859987433, guid: 2256196093fff3e458a4813d6e575103,
-        type: 3}
-    - target: {fileID: 5919785263254279646, guid: 1c0675cc3f9bd7c408df7d2991293698,
-        type: 3}
-      propertyPath: unitsHUD.canvasTransform
-      value: 
-      objectReference: {fileID: 888008715}
     - target: {fileID: 6981646066731945110, guid: 1c0675cc3f9bd7c408df7d2991293698,
         type: 3}
       propertyPath: m_Name
