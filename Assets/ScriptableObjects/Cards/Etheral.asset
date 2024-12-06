@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
-  m_Name: Boost
+  m_Name: Etheral
   m_EditorClassIdentifier: 
   cardType: 2
   target: 0
   spells: []
+  isBoostable: 0
   needSacrifice: 0
-  wakfuCost: 1
+  isEtheral: 1
+  wakfuCost: -6
   cardValue: 15
-  cardName: Boost
-  iconCard: {fileID: 1151999357, guid: 5cacfb1cc77aeec499c0ddb668baadf4, type: 3}
+  cardName: Etheral
+  iconCard: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
