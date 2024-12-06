@@ -8,7 +8,7 @@ namespace OMG.Card.UI
 {
     public class UICard : MonoBehaviour
     {
-        [Title("UI Card")]  
+        [Title("UI Card")]
         [SerializeField] private Image background;
         [SerializeField] private Image shader;
 
@@ -30,8 +30,12 @@ namespace OMG.Card.UI
         [SerializeField] private Transform spellsText;
         [SerializeField] private GameObject spellsLinePrefab;
 
+        protected CardData cardData;
+
         public virtual void Init(CardData cardData, CardOptions options)
         {
+            this.cardData = cardData;
+
             background.sprite = options.cardsTypeTexture[(int)cardData.cardType].background;
 
             //Header Section
@@ -46,7 +50,14 @@ namespace OMG.Card.UI
 
             //Foot Section
             nameText.text = cardData.cardName;
-            targetText.text = "Target : " + cardData.target.ToString();
+
+            //Target
+            if (cardData.cardType == CardType.BoostSingle)
+                targetText.text = "Boost a Card";
+            else if (cardData.cardType == CardType.BoostMultiple)
+                targetText.text = "Boost all Cards";
+            else
+                targetText.text = "Target : " + cardData.target.ToString();
 
             //Spells
             CreateSpellsText(cardData.spells);
@@ -74,6 +85,17 @@ namespace OMG.Card.UI
                 shader.gameObject.SetActive(true);
                 shader.material = shaderMaterial;
             }
+        }
+
+        protected void UpdateUI(int wakfuValue, int cardValue)
+        {
+            valueText.text = cardValue.ToString();
+            wakfuCostText.text = wakfuValue.ToString();
+
+            if (cardData.cardValue != cardValue)
+                valueText.color = Color.green;
+            if (cardData.wakfuCost != wakfuValue)
+                wakfuCostText.color = Color.green;
         }
     }
 }

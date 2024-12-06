@@ -71,5 +71,14 @@ namespace OMG.Battle.Manager
         {
             playableCard.Destroy();
         }
+
+        public void BoostAllCard(int value)
+        {
+            foreach(PlayableCard card in cardsOnBoard)
+            {
+                if (card == null) return;
+                card.BoostCardValue(value);
+            }
+        }
     }
 }

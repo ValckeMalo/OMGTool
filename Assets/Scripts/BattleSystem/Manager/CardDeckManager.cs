@@ -95,5 +95,10 @@ namespace OMG.Battle.Manager
                 deckShuffle[previousIndex] = card;
             }
         }
+
+        public void AddACardInDrawPile(CardData card)
+        {
+            deckShuffle.Add(card);
+        }
     }
 }

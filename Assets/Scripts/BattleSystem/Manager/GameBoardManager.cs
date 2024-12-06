@@ -4,6 +4,7 @@ namespace OMG.Battle.Manager
     using OMG.Card;
     using OMG.Card.Data;
     using OMG.Card.UI;
+    using System;
     using UnityEngine;
 
     public class GameBoardManager
@@ -38,6 +39,7 @@ namespace OMG.Battle.Manager
         #endregion
 
         #region Cards
+        #region SPAWN CARDS
         public void SpawnCardsInHands(int nbCardToSpawn)
         {
             if (cardDeckManager == null || cardDeckManager.IsDeckEmpty || cardBoardManager == null)
@@ -57,13 +59,14 @@ namespace OMG.Battle.Manager
                 SpawnSpecificCardInHand(card);
             }
         }
-        public void AddSpecificCardsInDeck(int nbCardToAdd, CardData card)
+        public void AddSpecificCardsInDrawPile(int nbCardToAdd, CardData card)
         {
             for (int i = 0; i < nbCardToAdd; i++)
             {
-                //TODO
+                AddCardInDrawPile(card);
             }
         }
+
         private void SpawnACardInHand()
         {
             CardData cardToSpawn = cardDeckManager.GetNextCard();
@@ -75,14 +78,13 @@ namespace OMG.Battle.Manager
             PlayableCard playableCard = CardSpawner.OnSpawnCard?.Invoke(card);
             cardBoardManager.AddCardOnBoard(playableCard);
         }
-        public void RemoveCardOnBoard(PlayableCard playableCard)
+        private void AddCardInDrawPile(CardData card)
         {
-            if (playableCard == null) return;
-
-            cardBoardManager.RemoveCardOnBoard(playableCard);
+            cardDeckManager.AddACardInDrawPile(card);
         }
+        #endregion
 
-        //USE CARD
+        #region USE CARD
         public void UseCard(PlayableCard playableCard)
         {
             if (playableCard == null || playableCard.CardData == null || (firstPlayableCard != null && firstPlayableCard == playableCard)) return; //Check
@@ -170,7 +172,11 @@ namespace OMG.Battle.Manager
             cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
             wakfuManager.ResetPreviewBar();
         }
-        /////////////
+        public void BoostAllCard(int value)
+        {
+            cardBoardManager.BoostAllCard(value); ;
+        }
+        #endregion
         #endregion
 
         #region Wakfu

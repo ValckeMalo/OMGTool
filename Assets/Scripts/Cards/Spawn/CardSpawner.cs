@@ -1,9 +1,8 @@
-using MaloProduction.CustomAttributes;
-using System.Linq;
-using UnityEngine;
-
 namespace OMG.Card.UI
 {
+    using System.Linq;
+    using UnityEngine;
+
     public class CardSpawner : MonoBehaviour
     {
         #region Shader Class

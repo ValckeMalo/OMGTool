@@ -18,19 +18,18 @@ namespace OMG.Card.UI
         private int boostValue = 0;
         private int wakfuBoost = 0;
 
-        private CardData data;
         private RectTransform rect;
 
-        private const float ratioScale = 1.5f;
+        [SerializeField, Range(0.00f, 2.00f)] private float ratioScale = 1.5f;
         private static Vector2 BaseSize = Vector2.zero;
 
         private TweenerCore<Vector2, Vector2> tweenScale = null;
 
         private bool isHoverFixed = false;
 
-        public int WakfuCost => data.wakfuCost + wakfuBoost;
-        public int CardValue => data.cardValue + boostValue;
-        public CardData CardData => data;
+        public int WakfuCost => cardData.wakfuCost + wakfuBoost;
+        public int CardValue => cardData.cardValue + boostValue;
+        public CardData CardData => cardData;
 
         #region Card State
         public void UnusableCard()
@@ -71,7 +70,7 @@ namespace OMG.Card.UI
 
             cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCard(this));
 
-            data = cardData;
+            base.cardData = cardData;
             rect = GetComponent<RectTransform>();
             BaseSize = rect.sizeDelta;
         }
@@ -85,12 +84,16 @@ namespace OMG.Card.UI
         public void BoostCardValue(int boostValue)
         {
             this.boostValue += boostValue;
-            //TODO UPDATE UI
+            UpdateUI();
         }
         public void BoostCardWakfu(int wakfuBoost)
         {
             this.wakfuBoost += wakfuBoost;
-            //TODO UPDATE UI
+            UpdateUI();
+        }
+        private void UpdateUI()
+        {
+            base.UpdateUI(WakfuCost, CardValue);
         }
 
         #region Tween

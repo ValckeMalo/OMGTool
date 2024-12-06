@@ -23,7 +23,7 @@ namespace OMG.Card
         private static Monster[] Monsters => BattleData.GetAllMonsters();
 
         #region Process
-        public static void ProcessCard(CardData card,int valueCard, bool playedFirst)
+        public static void ProcessCard(CardData card, int valueCard, bool playedFirst)
         {
             if (!UnitTest(card)) return; //Failed Unit Test
 
@@ -85,7 +85,7 @@ namespace OMG.Card
                     break;
 
                 case CardType.BoostMultiple:
-                    Debug.LogError("PB");
+                    BattleSystem.Instance.GameBoard.BoostAllCard(cardValue);
                     break;
 
                 case CardType.Neutral:

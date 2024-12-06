@@ -414,6 +414,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayableCard
       objectReference: {fileID: 0}
+    - target: {fileID: 2646457538205649069, guid: 6ee8f6152e5fe3648b0fb1c6197175a3,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 15.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646457538205649069, guid: 6ee8f6152e5fe3648b0fb1c6197175a3,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2646457538205649069, guid: 6ee8f6152e5fe3648b0fb1c6197175a3,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2817085611902990010, guid: 6ee8f6152e5fe3648b0fb1c6197175a3,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -875,6 +890,7 @@ MonoBehaviour:
     type: 3}
   disableImage: {fileID: 4458891350747013110}
   cardButton: {fileID: 213232361950446862}
+  ratioScale: 1.3
 --- !u!114 &213232361950446862
 MonoBehaviour:
   m_ObjectHideFlags: 0
