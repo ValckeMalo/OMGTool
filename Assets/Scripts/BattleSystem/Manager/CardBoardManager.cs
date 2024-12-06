@@ -14,6 +14,7 @@ namespace OMG.Battle.Manager
 
         public int NbCardToSpawn => Mathf.Max(0, MaxCardOnBoard - cardsOnBoard.Count);
 
+        #region Board
         public bool AddCardOnBoard(PlayableCard playableCard)
         {
             if (playableCard == null || cardsOnBoard == null)
@@ -30,8 +31,9 @@ namespace OMG.Battle.Manager
             cardsOnBoard.Remove(playableCard);
             return playableCard.CardData;
         }
+        #endregion
 
-        public void HideAllCards()
+        private void HideAllCards()
         {
             foreach (PlayableCard playableCard in cardsOnBoard)
             {
@@ -46,6 +48,7 @@ namespace OMG.Battle.Manager
             }
         }
 
+        #region Toggle
         public void ToggleCardBasedOnWakfuRemain(int wakfuRemain)
         {
             foreach (PlayableCard playableCard in cardsOnBoard)
@@ -60,7 +63,6 @@ namespace OMG.Battle.Manager
                 }
             }
         }
-
         public void ToggleSacrificiableCard()
         {
             foreach (PlayableCard playableCard in cardsOnBoard)
@@ -68,6 +70,17 @@ namespace OMG.Battle.Manager
                 playableCard.UsableCard();
             }
         }
+        public void ToggleBoostableCard()
+        {
+            foreach (PlayableCard playableCard in cardsOnBoard)
+            {
+                if (playableCard.CardData.isBoostable)
+                    playableCard.UsableCard();
+                else
+                    playableCard.UnusableCard();
+            }
+        }
+        #endregion
 
         public void DestroyPlayableCard(PlayableCard playableCard)
         {
@@ -76,11 +89,34 @@ namespace OMG.Battle.Manager
 
         public void BoostAllCard(int value)
         {
-            foreach(PlayableCard card in cardsOnBoard)
+            foreach (PlayableCard card in cardsOnBoard)
             {
                 if (card == null) return;
                 card.BoostCardValue(value);
             }
         }
+
+        #region Spawn
+        public void SpawnFinishers(List<CardData> finishers)
+        {
+            HideAllCards(); //Hide all card present on board
+
+            if (finishers == null || finishers.Count <= 0)
+            {
+                Debug.LogError("PB");
+                return;
+            }
+
+            foreach (CardData finisher in finishers)
+            {
+                SpawnCardInHand(finisher);
+            }
+        }
+        private void SpawnCardInHand(CardData card)
+        {
+            PlayableCard playableCard = CardSpawner.OnSpawnCard?.Invoke(card);
+            AddCardOnBoard(playableCard);
+        }
+        #endregion
     }
 }

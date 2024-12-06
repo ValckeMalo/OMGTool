@@ -29,7 +29,6 @@ namespace OMG.Battle.Manager
         #region OropoTurn
         public void StartOropoTurn()
         {
-            HUDBattle.EndTurnButton.PlayerTurnButton();
             wakfuManager.TryBreakPadLock();
             SpawnCardsInHands(cardBoardManager.NbCardToSpawn);
             cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
@@ -37,7 +36,6 @@ namespace OMG.Battle.Manager
         public void EndOropoTurn()
         {
             wakfuManager.UnlockWakfu();
-            HUDBattle.EndTurnButton.MonstersTurnButton();
         }
         #endregion
 
@@ -90,11 +88,21 @@ namespace OMG.Battle.Manager
         #region USE CARD
         public void UseCard(PlayableCard playableCard)
         {
+            ProcessPlayableCard(playableCard);
+
+            if (wakfuManager.IsAtMaxWakfu())
+            {
+                cardBoardManager.SpawnFinishers(cardDeckManager.Finishers);
+
+            }
+        }
+        private void ProcessPlayableCard(PlayableCard playableCard)
+        {
             if (playableCard == null || playableCard.CardData == null || (firstPlayableCard != null && firstPlayableCard == playableCard)) return; //Check
 
             if (firstPlayableCard != null)
             {
-                HUDBattle.DisableCancelSecondCard();
+                HUDBattle.Instance.ToggleSelectSecondCard(false);
                 ProcessSecondCard(playableCard);
                 firstPlayableCard = null;
                 return;
@@ -107,7 +115,7 @@ namespace OMG.Battle.Manager
                     playableCard.FixHover(); //Let it in hover mode
                     cardBoardManager.ToggleSacrificiableCard();
                     firstPlayableCard = playableCard;
-                    HUDBattle.EnableCancelSecondCard();
+                    HUDBattle.Instance.ToggleSelectSecondCard(true);
                     return;
                 }
                 else
@@ -127,7 +135,7 @@ namespace OMG.Battle.Manager
 
             DestroyCardOnBoard(playableCard);
 
-                cardDeckManager.ReintroduceCard(playableCard.CardData);
+            cardDeckManager.ReintroduceCard(playableCard.CardData);
 
             cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
         }

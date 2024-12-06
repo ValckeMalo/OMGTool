@@ -78,5 +78,7 @@ namespace OMG.Battle.Manager
         {
             HUDBattle.OropoWakfuGauge.ResetPreviewBar();
         }
+
+        public bool IsAtMaxWakfu() => wakfu == MaxWakfu;
     }
 }

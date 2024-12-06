@@ -14,5 +14,7 @@ namespace OMG.Card.Data
 
         [SerializeField] private List<CardData> curses = new List<CardData>();
         [SerializeField] private List<CardData> divine = new List<CardData>();
+
+        public List<CardData> Finishers => finishers;
     }
 }

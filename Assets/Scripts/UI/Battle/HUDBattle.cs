@@ -1,59 +1,15 @@
 namespace OMG.Battle.UI
 {
-    using MaloProduction.CustomAttributes;
     using MaloProduction.Tween.Core;
     using MaloProduction.Tween.DoTween.Module;
-
+    using OMG.Battle.UI.Manager;
     using OMG.Unit;
-    using OMG.Unit.HUD;
-
-    using TMPro;
+    using System;
     using UnityEngine;
     using UnityEngine.UI;
 
     public class HUDBattle : MonoBehaviour
     {
-        #region Turn Button
-        [System.Serializable]
-        public class TurnButton
-        {
-            private enum TurnText
-            {
-                Player,
-                Monster,
-            }
-            private static string[] Converter = new string[2] { "FIN DU \nTOUR", "TOUR \nADVERSE" };
-
-            [SerializeField] private Button button;
-            [SerializeField] private TextMeshProUGUI stateTurnText;
-            [SerializeField] private TextMeshProUGUI turnIndexText;
-
-            public void AddCallback(System.Action action)
-            {
-                button.onClick.AddListener(() => action());
-            }
-            public void PlayerTurnButton()
-            {
-                Update(true, BattleSystem.Instance.TurnIndex, TurnText.Player);
-            }
-            public void MonstersTurnButton()
-            {
-                Update(true, BattleSystem.Instance.TurnIndex, TurnText.Monster);
-            }
-            public void DisableButton()
-            {
-                button.interactable = false;
-            }
-
-            private void Update(bool isInteractible, int turnIndex, TurnText turnText)
-            {
-                stateTurnText.text = Converter[(int)turnText];
-                button.interactable = isInteractible;
-                turnIndexText.text = "TOUR " + turnIndex.ToString(); ;
-            }
-        }
-        #endregion
-
         #region WakfuGauge
         [System.Serializable]
         public class WakfuGauge
@@ -148,31 +104,9 @@ namespace OMG.Battle.UI
         }
         #endregion
 
-        #region Unit HUD
-        [System.Serializable]
-        public class UnitsHUD
-        {
-            [Title("Unit HUD")]
-            [SerializeField] private RectTransform parent;
-            [SerializeField] private RectTransform canvasTransform;
-            [SerializeField] private GameObject prefabUnitHUD;
-
-            public void SpawnUnitHUD(Vector3 unitPosition, Unit unit)
-            {
-                Vector3 viewportPosition = Camera.main.WorldToViewportPoint(unitPosition);
-                Vector2 worldObjectScreenPosition = new Vector2(
-                                        ((viewportPosition.x * canvasTransform.sizeDelta.x) - (canvasTransform.sizeDelta.x * 0.5f)),
-                                        ((viewportPosition.y * canvasTransform.sizeDelta.y) - (canvasTransform.sizeDelta.y * 0.5f)));
-
-                GameObject unitHUD = Instantiate(prefabUnitHUD, parent);
-                unitHUD.GetComponent<RectTransform>().anchoredPosition = worldObjectScreenPosition;
-                unitHUD.GetComponent<UnitHUD>().Initialize(unit);
-            }
-        }
-        #endregion
-
         #region Singleton
         private static HUDBattle instance = null;
+        public static HUDBattle Instance => instance;
         private static HUDBattle GetInstance()
         {
             if (instance == null)
@@ -196,28 +130,83 @@ namespace OMG.Battle.UI
         #endregion
 
         [Header("UI Class")]
-        [SerializeField] private TurnButton turnButton;
+        [SerializeField] private TurnButtonManager turnButtonManager;
         [SerializeField] private WakfuGauge wakfuGauge;
-        [SerializeField] private UnitsHUD unitsHUD;
+        [SerializeField] private UnitsHUDManager unitsHUDManager; //NOT SURE ABOUT THIS CLASS IT'S SO EMPTY
         [SerializeField] private Button cancelSecondCard;
 
-        public void Start() => cancelSecondCard.onClick.AddListener(() =>
+        public void Start()
         {
-            DisableCancelSecondCard();
-            BattleSystem.Instance.GameBoard.CancelSecondCard();
-        });
+            cancelSecondCard.onClick.AddListener(() =>
+            {
+                ToggleSelectSecondCard(false);
+                BattleSystem.Instance.GameBoard.CancelSecondCard();
+            });
+        }
 
-        public static TurnButton EndTurnButton { get => GetInstance().turnButton; }
         public static WakfuGauge OropoWakfuGauge { get => GetInstance().wakfuGauge; }
-        public static UnitsHUD UnitHUD { get => GetInstance().unitsHUD; }
 
-        public static void EnableCancelSecondCard()
+        public enum BattleHUDState
         {
-            GetInstance().cancelSecondCard.gameObject.SetActive(true);
+            Oropo,
+            Monsters,
         }
-        public static void DisableCancelSecondCard()
+
+        public void SwitchState(BattleHUDState state)
         {
-            GetInstance().cancelSecondCard.gameObject.SetActive(false);
+            switch (state)
+            {
+                case BattleHUDState.Oropo:
+                    OropoMode();
+                    break;
+
+                case BattleHUDState.Monsters:
+                    MonstersMode();
+                    break;
+
+                default:
+                    Debug.Log("PB");
+                    break;
+            }
         }
+
+        #region Mode
+        private void OropoMode()
+        {
+            turnButtonManager.OropoTurn();
+
+            ToggleSelectSecondCard(false);
+            ToggleFinishersMode(false);
+        }
+        private void MonstersMode()
+        {
+            turnButtonManager.MonstersTurn();
+
+            ToggleSelectSecondCard(false);
+            ToggleFinishersMode(false);
+        }
+        #endregion
+
+        #region Toggle UI
+        public void ToggleSelectSecondCard(bool toggle)
+        {
+            cancelSecondCard.gameObject.SetActive(toggle);
+        }
+        public void ToggleFinishersMode(bool toggle)
+        {
+            turnButtonManager.ToggleTurnButton(!toggle);
+        }
+        #endregion
+
+        #region UsefullFunction
+        public void TurnButtonAddCallback(Action clickFct)
+        {
+            turnButtonManager.AddCallback(clickFct);
+        }
+        public void SpawnUnitHUD(Vector3 position, Unit unit)
+        {
+            unitsHUDManager.SpawnUnitHUD(position, unit);
+        }
+        #endregion
     }
 }

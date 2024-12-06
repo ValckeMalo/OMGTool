@@ -18,6 +18,7 @@ namespace OMG.Battle.Manager
         private int indexShuffle = 0;
 
         public bool IsDeckEmpty => deck == null;
+        public List<CardData> Finishers => deck.Finishers;
 
         public CardDeckManager(CardDeck deck)
         {
