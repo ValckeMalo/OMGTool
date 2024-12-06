@@ -199,9 +199,25 @@ namespace OMG.Battle.UI
         [SerializeField] private TurnButton turnButton;
         [SerializeField] private WakfuGauge wakfuGauge;
         [SerializeField] private UnitsHUD unitsHUD;
+        [SerializeField] private Button cancelSecondCard;
+
+        public void Start() => cancelSecondCard.onClick.AddListener(() =>
+        {
+            DisableCancelSecondCard();
+            BattleSystem.Instance.GameBoard.CancelSecondCard();
+        });
 
         public static TurnButton EndTurnButton { get => GetInstance().turnButton; }
         public static WakfuGauge OropoWakfuGauge { get => GetInstance().wakfuGauge; }
         public static UnitsHUD UnitHUD { get => GetInstance().unitsHUD; }
+
+        public static void EnableCancelSecondCard()
+        {
+            GetInstance().cancelSecondCard.gameObject.SetActive(true);
+        }
+        public static void DisableCancelSecondCard()
+        {
+            GetInstance().cancelSecondCard.gameObject.SetActive(false);
+        }
     }
 }

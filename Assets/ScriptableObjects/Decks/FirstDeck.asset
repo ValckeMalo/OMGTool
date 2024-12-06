@@ -13,21 +13,20 @@ MonoBehaviour:
   m_Name: FirstDeck
   m_EditorClassIdentifier: 
   cards:
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
   - {fileID: 11400000, guid: 416a37ae5efadce4fa28ea3b569f9a6c, type: 2}
   - {fileID: 11400000, guid: 416a37ae5efadce4fa28ea3b569f9a6c, type: 2}
-  - {fileID: 11400000, guid: 416a37ae5efadce4fa28ea3b569f9a6c, type: 2}
-  - {fileID: 11400000, guid: 416a37ae5efadce4fa28ea3b569f9a6c, type: 2}
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
   - {fileID: 11400000, guid: 5e7a41e7b96bfbe4d849a5d9ccc66b66, type: 2}
   - {fileID: 11400000, guid: 5e7a41e7b96bfbe4d849a5d9ccc66b66, type: 2}
-  - {fileID: 11400000, guid: 5e7a41e7b96bfbe4d849a5d9ccc66b66, type: 2}
-  - {fileID: 11400000, guid: 5e7a41e7b96bfbe4d849a5d9ccc66b66, type: 2}
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
   - {fileID: 11400000, guid: 0a30b40514270b54d848b17557cfc99c, type: 2}
   - {fileID: 11400000, guid: 0a30b40514270b54d848b17557cfc99c, type: 2}
-  - {fileID: 11400000, guid: 416a37ae5efadce4fa28ea3b569f9a6c, type: 2}
-  - {fileID: 11400000, guid: 0a30b40514270b54d848b17557cfc99c, type: 2}
-  - {fileID: 11400000, guid: 0a30b40514270b54d848b17557cfc99c, type: 2}
-  - {fileID: 11400000, guid: 0a30b40514270b54d848b17557cfc99c, type: 2}
-  finishers:
-  - {fileID: 11400000, guid: cde6c9ff3ebe07c40a2809b3ca5f84e7, type: 2}
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
+  - {fileID: 11400000, guid: 0b363cf251a531b4ebe53d46fd7620cc, type: 2}
+  finishers: []
   curses: []
   divine: []

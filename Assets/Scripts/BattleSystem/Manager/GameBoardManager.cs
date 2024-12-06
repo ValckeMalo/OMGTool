@@ -89,23 +89,25 @@ namespace OMG.Battle.Manager
 
             if (firstPlayableCard != null)
             {
-                ProcessCardSecondCard(playableCard);
+                HUDBattle.DisableCancelSecondCard();
+                ProcessSecondCard(playableCard);
                 firstPlayableCard = null;
                 return;
             }
 
-            if (wakfuManager.CanAddWakfu(playableCard.CardData.wakfuCost)) //If there are enough wakfu available
+            if (wakfuManager.CanAddWakfu(playableCard.WakfuCost)) //If there are enough wakfu available
             {
                 if (DoesCardNeedAnotherCard(playableCard.CardData)) //Search if the card does need another one
                 {
                     playableCard.FixHover(); //Let it in hover mode
                     cardBoardManager.ToggleSacrificiableCard();
                     firstPlayableCard = playableCard;
+                    HUDBattle.EnableCancelSecondCard();
                     return;
                 }
                 else
                 {
-                    CardUtils.ProcessCard(playableCard.CardData, false);
+                    CardUtils.ProcessCard(playableCard.CardData, playableCard.CardValue, false);
                     ProcessCard(playableCard);
                 }
             }
@@ -116,7 +118,7 @@ namespace OMG.Battle.Manager
         }
         private void ProcessCard(PlayableCard playableCard)
         {
-            wakfuManager.AddWakfu(playableCard.CardData.wakfuCost);
+            wakfuManager.AddWakfu(playableCard.WakfuCost);
 
             DestroyCardOnBoard(playableCard);
 
@@ -130,23 +132,43 @@ namespace OMG.Battle.Manager
             cardBoardManager.RemoveCardOnBoard(playableCard);
             cardBoardManager.DestroyPlayableCard(playableCard);
         }
-        private void ProcessCardSecondCard(PlayableCard secondPlayableCard)
+        private void ProcessSecondCard(PlayableCard secondPlayableCard)
         {
             CardData secondCard = secondPlayableCard.CardData;
-
             if (firstPlayableCard.CardData.needSacrifice)
             {
-                DestroyCardOnBoard(secondPlayableCard);
-                cardDeckManager.ReintroduceCard(secondCard);
-
-                CardUtils.ProcessCard(firstPlayableCard.CardData, false);
-
-                ProcessCard(firstPlayableCard);
+                ProcessSecondCardSacrifice(secondPlayableCard);
             }
             else if (firstPlayableCard.CardData.cardType == CardType.BoostSingle)
             {
-                //TODO BOOST
+                ProcessSecondCardBoost(secondPlayableCard);
             }
+        }
+        private void ProcessSecondCardSacrifice(PlayableCard secondPlayableCard)
+        {
+            DestroyCardOnBoard(secondPlayableCard);
+            cardDeckManager.ReintroduceCard(secondPlayableCard.CardData);
+
+            CardUtils.ProcessCard(firstPlayableCard.CardData, firstPlayableCard.CardValue, false);
+
+            ProcessCard(firstPlayableCard);
+        }
+        private void ProcessSecondCardBoost(PlayableCard secondPlayableCard)
+        {
+            secondPlayableCard.BoostCardValue(firstPlayableCard.CardValue);
+
+            CardUtils.ProcessOnlyCardSpells(firstPlayableCard.CardData, false);
+            ProcessCard(firstPlayableCard);
+        }
+        public void CancelSecondCard()
+        {
+            if (firstPlayableCard == null) return;
+
+            firstPlayableCard.UnFixHover();
+            firstPlayableCard = null;
+
+            cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
+            wakfuManager.ResetPreviewBar();
         }
         /////////////
         #endregion

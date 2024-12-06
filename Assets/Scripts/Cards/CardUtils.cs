@@ -23,12 +23,12 @@ namespace OMG.Card
         private static Monster[] Monsters => BattleData.GetAllMonsters();
 
         #region Process
-        public static void ProcessCard(CardData card, bool playedFirst)
+        public static void ProcessCard(CardData card,int valueCard, bool playedFirst)
         {
             if (!UnitTest(card)) return; //Failed Unit Test
 
             IUnit[] targets = GetTargets(card.target);
-            ProcessCardType(card.cardType, card.cardValue, targets);
+            ProcessCardType(card.cardType, valueCard, targets);
             ProcessCardSpells(card.spells, playedFirst, targets);
         }
         public static void ProcessOnlyCardSpells(CardData card, bool playedFirst)

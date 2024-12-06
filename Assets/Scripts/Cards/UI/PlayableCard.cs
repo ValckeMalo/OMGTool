@@ -15,6 +15,9 @@ namespace OMG.Card.UI
         [SerializeField] private Image disableImage;
         [SerializeField] private Button cardButton;
 
+        private int boostValue = 0;
+        private int wakfuBoost = 0;
+
         private CardData data;
         private RectTransform rect;
 
@@ -25,7 +28,8 @@ namespace OMG.Card.UI
 
         private bool isHoverFixed = false;
 
-        public int WakfuCost => data.wakfuCost;
+        public int WakfuCost => data.wakfuCost + wakfuBoost;
+        public int CardValue => data.cardValue + boostValue;
         public CardData CardData => data;
 
         #region Card State
@@ -78,6 +82,18 @@ namespace OMG.Card.UI
             Destroy(gameObject);
         }
 
+        public void BoostCardValue(int boostValue)
+        {
+            this.boostValue += boostValue;
+            //TODO UPDATE UI
+        }
+        public void BoostCardWakfu(int wakfuBoost)
+        {
+            this.wakfuBoost += wakfuBoost;
+            //TODO UPDATE UI
+        }
+
+        #region Tween
         private void ScaleUp()
         {
             if (tweenScale != null)
@@ -96,6 +112,7 @@ namespace OMG.Card.UI
             }
             rect.DoScale(BaseSize, 0.1f);
         }
+        #endregion
 
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
