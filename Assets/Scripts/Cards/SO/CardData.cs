@@ -23,6 +23,7 @@ public class CardData : ScriptableObject
 
     public bool isBoostable = true;
     public bool needSacrifice = false;
+    public bool isEtheral = false;
 
     public int wakfuCost;
     public int cardValue;

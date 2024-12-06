@@ -17,6 +17,7 @@ namespace MaloProduction
         private SerializedProperty propCardSpells;
         private SerializedProperty propNeedSacrifice;
         private SerializedProperty propIsBoostable;
+        private SerializedProperty propIsEtheral;
 
         private int indexCard;
         private bool popUpDelete = false;
@@ -144,6 +145,12 @@ namespace MaloProduction
                     EditorGUILayout.PropertyField(propNeedSacrifice);
                 }
 
+                //IS ETHERAL
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    EditorGUILayout.PropertyField(propIsEtheral);
+                }
+
                 //TARGET
                 if (propCardType.enumValueIndex != (int)CardType.BoostMultiple && propCardType.enumValueIndex != (int)CardType.BoostSingle)
                 {
@@ -193,6 +200,7 @@ namespace MaloProduction
             propCardSpells = currentCard.FindProperty("spells");
             propIsBoostable = currentCard.FindProperty("isBoostable");
             propNeedSacrifice = currentCard.FindProperty("needSacrifice");
+            propIsEtheral = currentCard.FindProperty("isEtheral");
 
             this.indexCard = indexCard;
         }

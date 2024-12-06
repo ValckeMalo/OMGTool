@@ -6,12 +6,15 @@ namespace OMG.Battle.Manager
 
     using System.Collections.Generic;
     using System.Linq;
+    using MaloProduction.CustomAttributes;
 
+    [System.Serializable]
     public class CardDeckManager
     {
+        [Title("Card Deck Manager")]
         private CardDeck deck;
-        private List<CardData> deckShuffle;
-        private List<CardData> cardPlayed;
+        [SerializeField] private List<CardData> deckShuffle;
+        [SerializeField] private List<CardData> cardPlayed;
         private int indexShuffle = 0;
 
         public bool IsDeckEmpty => deck == null;
@@ -75,6 +78,9 @@ namespace OMG.Battle.Manager
         public void ReintroduceCard(CardData card)
         {
             cardPlayed.Remove(card);
+
+            if (card.isEtheral || card.cardType == CardType.Divine || card.cardType == CardType.Curse) return;
+
             int entryIndex = indexShuffle;
             int previousIndex = indexShuffle;
 

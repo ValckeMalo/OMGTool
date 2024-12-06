@@ -198,6 +198,7 @@ namespace OMG.Tools.PreviewCard
                 targetContent = new GUIContent("Target : " + TargetStringProvider.TargetDescriptions[(int)card.target]);
             }
 
+            //Spell
             Vector2 targetSize = new Vector2(bottomSize.x, TargetStyle.CalcHeight(titleContent, bottomSize.x));
             Vector2 targetPosition = new Vector2(titleRect.x, titleRect.y + titleRect.height);
             Rect targetRect = new Rect(targetPosition, targetSize);
@@ -205,6 +206,7 @@ namespace OMG.Tools.PreviewCard
 
             Rect spellsRect = Spells(card.spells, targetRect);
 
+            //Sacrifice
             if (card.needSacrifice)
             {
                 Rect startRect = (spellsRect == Rect.zero) ? targetRect : spellsRect;

@@ -6,10 +6,12 @@ namespace OMG.Battle.Manager
     using System.Collections.Generic;
     using System;
 
+    [System.Serializable]
     public class CardBoardManager
     {
-        private List<PlayableCard> cardsOnBoard = new List<PlayableCard>();
+        [SerializeField] private List<PlayableCard> cardsOnBoard = new List<PlayableCard>();
         private const int MaxCardOnBoard = 6;
+
         public int NbCardToSpawn => Mathf.Max(0, MaxCardOnBoard - cardsOnBoard.Count);
 
         public bool AddCardOnBoard(PlayableCard playableCard)

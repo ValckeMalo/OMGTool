@@ -1,5 +1,6 @@
 namespace OMG.Battle.Manager
 {
+    using MaloProduction.CustomAttributes;
     using OMG.Battle.UI;
     using OMG.Card;
     using OMG.Card.Data;
@@ -7,10 +8,12 @@ namespace OMG.Battle.Manager
     using System;
     using UnityEngine;
 
+    [System.Serializable]
     public class GameBoardManager
     {
-        private CardBoardManager cardBoardManager;
-        private CardDeckManager cardDeckManager;
+        [Title("Game Board Manager")]
+        [SerializeField] private CardBoardManager cardBoardManager;
+        [SerializeField] private CardDeckManager cardDeckManager;
         private WakfuManager wakfuManager;
 
         private PlayableCard firstPlayableCard = null;
@@ -124,8 +127,7 @@ namespace OMG.Battle.Manager
 
             DestroyCardOnBoard(playableCard);
 
-            //TODO IS A TEMP CARD
-            cardDeckManager.ReintroduceCard(playableCard.CardData);
+                cardDeckManager.ReintroduceCard(playableCard.CardData);
 
             cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
         }
