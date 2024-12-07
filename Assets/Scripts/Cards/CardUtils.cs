@@ -1,17 +1,15 @@
 namespace OMG.Card
 {
     using OMG.Battle;
-    using OMG.Unit;
-    using OMG.Unit.Status;
-    using static CardData;
     using OMG.Battle.Data;
+    using OMG.Unit;
     using OMG.Unit.Oropo;
+    using OMG.Unit.Status;
     using OMG.Unit.Monster;
+    using static CardData;
 
-    using System.Collections.Generic;
     using UnityEngine;
-    using OMG.Card.UI;
-    using System;
+    using System.Collections.Generic;
 
     public static class CardUtils
     {
@@ -28,7 +26,7 @@ namespace OMG.Card
             if (!UnitTest(card)) return; //Failed Unit Test
 
             IUnit[] targets = GetTargets(card.target);
-            ProcessCardType(card.cardType, valueCard, targets);
+            ProcessCardType(card, targets);
             ProcessCardSpells(card.spells, playedFirst, targets);
         }
         public static void ProcessOnlyCardSpells(CardData card, bool playedFirst)
@@ -62,11 +60,18 @@ namespace OMG.Card
             }
         }
 
-        private static void ProcessCardType(CardType type, int cardValue, IUnit[] targets)
+        private static void ProcessCardType(CardData card, IUnit[] targets)
         {
-            switch (type)
+            CardType cardType = card.cardType;
+            int cardValue = card.cardValue;
+
+            if (cardType == CardType.Divine || cardType == CardType.Curse || cardType == CardType.Finisher)
             {
-                case CardType.Finisher:
+                cardType = card.specialCardType;
+            }
+
+            switch (cardType)
+            {
                 case CardType.Attack:
                     foreach (IUnit unit in targets)
                     {
@@ -81,10 +86,6 @@ namespace OMG.Card
                     }
                     break;
 
-                case CardType.BoostSingle:
-                    Debug.LogError("Youre not supposed to be here");
-                    break;
-
                 case CardType.BoostMultiple:
                     BattleSystem.Instance.GameBoard.BoostAllCard(cardValue);
                     break;
@@ -93,16 +94,12 @@ namespace OMG.Card
                     BattleSystem.Instance.GameBoard.SpawnCardsInHands(cardValue);
                     break;
 
+                case CardType.BoostSingle:
+                case CardType.Finisher:
                 case CardType.Divine:
-                    Debug.LogError("PB");
-                    break;
-
                 case CardType.Curse:
-                    Debug.LogError("PB");
-                    break;
-
                 default:
-                    Debug.LogError("PB");
+                    Debug.LogError("Youre not supposed to be here, how have you done.");
                     break;
             }
         }

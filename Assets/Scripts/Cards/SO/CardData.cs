@@ -17,6 +17,7 @@ public class CardData : ScriptableObject
     }
 
     public CardType cardType;
+    public CardType specialCardType;
     public Target target;
 
     public List<Spell> spells = new List<Spell>();
