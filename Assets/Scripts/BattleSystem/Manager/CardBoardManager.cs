@@ -4,12 +4,14 @@ namespace OMG.Battle.Manager
 
     using UnityEngine;
     using System.Collections.Generic;
-    using System;
+    using MaloProduction.CustomAttributes;
 
     [System.Serializable]
     public class CardBoardManager
     {
+        [Title("Card Board Manager")]
         [SerializeField] private List<PlayableCard> cardsOnBoard = new List<PlayableCard>();
+        private List<PlayableCard> finishersOnBoard = null;
         private const int MaxCardOnBoard = 6;
 
         public int NbCardToSpawn => Mathf.Max(0, MaxCardOnBoard - cardsOnBoard.Count);
@@ -20,7 +22,12 @@ namespace OMG.Battle.Manager
             if (playableCard == null || cardsOnBoard == null)
                 return false;
 
-            cardsOnBoard.Add(playableCard);
+            //If the playable is a finisher card put it in his spesific list
+            if (playableCard.CardData.cardType != CardType.Finisher)
+                cardsOnBoard.Add(playableCard);
+            else
+                finishersOnBoard.Add(playableCard);
+
             return true;
         }
         public CardData RemoveCardOnBoard(PlayableCard playableCard)
@@ -45,6 +52,7 @@ namespace OMG.Battle.Manager
             foreach (PlayableCard playableCard in cardsOnBoard)
             {
                 playableCard.ShowCard();
+                playableCard.UnFixHover(); //to handle some bug
             }
         }
 
@@ -107,11 +115,26 @@ namespace OMG.Battle.Manager
                 return;
             }
 
+            //the array that contain all the finisher that gonna be spawn
+            finishersOnBoard = new List<PlayableCard>();
             foreach (CardData finisher in finishers)
             {
                 SpawnCardInHand(finisher);
             }
         }
+        public void DespawnFinishers()
+        {
+            ShowAllCards(); //repop all card previously on board
+
+            foreach (PlayableCard finisherOnBoard in finishersOnBoard)
+            {
+                finisherOnBoard.Destroy();
+            }
+
+            finishersOnBoard.Clear();
+            finishersOnBoard = null;
+        }
+
         private void SpawnCardInHand(CardData card)
         {
             PlayableCard playableCard = CardSpawner.OnSpawnCard?.Invoke(card);

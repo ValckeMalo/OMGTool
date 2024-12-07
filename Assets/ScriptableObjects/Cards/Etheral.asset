@@ -18,7 +18,7 @@ MonoBehaviour:
   isBoostable: 0
   needSacrifice: 0
   isEtheral: 1
-  wakfuCost: -6
+  wakfuCost: 6
   cardValue: 15
   cardName: Etheral
   iconCard: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}

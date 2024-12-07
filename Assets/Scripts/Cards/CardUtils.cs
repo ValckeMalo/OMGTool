@@ -66,6 +66,7 @@ namespace OMG.Card
         {
             switch (type)
             {
+                case CardType.Finisher:
                 case CardType.Attack:
                     foreach (IUnit unit in targets)
                     {
@@ -81,7 +82,7 @@ namespace OMG.Card
                     break;
 
                 case CardType.BoostSingle:
-                    Debug.LogError("PB");
+                    Debug.LogError("Youre not supposed to be here");
                     break;
 
                 case CardType.BoostMultiple:
@@ -97,10 +98,6 @@ namespace OMG.Card
                     break;
 
                 case CardType.Curse:
-                    Debug.LogError("PB");
-                    break;
-
-                case CardType.Finisher:
                     Debug.LogError("PB");
                     break;
 

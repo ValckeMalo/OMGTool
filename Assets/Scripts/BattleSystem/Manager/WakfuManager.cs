@@ -23,6 +23,8 @@ namespace OMG.Battle.Manager
             wakfu = 0;
             wakfuUnlock = 3;
             HUDBattle.OropoWakfuGauge.ResetPadLock();
+            HUDBattle.OropoWakfuGauge.UpdatePreviewBar(0);
+            HUDBattle.OropoWakfuGauge.UpdateWakfuBar(0);
         }
 
         public void PreviewWakfu(int amount)

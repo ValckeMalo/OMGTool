@@ -92,8 +92,17 @@ namespace OMG.Battle.Manager
 
             if (wakfuManager.IsAtMaxWakfu())
             {
-                cardBoardManager.SpawnFinishers(cardDeckManager.Finishers);
-
+                if (playableCard.CardData.cardType != CardType.Finisher) //if it was a card that make wafku gauge full
+                {
+                    cardBoardManager.SpawnFinishers(cardDeckManager.Finishers);
+                    HUDBattle.Instance.ToggleFinishersMode(true);
+                }
+                else // if it was the finisher card
+                {
+                    cardBoardManager.DespawnFinishers();
+                    HUDBattle.Instance.ToggleFinishersMode(false);
+                    BattleSystem.Instance.EndOropoTurn();
+                }
             }
         }
         private void ProcessPlayableCard(PlayableCard playableCard)
@@ -108,7 +117,9 @@ namespace OMG.Battle.Manager
                 return;
             }
 
-            if (wakfuManager.CanAddWakfu(playableCard.WakfuCost)) //If there are enough wakfu available
+            //If there are enough wakfu available or if it's a finisher just process it
+            //don't care about the wakfu cost for the finisher there all free
+            if (wakfuManager.CanAddWakfu(playableCard.WakfuCost) || playableCard.CardData.cardType == CardType.Finisher)
             {
                 if (DoesCardNeedAnotherCard(playableCard.CardData)) //Search if the card does need another one
                 {

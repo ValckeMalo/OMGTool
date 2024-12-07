@@ -83,7 +83,7 @@ namespace OMG.Battle
             SwitchBattleSate(BattleState.Oropo);
         }
 
-        private void EndOropoTurn()
+        public void EndOropoTurn()
         {
             GameBoard.EndOropoTurn();
             SwitchBattleSate(BattleState.Monsters);
