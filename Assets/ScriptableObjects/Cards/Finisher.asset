@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
   m_Name: Finisher
   m_EditorClassIdentifier: 
-  cardType: 7
-  target: 0
-  spells: []
+  background: 6
+  type: 0
+  value: 0
+  wakfu: 0
+  name: Finisher
+  icon: {fileID: 0}
   isBoostable: 0
-  needSacrifice: 0
   isEtheral: 0
-  wakfuCost: 1
-  cardValue: 15
-  cardName: Finisher
-  iconCard: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
+  needSacrifice: 0
+  target: 2
+  spells: []

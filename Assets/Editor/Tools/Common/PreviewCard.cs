@@ -2,8 +2,7 @@ namespace OMG.Tools.PreviewCard
 {
     using UnityEditor;
     using UnityEngine;
-    using System.Collections.Generic;
-    using static CardOptions;
+    using OMG.Card.Data;
 
     public static class PreviewCardEditor
     {
@@ -36,22 +35,25 @@ namespace OMG.Tools.PreviewCard
                 LogError($"The options gives is null");
                 return;
             }
-            CardTypeTexture cardTexture = settings.cardsTypeTexture[(int)cardData.cardType];
-            if (cardTexture.background == null)
+
+            Sprite backgroundSprite = settings.backgroundSprite[(int)cardData.background].sprite;
+            Sprite iconType = settings.iconSprite[(int)cardData.type].sprite;
+
+            if (backgroundSprite == null)
             {
-                LogError($"No background for : {cardData.cardType}.");
+                LogError($"No background for : {cardData.background}.");
                 return;
             }
-            if (cardTexture.iconCard == null)
+            if (iconType == null)
             {
-                LogError($"No Icon card for : {cardData.cardType}.");
+                LogError($"No Icon card for : {cardData.type}.");
             }
             if (settings.wakfu == null)
             {
                 LogError($"No Wakfu Sprite inside the settings");
             }
 
-            Texture2D backgroundTexture = cardTexture.background.texture;
+            Texture2D backgroundTexture = backgroundSprite.texture;
 
             using (EditorGUILayout.HorizontalScope scope = new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.Width(width)))
             {
@@ -65,9 +67,9 @@ namespace OMG.Tools.PreviewCard
                 GUI.contentColor = Color.black;
 
                 Rect backgroundRect = Background(backgroundTexture, scopeRect, ratioScale);
-                Rect topRect = TopCard(cardData.cardValue, (cardTexture.iconCard != null) ? cardTexture.iconCard.texture : null,
-                                       cardData.wakfuCost, (settings.wakfu != null) ? settings.wakfu.texture : null, backgroundRect);
-                Rect centerRect = CenterCard((cardData.iconCard != null) ? cardData.iconCard.texture : null, topRect, backgroundRect);
+                Rect topRect = TopCard(cardData.value, (iconType != null) ? iconType.texture : null,
+                                       cardData.wakfu, (settings.wakfu != null) ? settings.wakfu.texture : null, backgroundRect);
+                Rect centerRect = CenterCard((cardData.icon != null) ? cardData.icon.texture : null, topRect, backgroundRect);
                 BottomCard(cardData, centerRect, backgroundRect);
 
                 GUI.contentColor = Color.white;
@@ -178,25 +180,13 @@ namespace OMG.Tools.PreviewCard
             Rect bottomRect = new Rect(bottomPosition, bottomSize);
 
             //TITLE
-            GUIContent titleContent = new GUIContent(card.cardName);
+            GUIContent titleContent = new GUIContent(card.name);
             Vector2 titleSize = new Vector2(bottomSize.x, TitleStyle.CalcHeight(titleContent, bottomSize.x));
             Rect titleRect = new Rect(bottomPosition, titleSize);
             GUI.Label(titleRect, titleContent, TitleStyle);
 
             //TARGET
-            GUIContent targetContent;
-            if (card.cardType == CardType.BoostSingle)
-            {
-                targetContent = new GUIContent("Boost a Card");
-            }
-            else if (card.cardType == CardType.BoostMultiple)
-            {
-                targetContent = new GUIContent("Boost all Cards");
-            }
-            else
-            {
-                targetContent = new GUIContent("Target : " + TargetStringProvider.TargetDescriptions[(int)card.target]);
-            }
+            GUIContent targetContent = new GUIContent("Target : " + TargetStringProvider.TargetDescriptions[(int)card.target]);
 
             //Spell
             Vector2 targetSize = new Vector2(bottomSize.x, TargetStyle.CalcHeight(titleContent, bottomSize.x));
@@ -218,30 +208,30 @@ namespace OMG.Tools.PreviewCard
                 GUI.Label(sacrificeRect, sacrificeContent, TargetStyle);
             }
         }
-        private static Rect Spells(List<CardData.Spell> spells, Rect targetRect)
+        private static Rect Spells(Spell[] spells, Rect targetRect)
         {
             if (spells != null)
             {
-                int spellsCount = spells.Count;
+                int spellsCount = spells.Length;
                 if (spellsCount > 0)
                 {
                     string spellsText = string.Empty;
 
-                    foreach (CardData.Spell spellBonus in spells)
+                    foreach (Spell spellBonus in spells)
                     {
-                        if (spellBonus != null && spellBonus.showDescOnCard)
+                        if (spellBonus != null && spellBonus.shownOnCard)
                         {
-                            if (spellBonus.isInitiative)
+                            if (spellBonus.initiative)
                             {
                                 spellsText += "Initiative : ";
-                                spellsText += spellBonus.amount >= 0 ? "+ " : "- ";
-                                spellsText += Mathf.Abs(spellBonus.amount).ToString() + " " + spellBonus.spellType.ToString();
+                                spellsText += spellBonus.value >= 0 ? "+ " : "- ";
+                                spellsText += Mathf.Abs(spellBonus.value).ToString() + " " + spellBonus.type.ToString();
                             }
                             else
                             {
-                                spellsText += spellBonus.spellType.ToString() + " : ";
-                                spellsText += spellBonus.amount >= 0 ? "+ " : "- ";
-                                spellsText += Mathf.Abs(spellBonus.amount).ToString();
+                                spellsText += spellBonus.type.ToString() + " : ";
+                                spellsText += spellBonus.value >= 0 ? "+ " : "- ";
+                                spellsText += Mathf.Abs(spellBonus.value).ToString();
                             }
 
                             spellsText += "\n";

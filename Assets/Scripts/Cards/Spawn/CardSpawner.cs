@@ -3,13 +3,15 @@ namespace OMG.Card.UI
     using System.Linq;
     using UnityEngine;
 
+    using OMG.Card.Data;
+
     public class CardSpawner : MonoBehaviour
     {
         #region Shader Class
         [System.Serializable]
         private class ShaderCards
         {
-            public CardType cardType;
+            public CardBackground background;
             public Material shaderMaterial;
         }
         #endregion
@@ -43,7 +45,7 @@ namespace OMG.Card.UI
             PlayableCard newCardUI = newCard.GetComponent<PlayableCard>();
             newCardUI.Init(cardToSpawn, cardOptions);
             newCardUI.InitShader(shaderCards
-                                        .Where(shader => shader.cardType == cardToSpawn.cardType)
+                                        .Where(shader => shader.background == cardToSpawn.background)
                                         .Select(shader => shader.shaderMaterial)
                                         .FirstOrDefault());
 

@@ -2,14 +2,15 @@ namespace OMG.Card
 {
     using OMG.Battle;
     using OMG.Battle.Data;
+
     using OMG.Unit;
     using OMG.Unit.Oropo;
     using OMG.Unit.Status;
     using OMG.Unit.Monster;
-    using static CardData;
+
+    using OMG.Card.Data;
 
     using UnityEngine;
-    using System.Collections.Generic;
 
     public static class CardUtils
     {
@@ -26,7 +27,7 @@ namespace OMG.Card
             if (!UnitTest(card)) return; //Failed Unit Test
 
             IUnit[] targets = GetTargets(card.target);
-            ProcessCardType(card, targets);
+            ProcessCardType(card.type, card.value, targets);
             ProcessCardSpells(card.spells, playedFirst, targets);
         }
         public static void ProcessOnlyCardSpells(CardData card, bool playedFirst)
@@ -60,91 +61,79 @@ namespace OMG.Card
             }
         }
 
-        private static void ProcessCardType(CardData card, IUnit[] targets)
+        private static void ProcessCardType(CardAction type, int value, IUnit[] targets)
         {
-            CardType cardType = card.cardType;
-            int cardValue = card.cardValue;
-
-            if (cardType == CardType.Divine || cardType == CardType.Curse || cardType == CardType.Finisher)
+            switch (type)
             {
-                cardType = card.specialCardType;
-            }
-
-            switch (cardType)
-            {
-                case CardType.Attack:
+                case CardAction.Attack:
                     foreach (IUnit unit in targets)
                     {
-                        unit.Damage(cardValue);
+                        unit.Damage(value);
                     }
                     break;
 
-                case CardType.Defense:
+                case CardAction.Defense:
                     foreach (IUnit unit in targets)
                     {
-                        unit.AddArmor(cardValue);
+                        unit.AddArmor(value);
                     }
                     break;
 
-                case CardType.BoostMultiple:
-                    BattleSystem.Instance.GameBoard.BoostAllCard(cardValue);
+                case CardAction.Boost:
+                    BattleSystem.Instance.GameBoard.BoostAllCard(value);
                     break;
 
-                case CardType.Neutral:
-                    BattleSystem.Instance.GameBoard.SpawnCardsInHands(cardValue);
+                case CardAction.Neutral:
+                    BattleSystem.Instance.GameBoard.SpawnCardsInHands(value);
                     break;
 
-                case CardType.BoostSingle:
-                case CardType.Finisher:
-                case CardType.Divine:
-                case CardType.Curse:
                 default:
                     Debug.LogError("Youre not supposed to be here, how have you done.");
                     break;
             }
         }
-        private static void ProcessCardSpells(List<Spell> spells, bool playedFirst, IUnit[] targets)
+        private static void ProcessCardSpells(Spell[] spells, bool playedFirst, IUnit[] targets)
         {
             foreach (Spell spell in spells)
             {
-                if (!playedFirst && spell.isInitiative) continue;
+                if (spell.initiative && !playedFirst) continue;
 
                 ProcessACardSpell(spell, targets);
             }
         }
         private static void ProcessACardSpell(Spell spell, IUnit[] targets)
         {
-            switch (spell.spellType)
+            switch (spell.type)
             {
-                case Spells.Poison:
+                case SpellType.Poison:
                     foreach (IUnit unit in targets)
                     {
-                        unit.AddStatus(StatusType.Poison, spell.amount);
+                        unit.AddStatus(StatusType.Poison, spell.value);
                     }
                     return;
 
-                case Spells.Plaie:
-                    Oropo.AddStatus(StatusType.Plaie, spell.amount);
+                case SpellType.Plaie:
+                    Oropo.AddStatus(StatusType.Plaie, spell.value);
                     return;
 
-                case Spells.Shield:
-                    Oropo.AddArmor(spell.amount);
+                case SpellType.Shield:
+                    Oropo.AddArmor(spell.value);
                     return;
 
-                case Spells.Tenacite:
-                    Oropo.AddStatus(StatusType.Tenacite, spell.amount);
+                case SpellType.Tenacite:
+                    Oropo.AddStatus(StatusType.Tenacite, spell.value);
                     return;
 
-                case Spells.Bousculade:
+                case SpellType.Bousculade:
                     Debug.LogError("Bousculade pas implémenter");
                     return;
 
-                case Spells.Eveil:
-                    Oropo.AddStatus(StatusType.Eveil, spell.amount);
+                case SpellType.Eveil:
+                    Oropo.AddStatus(StatusType.Eveil, spell.value);
                     break;
 
                 default:
-                    Debug.LogError($"Spell is not recognize or not implemented {spell.spellType}.");
+                    Debug.LogError($"Spell is not recognize or not implemented {spell.type}.");
                     break;
             }
         }

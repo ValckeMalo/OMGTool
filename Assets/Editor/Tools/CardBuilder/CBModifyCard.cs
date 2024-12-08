@@ -2,7 +2,9 @@ namespace MaloProduction
 {
     using UnityEngine;
     using UnityEditor;
+
     using OMG.Tools.PreviewCard;
+    using OMG.Card.Data;
 
     public partial class CardBuilder : EditorWindow
     {
@@ -152,12 +154,9 @@ namespace MaloProduction
                 }
 
                 //TARGET
-                if (propCardType.enumValueIndex != (int)CardType.BoostMultiple && propCardType.enumValueIndex != (int)CardType.BoostSingle)
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
-                    using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
-                    {
-                        EditorGUILayout.PropertyField(propCardTarget);
-                    }
+                    EditorGUILayout.PropertyField(propCardTarget);
                 }
 
                 //SPELLS LIST
@@ -181,7 +180,7 @@ namespace MaloProduction
 
         private void ModifyNameCardObject()
         {
-            if (propCardName.stringValue != "New Card" && state == WindowState.Modify)
+            if (state == WindowState.Modify && propCardName != null && propCardName.stringValue != "New Card")
             {
                 AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(currentCard.targetObject), propCardName.stringValue);
             }
@@ -191,11 +190,11 @@ namespace MaloProduction
         {
             currentCard = new SerializedObject(cardLibrary.cards[indexCard]);
 
-            propCardName = currentCard.FindProperty("cardName");
-            propCardValue = currentCard.FindProperty("cardValue");
-            propCardWakfu = currentCard.FindProperty("wakfuCost");
-            propCardIcon = currentCard.FindProperty("iconCard");
-            propCardType = currentCard.FindProperty("cardType");
+            propCardName = currentCard.FindProperty("name");
+            propCardValue = currentCard.FindProperty("value");
+            propCardWakfu = currentCard.FindProperty("wakfu");
+            propCardIcon = currentCard.FindProperty("icon");
+            propCardType = currentCard.FindProperty("type");
             propCardTarget = currentCard.FindProperty("target");
             propCardSpells = currentCard.FindProperty("spells");
             propIsBoostable = currentCard.FindProperty("isBoostable");

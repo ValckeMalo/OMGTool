@@ -3,6 +3,8 @@ namespace MaloProduction
     using UnityEditor;
     using UnityEngine;
 
+    using OMG.Card.Data;
+
     public partial class CardBuilder : EditorWindow
     {
         #region Enum
@@ -15,14 +17,13 @@ namespace MaloProduction
         private enum CardTypeFilter
         {
             All = -1,
-            Attack = CardType.Attack,
-            Defense = CardType.Defense,
-            BoostSingle = CardType.BoostSingle,
-            BoostMultiple = CardType.BoostMultiple,
-            Neutral = CardType.Neutral,
-            Divine = CardType.Divine,
-            Curse = CardType.Curse,
-            Finisher = CardType.Finisher,
+            Attack = CardBackground.Attack,
+            Defense = CardBackground.Defense,
+            Boost= CardBackground.Boost,
+            Neutral = CardBackground.Neutral,
+            Divine = CardBackground.Divine,
+            Curse = CardBackground.Curse,
+            Finisher = CardBackground.Finisher,
         }
         private enum CardNavigation
         {

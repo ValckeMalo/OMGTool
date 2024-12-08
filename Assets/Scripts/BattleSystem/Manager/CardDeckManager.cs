@@ -81,10 +81,10 @@ namespace OMG.Battle.Manager
             cardPlayed.Remove(card);
 
             //don't reintroduce card that being use only one time in a combat like divine cure finisher or etheral card
-            if (card.isEtheral || 
-                card.cardType == CardType.Divine || 
-                card.cardType == CardType.Curse || 
-                card.cardType == CardType.Finisher) return; 
+            if (card.isEtheral ||
+                card.background == CardBackground.Divine ||
+                card.background == CardBackground.Curse ||
+                card.background == CardBackground.Finisher) return;
 
             int entryIndex = indexShuffle;
             int previousIndex = indexShuffle;

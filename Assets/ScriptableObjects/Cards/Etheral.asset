@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
   m_Name: Etheral
   m_EditorClassIdentifier: 
-  cardType: 2
-  target: 0
-  spells: []
+  background: 0
+  type: 0
+  value: 0
+  wakfu: 0
+  name: Etheral
+  icon: {fileID: 0}
   isBoostable: 0
-  needSacrifice: 0
   isEtheral: 1
-  wakfuCost: 6
-  cardValue: 15
-  cardName: Etheral
-  iconCard: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
+  needSacrifice: 0
+  target: 3
+  spells: []

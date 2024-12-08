@@ -5,7 +5,7 @@ namespace OMG.Battle.Manager
     using OMG.Card;
     using OMG.Card.Data;
     using OMG.Card.UI;
-    using System;
+
     using UnityEngine;
 
     [System.Serializable]
@@ -92,7 +92,7 @@ namespace OMG.Battle.Manager
 
             if (wakfuManager.IsAtMaxWakfu())
             {
-                if (playableCard.CardData.cardType != CardType.Finisher) //if it was a card that make wafku gauge full
+                if (playableCard.CardData.background != CardBackground.Finisher) //if it was a card that make wafku gauge full
                 {
                     cardBoardManager.SpawnFinishers(cardDeckManager.Finishers);
                     HUDBattle.Instance.ToggleFinishersMode(true);
@@ -119,7 +119,7 @@ namespace OMG.Battle.Manager
 
             //If there are enough wakfu available or if it's a finisher just process it
             //don't care about the wakfu cost for the finisher there all free
-            if (wakfuManager.CanAddWakfu(playableCard.WakfuCost) || playableCard.CardData.cardType == CardType.Finisher)
+            if (wakfuManager.CanAddWakfu(playableCard.WakfuCost) || playableCard.CardData.background == CardBackground.Finisher)
             {
                 if (DoesCardNeedAnotherCard(playableCard.CardData)) //Search if the card does need another one
                 {
@@ -138,7 +138,7 @@ namespace OMG.Battle.Manager
         }
         private bool DoesCardNeedAnotherCard(CardData card)
         {
-            return (card.needSacrifice || card.cardType == CardType.BoostSingle);
+            return (card.needSacrifice || (card.background == CardBackground.Boost && card.target == Target.OneCard));
         }
         private void ProcessCard(PlayableCard playableCard)
         {
@@ -162,7 +162,7 @@ namespace OMG.Battle.Manager
             {
                 ProcessSecondCardSacrifice(secondPlayableCard);
             }
-            else if (firstPlayableCard.CardData.cardType == CardType.BoostSingle)
+            else if (firstPlayableCard.CardData.background == CardBackground.Boost)
             {
                 ProcessSecondCardBoost(secondPlayableCard);
             }

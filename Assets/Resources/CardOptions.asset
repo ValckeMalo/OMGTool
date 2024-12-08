@@ -12,29 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cf356ab1d0ef946847a45c2ea17226, type: 3}
   m_Name: CardOptions
   m_EditorClassIdentifier: 
-  cardsTypeTexture:
+  backgroundSprite:
   - type: 0
-    background: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
-    iconCard: {fileID: 21300000, guid: c06132a5bc006d348881e200ee9de71f, type: 3}
+    sprite: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
   - type: 1
-    background: {fileID: 1397210691, guid: d6e0229eebccb144ba09ebb047d54212, type: 3}
-    iconCard: {fileID: 21300000, guid: bf7fd971c22658c4bac6a2eccfdc14a2, type: 3}
+    sprite: {fileID: 1397210691, guid: d6e0229eebccb144ba09ebb047d54212, type: 3}
   - type: 2
-    background: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
-    iconCard: {fileID: 21300000, guid: 90253d2a213d2544c8b9aa27b5b3351a, type: 3}
+    sprite: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
   - type: 3
-    background: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
-    iconCard: {fileID: 21300000, guid: 90253d2a213d2544c8b9aa27b5b3351a, type: 3}
+    sprite: {fileID: -1963147090, guid: f24f988aac215a243bcb4e190e63f55e, type: 3}
   - type: 4
-    background: {fileID: -1963147090, guid: f24f988aac215a243bcb4e190e63f55e, type: 3}
-    iconCard: {fileID: 21300000, guid: d0df08988c7562f4e97736a6a96c96ee, type: 3}
+    sprite: {fileID: -1864520909, guid: 052526c09a3fab242a2b8610f4dcfc22, type: 3}
   - type: 5
-    background: {fileID: -1864520909, guid: 052526c09a3fab242a2b8610f4dcfc22, type: 3}
-    iconCard: {fileID: 0}
+    sprite: {fileID: 1151999357, guid: 5cacfb1cc77aeec499c0ddb668baadf4, type: 3}
   - type: 6
-    background: {fileID: 1151999357, guid: 5cacfb1cc77aeec499c0ddb668baadf4, type: 3}
-    iconCard: {fileID: 0}
-  - type: 7
-    background: {fileID: -598820051, guid: 12856d8969ed3f84aa32ccee62e0018b, type: 3}
-    iconCard: {fileID: 0}
+    sprite: {fileID: -598820051, guid: 12856d8969ed3f84aa32ccee62e0018b, type: 3}
+  iconSprite:
+  - type: 0
+    sprite: {fileID: 21300000, guid: c06132a5bc006d348881e200ee9de71f, type: 3}
+  - type: 1
+    sprite: {fileID: 21300000, guid: bf7fd971c22658c4bac6a2eccfdc14a2, type: 3}
+  - type: 2
+    sprite: {fileID: 21300000, guid: 90253d2a213d2544c8b9aa27b5b3351a, type: 3}
+  - type: 3
+    sprite: {fileID: 21300000, guid: d0df08988c7562f4e97736a6a96c96ee, type: 3}
   wakfu: {fileID: 2112375095, guid: b5b84f74a1ef92548a9e21e45354cb64, type: 3}

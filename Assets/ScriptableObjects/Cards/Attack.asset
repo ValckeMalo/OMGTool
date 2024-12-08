@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
   m_Name: Attack
   m_EditorClassIdentifier: 
-  cardType: 0
-  target: 0
-  spells:
-  - isInitiative: 0
-    spellType: 0
-    amount: 26
-  needSacrifice: 1
-  wakfuCost: 1
-  cardValue: 25
-  cardName: Attack
-  iconCard: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  background: 0
+  type: 0
+  value: 0
+  wakfu: 0
+  name: Attack
+  icon: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
+  isBoostable: 1
+  isEtheral: 0
+  needSacrifice: 0
+  target: 2
+  spells: []

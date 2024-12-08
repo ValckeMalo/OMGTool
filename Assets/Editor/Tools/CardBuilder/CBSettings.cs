@@ -2,6 +2,7 @@ namespace MaloProduction
 {
     using UnityEngine;
     using UnityEditor;
+    using OMG.Card.Data;
 
     public partial class CardBuilder : EditorWindow
     {
@@ -10,9 +11,9 @@ namespace MaloProduction
         {
             public SettingsSection[] section;
 
-            public SettingsLine(SettingsSection[] section)
+            public SettingsLine(int nbSection)
             {
-                if (section.Length > 2)
+                if (nbSection > 4)
                 {
                     Debug.LogError($"This struct SettingsSection can handle only {maxNbSection} items.\n Your array has been truncated to {maxNbSection}.");
 
@@ -27,7 +28,7 @@ namespace MaloProduction
                 }
                 else
                 {
-                    this.section = section;
+                    this.section = new SettingsSection[nbSection];
                 }
             }
         }
@@ -36,10 +37,10 @@ namespace MaloProduction
             public readonly string titleSection;
             public readonly SettingsField[] field;
 
-            public SettingsSection(string titleSection, SettingsField[] field)
+            public SettingsSection(string titleSection, int nbField)
             {
                 this.titleSection = titleSection;
-                this.field = field;
+                this.field = new SettingsField[nbField];
             }
         }
 
@@ -62,15 +63,16 @@ namespace MaloProduction
         private const short nbLine = 4;
         private const float spacingWidthLine = 20f;
         private const float spacingHeightLine = 15f;
-        private const short maxNbSection = 2;
+        private const short maxNbSection = 4;
         #endregion
 
         //VAR
         private SerializedObject settings;
         private SerializedProperty wakfuIcon;
-        private SerializedProperty cardsType;
+        private SerializedProperty backgroundsSprite;
+        private SerializedProperty iconsSprite;
 
-        private SettingsLine[] linesSettings = new SettingsLine[4];
+        private SettingsLine[] linesSettings;
 
         #region Reload
         private void ReloadSettings()
@@ -78,40 +80,42 @@ namespace MaloProduction
             settings = new SerializedObject(cardSettings);
 
             wakfuIcon = settings.FindProperty("wakfu");
-            cardsType = settings.FindProperty("cardsTypeTexture");
+            backgroundsSprite = settings.FindProperty("backgroundSprite");
+            iconsSprite = settings.FindProperty("iconSprite");
 
             ReloadSettingsLine();
-            //ReloadSettingsWakfu();
         }
         private void ReloadSettingsLine()
         {
-            const short nbSectionCardsType = 2;
-            const short nbFieldCardsType = 2;
-            int indexArray = 0;
+            linesSettings = new SettingsLine[4];
 
-            for (int i = 0; i < linesSettings.Length; i++)
+            linesSettings[0] = new SettingsLine(4);
+            linesSettings[1] = new SettingsLine(3);
+
+            linesSettings[2] = new SettingsLine(4);
+
+            linesSettings[3] = new SettingsLine(1);
+
+            for (int i = 0; i < backgroundsSprite.arraySize; i++)
             {
-                linesSettings[i] = new SettingsLine(new SettingsSection[nbSectionCardsType]);
+                SerializedProperty backgoundSpriteProp = backgroundsSprite.GetArrayElementAtIndex(i);
+                SerializedProperty nameProp = backgoundSpriteProp.FindPropertyRelative("type");
 
-                for (int j = 0; j < nbSectionCardsType; j++)
-                {
-
-                    SerializedProperty fieldProp = cardsType.GetArrayElementAtIndex(indexArray);
-                    SerializedProperty enumProp = fieldProp.FindPropertyRelative("type");
-
-                    linesSettings[i].section[j] = new SettingsSection(enumProp.enumDisplayNames[enumProp.enumValueIndex], new SettingsField[nbFieldCardsType]);
-
-                    linesSettings[i].section[j].field[0] = new SettingsField(fieldProp.FindPropertyRelative("background"), "Background");
-                    linesSettings[i].section[j].field[1] = new SettingsField(fieldProp.FindPropertyRelative("iconCard"), "Icon");
-
-                    indexArray++;
-                }
+                linesSettings[(i >= 4) ? 1 : 0].section[(i >= 4) ? i - 4 : i] = new SettingsSection(nameProp.enumDisplayNames[nameProp.enumValueIndex], 1);
+                linesSettings[(i >= 4) ? 1 : 0].section[(i >= 4) ? i - 4 : i].field[0] = new SettingsField(backgoundSpriteProp.FindPropertyRelative("sprite"), "Background");
             }
-        }
-        private void ReloadSettingsWakfu()
-        {
-            linesSettings[4].section[0] = new SettingsSection("Wakfu", new SettingsField[1]);
-            linesSettings[4].section[0].field[0] = new SettingsField(wakfuIcon, "Icon");
+
+            for (int i = 0; i < iconsSprite.arraySize; i++)
+            {
+                SerializedProperty iconSpriteProp = iconsSprite.GetArrayElementAtIndex(i);
+                SerializedProperty nameProp = iconSpriteProp.FindPropertyRelative("type");
+
+                linesSettings[2].section[i] = new SettingsSection(nameProp.enumDisplayNames[nameProp.enumValueIndex], 1);
+                linesSettings[2].section[i].field[0] = new SettingsField(iconSpriteProp.FindPropertyRelative("sprite"), "Background");
+            }
+
+            linesSettings[3].section[0] = new SettingsSection("Wakfu", 1);
+            linesSettings[3].section[0].field[0] = new SettingsField(wakfuIcon, "Sprite");
         }
         #endregion
 
@@ -203,6 +207,8 @@ namespace MaloProduction
                 //fields scope
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
                 {
+                    if (section.field == null) return;
+
                     for (int i = 0; i < section.field.Length; i++)
                     {
                         FieldSection(section.field[i]);

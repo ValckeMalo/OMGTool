@@ -1,10 +1,13 @@
 namespace OMG.Battle.Manager
 {
+    using MaloProduction.CustomAttributes;
+
     using OMG.Card.UI;
+    using OMG.Card.Data;
 
     using UnityEngine;
     using System.Collections.Generic;
-    using MaloProduction.CustomAttributes;
+
 
     [System.Serializable]
     public class CardBoardManager
@@ -23,7 +26,7 @@ namespace OMG.Battle.Manager
                 return false;
 
             //If the playable is a finisher card put it in his spesific list
-            if (playableCard.CardData.cardType != CardType.Finisher)
+            if (playableCard.CardData.background != CardBackground.Finisher)
                 cardsOnBoard.Add(playableCard);
             else
                 finishersOnBoard.Add(playableCard);

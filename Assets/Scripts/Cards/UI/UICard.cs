@@ -1,11 +1,13 @@
-using MaloProduction.CustomAttributes;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
-
 namespace OMG.Card.UI
 {
+    using MaloProduction.CustomAttributes;
+
+    using OMG.Card.Data;
+
+    using TMPro;
+    using UnityEngine;
+    using UnityEngine.UI;
+
     public class UICard : MonoBehaviour
     {
         [Title("UI Card")]
@@ -36,41 +38,36 @@ namespace OMG.Card.UI
         {
             this.cardData = cardData;
 
-            background.sprite = options.cardsTypeTexture[(int)cardData.cardType].background;
+            background.sprite = options.backgroundSprite[(int)cardData.background].sprite;
 
             //Header Section
-            iconValue.sprite = options.cardsTypeTexture[(int)cardData.cardType].iconCard;
-            valueText.text = cardData.cardValue.ToString();
+            iconValue.sprite = options.iconSprite[(int)cardData.type].sprite;
+            valueText.text = cardData.value.ToString();
 
             wakfu.sprite = options.wakfu;
-            wakfuCostText.text = cardData.wakfuCost.ToString();
+            wakfuCostText.text = cardData.wakfu.ToString();
 
             //Center Section
-            icon.sprite = cardData.iconCard;
+            icon.sprite = cardData.icon;
 
             //Foot Section
-            nameText.text = cardData.cardName;
+            nameText.text = cardData.name;
 
             //Target
-            if (cardData.cardType == CardType.BoostSingle)
-                targetText.text = "Boost a Card";
-            else if (cardData.cardType == CardType.BoostMultiple)
-                targetText.text = "Boost all Cards";
-            else
-                targetText.text = "Target : " + cardData.target.ToString();
+            targetText.text = "Target : " + cardData.target.ToString();
 
             //Spells
             CreateSpellsText(cardData.spells);
         }
 
-        private void CreateSpellsText(List<CardData.Spell> spellsBonus)
+        private void CreateSpellsText(Spell[] spellsBonus)
         {
             string spellsLineText = string.Empty;
-            foreach (CardData.Spell spellBonus in spellsBonus)
+            foreach (Spell spellBonus in spellsBonus)
             {
-                spellsLineText += spellBonus.spellType.ToString(); // get the name of the spell by to string the enum
+                spellsLineText += spellBonus.type.ToString(); // get the name of the spell by to string the enum
                 spellsLineText += " : "; // separator
-                spellsLineText += spellBonus.amount.ToString(); // value
+                spellsLineText += spellBonus.value.ToString(); // value
                 spellsLineText += "\n"; // line break
 
                 GameObject spellsLine = Instantiate(spellsLinePrefab, spellsText);
@@ -92,9 +89,9 @@ namespace OMG.Card.UI
             valueText.text = cardValue.ToString();
             wakfuCostText.text = wakfuValue.ToString();
 
-            if (cardData.cardValue != cardValue)
+            if (cardData.value != cardValue)
                 valueText.color = Color.green;
-            if (cardData.wakfuCost != wakfuValue)
+            if (cardData.wakfu != wakfuValue)
                 wakfuCostText.color = Color.green;
         }
     }

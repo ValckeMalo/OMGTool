@@ -7,6 +7,7 @@ namespace MaloProduction
     using UnityEngine;
 
     using OMG.Tools.PreviewCard;
+    using OMG.Card.Data;
 
     public partial class CardBuilder : EditorWindow
     {
@@ -45,13 +46,13 @@ namespace MaloProduction
 
                     new FilterLine(new List<FilterElement>()
                     {
-                        new FilterElement(Spells.Poison),
+                        new FilterElement(SpellType.Poison),
                         new FilterElement(Comparison.Equal),
                         new FilterElement(0),
                     }),
                 });
 
-        private CardType cardTypeCreated = CardType.Attack;
+        private CardBackground cardBackgroundCreated = CardBackground.Attack;
 
         private void UpdateManageCard()
         {
@@ -105,7 +106,7 @@ namespace MaloProduction
                 {
                     GUILayout.FlexibleSpace();
                     //type card
-                    cardTypeCreated = (CardType)EditorGUILayout.EnumPopup(cardTypeCreated, GUILayout.ExpandWidth(true));
+                    cardBackgroundCreated = (CardBackground)EditorGUILayout.EnumPopup(cardBackgroundCreated, GUILayout.ExpandWidth(true));
                     GUILayout.FlexibleSpace();
                 }
             }
@@ -113,9 +114,9 @@ namespace MaloProduction
         private void CreateACard()
         {
             ScriptableObject newCard = ScriptableObject.CreateInstance(typeof(CardData));
-            (newCard as CardData).cardName = "NewCard";
+            (newCard as CardData).name = "NewCard";
             string newCardName = "NewCard" + ExtensionMethods.GenerateRandomString(10);
-            (newCard as CardData).cardType = cardTypeCreated;
+            (newCard as CardData).background = cardBackgroundCreated;
             AssetDatabase.CreateAsset(newCard, pathCard + newCardName + ".asset");
             cardLibrary.cards.Add(newCard as CardData);
         }
@@ -250,7 +251,7 @@ namespace MaloProduction
 
                                 new FilterLine(new List<FilterElement>()
                                 {
-                                    new FilterElement(Spells.Poison),
+                                    new FilterElement(SpellType.Poison),
                                     new FilterElement(Comparison.Equal),
                                     new FilterElement(0),
                                 }),
@@ -301,7 +302,7 @@ namespace MaloProduction
                 {
                     PreviewCardEditor.PreviewCard(listFiltered[i], cardSettings, (int)buttonWidth);
 
-                    EditorGUILayout.LabelField(listFiltered[i].cardName, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.Width(buttonWidth));
+                    EditorGUILayout.LabelField(listFiltered[i].name, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter }, GUILayout.Width(buttonWidth));
                 }
 
                 //draw invisible button on the top of the preview and name of the card
@@ -369,12 +370,12 @@ namespace MaloProduction
 
             if (nameFilter != string.Empty)
             {
-                filteredList = filteredList.Where(card => card.cardName.ToLower().Replace(" ", "").Contains(nameFilter.Replace(" ", "").ToLower())).Select(card => card).ToList();
+                filteredList = filteredList.Where(card => card.name.ToLower().Replace(" ", "").Contains(nameFilter.Replace(" ", "").ToLower())).Select(card => card).ToList();
             }
 
             if (typeFilter != CardTypeFilter.All)
             {
-                filteredList = filteredList.Where(card => card.cardType == (CardType)typeFilter).Select(card => card).ToList();
+                filteredList = filteredList.Where(card => card.background == (CardBackground)typeFilter).Select(card => card).ToList();
             }
 
             if (toggleCount > 0)
@@ -402,7 +403,7 @@ namespace MaloProduction
                                 FilterElement antepenultimateElement = line.GetElementAt(lastIndex - 2);
                                 if (TryEnumSpell(antepenultimateElement))
                                 {
-                                    filteredList = ComparisonSpell(filteredList, (Comparison)penultimateElement.EnumValue, (Spells)antepenultimateElement.EnumValue, lastElement.IntValue);
+                                    filteredList = ComparisonSpell(filteredList, (Comparison)penultimateElement.EnumValue, (SpellType)antepenultimateElement.EnumValue, lastElement.IntValue);
                                 }
                                 else
                                 {
@@ -438,7 +439,7 @@ namespace MaloProduction
         }
         private bool TryEnumSpell(FilterElement element)
         {
-            return (element.Type == FilterElementType.Enum && element.EnumValue is Spells);
+            return (element.Type == FilterElementType.Enum && element.EnumValue is SpellType);
         }
 
         private List<CardData> ComparisonWakfuCost(List<CardData> filteredList, Comparison comparison, int intValue)
@@ -446,11 +447,11 @@ namespace MaloProduction
             switch (comparison)
             {
                 case Comparison.GreaterOrEqual:
-                    return filteredList.Where(card => card.wakfuCost >= intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.wakfu >= intValue).Select(card => card).ToList();
                 case Comparison.Equal:
-                    return filteredList.Where(card => card.wakfuCost == intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.wakfu == intValue).Select(card => card).ToList();
                 case Comparison.LessOrEqual:
-                    return filteredList.Where(card => card.wakfuCost <= intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.wakfu <= intValue).Select(card => card).ToList();
                 default:
                     return filteredList;
             }
@@ -460,30 +461,30 @@ namespace MaloProduction
             switch (comparison)
             {
                 case Comparison.GreaterOrEqual:
-                    return filteredList.Where(card => card.cardValue >= intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.value >= intValue).Select(card => card).ToList();
                 case Comparison.Equal:
-                    return filteredList.Where(card => card.cardValue == intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.value == intValue).Select(card => card).ToList();
                 case Comparison.LessOrEqual:
-                    return filteredList.Where(card => card.cardValue <= intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.value <= intValue).Select(card => card).ToList();
                 default:
                     return filteredList;
             }
         }
-        private List<CardData> ComparisonSpell(List<CardData> filteredList, Comparison comparison, Spells spell, int intValue)
+        private List<CardData> ComparisonSpell(List<CardData> filteredList, Comparison comparison, SpellType spell, int intValue)
         {
             switch (comparison)
             {
                 case Comparison.GreaterOrEqual:
                     return filteredList
-                            .Where(card => card.spells.Any(spells => spells.spellType == spell && spells.amount >= intValue))
+                            .Where(card => card.spells.Any(spells => spells.type == spell && spells.value >= intValue))
                             .ToList();
                 case Comparison.Equal:
                     return filteredList
-                            .Where(card => card.spells.Any(spells => spells.spellType == spell && spells.amount == intValue))
+                            .Where(card => card.spells.Any(spells => spells.type == spell && spells.value == intValue))
                             .ToList();
                 case Comparison.LessOrEqual:
                     return filteredList
-                            .Where(card => card.spells.Any(spells => spells.spellType == spell && spells.amount <= intValue))
+                            .Where(card => card.spells.Any(spells => spells.type == spell && spells.value <= intValue))
                             .ToList();
                 default:
                     return filteredList;

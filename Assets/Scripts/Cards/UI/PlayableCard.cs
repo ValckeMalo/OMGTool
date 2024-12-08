@@ -3,7 +3,9 @@ namespace OMG.Card.UI
     using MaloProduction.CustomAttributes;
     using MaloProduction.Tween.DoTween.Module;
     using MaloProduction.Tween.Core;
+
     using OMG.Battle;
+    using OMG.Card.Data;
 
     using UnityEngine;
     using UnityEngine.EventSystems;
@@ -27,8 +29,8 @@ namespace OMG.Card.UI
 
         private bool isHoverFixed = false;
 
-        public int WakfuCost => cardData.wakfuCost + wakfuBoost;
-        public int CardValue => cardData.cardValue + boostValue;
+        public int WakfuCost => cardData.wakfu + wakfuBoost;
+        public int CardValue => cardData.value + boostValue;
         public CardData CardData => cardData;
 
         #region Card State

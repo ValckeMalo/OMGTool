@@ -1,18 +1,29 @@
-using UnityEngine;
-using System.Collections.Generic;
-
-[CreateAssetMenu(fileName = "CardOptions",order = 2,menuName = "Card/Options")]
-public class CardOptions : ScriptableObject
+namespace OMG.Card.Data
 {
-    public List<CardTypeTexture> cardsTypeTexture = new List<CardTypeTexture>();
+    using UnityEngine;
+    using System.Collections.Generic;
 
-    public Sprite wakfu;
 
-    [System.Serializable]
-    public class CardTypeTexture
+    [CreateAssetMenu(fileName = "CardOptions", order = 2, menuName = "Card/Options")]
+    public class CardOptions : ScriptableObject
     {
-        public CardType type;
-        public Sprite background;
-        public Sprite iconCard;
+        public List<BackgroundSprite> backgroundSprite = new List<BackgroundSprite>();
+        public List<IconSprite> iconSprite = new List<IconSprite>();
+
+        public Sprite wakfu;
+
+        [System.Serializable]
+        public class BackgroundSprite
+        {
+            public CardBackground type;
+            public Sprite sprite;
+        }
+
+        [System.Serializable]
+        public class IconSprite
+        {
+            public CardAction type;
+            public Sprite sprite;
+        }
     }
 }

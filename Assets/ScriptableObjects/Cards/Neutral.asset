@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
   m_Name: Neutral
   m_EditorClassIdentifier: 
-  cardType: 4
-  target: 3
-  spells: []
-  isBoostable: 0
+  background: 3
+  type: 3
+  value: 0
+  wakfu: 0
+  name: Neutral
+  icon: {fileID: 0}
+  isBoostable: 1
+  isEtheral: 0
   needSacrifice: 0
-  wakfuCost: -1
-  cardValue: 1
-  cardName: Neutral
-  iconCard: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
+  target: 1
+  spells: []

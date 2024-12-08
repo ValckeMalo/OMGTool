@@ -1,81 +1,71 @@
-using System.Collections.Generic;
-using UnityEngine;
-
-[CreateAssetMenu(menuName = "Card/Cards", order = 3, fileName = "NewCard")]
-public class CardData : ScriptableObject
+namespace OMG.Card.Data
 {
-    [System.Serializable]
-    public class Spell
+    using UnityEngine;
+
+    [CreateAssetMenu(menuName = "Card/Cards", order = 3, fileName = "NewCard")]
+    public class CardData : ScriptableObject
     {
-        public bool isInitiative = false;
-        public bool showDescOnCard = true;
+        public CardBackground background;
+        public CardAction type;
 
-        public Spells spellType = Spells.Poison;
-        public int amount = 0;
+        public int value = 0;
+        [Range(-6, 6)] public int wakfu = 0;
+        public new string name = string.Empty;
 
-        public CardData cardToSpawn = null;
+        public Sprite icon = null;
+
+        public bool isBoostable = true;
+        public bool isEtheral = false;
+        public bool needSacrifice = false;
+
+        public Target target;
+
+        public Spell[] spells = null;
     }
 
-    public CardType cardType;
-    public CardType specialCardType;
-    public Target target;
-
-    public List<Spell> spells = new List<Spell>();
-
-    public bool isBoostable = true;
-    public bool needSacrifice = false;
-    public bool isEtheral = false;
-
-    public int wakfuCost;
-    public int cardValue;
-
-    public string cardName;
-
-    public Sprite iconCard;
-}
-
-public static class TargetStringProvider
-{
-    /// <summary>
-    /// Array of strings representing different types of targets.
-    /// </summary>
-    public static string[] TargetDescriptions = new string[(int)Target.Count]
+    public enum CardBackground
     {
-        "first monster",
-        "last monster",
-        "all monsters",
-        "Oropo"
-    };
-}
+        Attack,
+        Defense,
+        Boost,
+        Neutral,
+        Divine,
+        Curse,
+        Finisher,
+    }
+    public enum CardAction
+    {
+        Attack,
+        Defense,
+        Boost,
+        Neutral,
+    }
+    public enum Target
+    {
+        None,
+        Oropo,
+        FirstMonster,
+        LastMonster,
+        AllMonsters,
+        RandomUnit,
+        OneCard,
+        AllCards,
+        RandomCard,
+    }
 
-
-public enum Spells
-{
-    Poison,
-    Plaie,
-    Shield,
-    Tenacite,
-    Bousculade,
-    Eveil,
-}
-
-public enum Target
-{
-    FirstMonster,
-    LastMonster,
-    AllMonsters,
-    Oropo,
-    Count,
-}
-
-public enum CardType
-{
-    Attack,
-    Defense,
-    BoostSingle,
-    BoostMultiple,
-    Neutral,
-    Divine,
-    Curse,
-    Finisher,
+    public static class TargetStringProvider
+    {
+        public static string[] TargetDescriptions =
+        {
+            "",
+            "Oropo",
+            "First Monster",
+            "Last Monster",
+            "All Monsters",
+            "Random Unit",
+            "Boost One Card",
+            "Boost All Cards",
+            "Boost a Random Card",
+        };
+    }
 }
