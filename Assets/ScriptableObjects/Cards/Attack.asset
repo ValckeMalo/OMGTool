@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: 0
   type: 0
-  value: 0
-  wakfu: 0
+  value: 1500
+  wakfu: 2
   name: Attack
-  icon: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
+  icon: {fileID: -1864520909, guid: 052526c09a3fab242a2b8610f4dcfc22, type: 3}
   isBoostable: 1
   isEtheral: 0
   needSacrifice: 0

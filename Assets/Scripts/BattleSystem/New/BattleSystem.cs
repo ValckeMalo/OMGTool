@@ -2,14 +2,16 @@ namespace OMG.Battle
 {
     using MaloProduction.CustomAttributes;
 
+    using OMG.Battle.Manager;
     using OMG.Battle.Data;
     using OMG.Battle.UI;
-    using OMG.Battle.Manager;
+    using OMG.Unit.Monster;
 
     using System.Linq;
 
     using Unity.Behavior;
     using UnityEngine;
+    using UnityEditor;
 
     public class BattleSystem : MonoBehaviour
     {
@@ -46,6 +48,7 @@ namespace OMG.Battle
         public MonstersBattleManager MonstersBattleManager { get => monstersBattleManager; }
         public BattleData BattleData { get => battleUnits; }
         public int TurnIndex { get; private set; } /*I think i need to put it in the gameBoard it's more natural TODO*/
+        private int remainMonsterAlive => battleUnits.GetAllMonsters().Length;
 
         public void Start() => StartBattle();
 
@@ -89,26 +92,53 @@ namespace OMG.Battle
             SwitchBattleSate(BattleState.Monsters);
         }
 
+        public void OropoDeath()
+        {
+            SwitchBattleSate(BattleState.Lose);
+        }
+
+        public void MobDead(Monster mobDead)
+        {
+            battleUnits.DeadMob(mobDead);
+
+            if (remainMonsterAlive <= 0)
+            {
+                SwitchBattleSate(BattleState.Win);
+            }
+        }
+
         private void SwitchBattleSate(BattleState newState)
         {
             switch (newState)
             {
                 case BattleState.Oropo:
                     HUDBattle.Instance.SwitchState(HUDBattle.BattleHUDState.Oropo);
-                    battleUnits.GetOropo().UpdateUnit();
-                    GameBoard.StartOropoTurn();
+                    if (battleUnits.GetOropo().UpdateUnit())
+                    {
+                        GameBoard.StartOropoTurn();
+                    }
                     break;
 
                 case BattleState.Monsters:
                     HUDBattle.Instance.SwitchState(HUDBattle.BattleHUDState.Monsters);
-                    MonstersBattleManager.UpdateMonstersTurn(battleUnits.GetAllMonsters(), battleUnits.GetOropo(), blackboardAsset.Blackboard);
-                    SwitchBattleSate(BattleState.Oropo);
+                    if (remainMonsterAlive >= 0)
+                    {
+                        MonstersBattleManager.UpdateMonstersTurn(battleUnits.GetAllMonsters(), battleUnits.GetOropo(), blackboardAsset.Blackboard);
+                        if (remainMonsterAlive >= 0)
+                        {
+                            SwitchBattleSate(BattleState.Oropo);
+                        }
+                    }
                     break;
 
                 case BattleState.Win:
+                    Debug.LogError("WIN");
+                    EditorApplication.isPlaying = false;
                     break;
 
                 case BattleState.Lose:
+                    Debug.LogError("LOSE");
+                    EditorApplication.isPlaying = false;
                     break;
 
                 default:

@@ -27,12 +27,13 @@ namespace OMG.Card
             if (!UnitTest(card)) return; //Failed Unit Test
 
             IUnit[] targets = GetTargets(card.target);
-            ProcessCardType(card.type, card.value, targets);
+            ProcessCardType(card.type, valueCard, targets);
             ProcessCardSpells(card.spells, playedFirst, targets);
         }
         public static void ProcessOnlyCardSpells(CardData card, bool playedFirst)
         {
             if (!UnitTest(card)) return; //Failed Unit Test
+            if (card.spells == null || card.spells.Length <= 0 || card.type == CardAction.Boost) return;
 
             IUnit[] targets = GetTargets(card.target);
             ProcessCardSpells(card.spells, playedFirst, targets);

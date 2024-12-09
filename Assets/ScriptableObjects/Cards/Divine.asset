@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
-  m_Name: Boost Multiple
+  m_Name: Divine
   m_EditorClassIdentifier: 
-  background: 2
-  type: 2
-  value: 0
+  background: 4
+  type: 0
+  value: 102
   wakfu: 0
-  name: Boost
-  icon: {fileID: 0}
-  isBoostable: 1
+  name: Divine
+  icon: {fileID: 1397210691, guid: d6e0229eebccb144ba09ebb047d54212, type: 3}
+  isBoostable: 0
   isEtheral: 0
   needSacrifice: 0
-  target: 6
+  target: 3
   spells: []

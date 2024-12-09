@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: 1
   type: 1
-  value: 0
-  wakfu: 0
+  value: 150
+  wakfu: 1
   name: Defense
-  icon: {fileID: 0}
+  icon: {fileID: 1151999357, guid: 5cacfb1cc77aeec499c0ddb668baadf4, type: 3}
   isBoostable: 1
   isEtheral: 0
   needSacrifice: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
   value: 0
   wakfu: 0
   name: Finisher
-  icon: {fileID: 0}
+  icon: {fileID: -1963147090, guid: f24f988aac215a243bcb4e190e63f55e, type: 3}
   isBoostable: 0
   isEtheral: 0
   needSacrifice: 0

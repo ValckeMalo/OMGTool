@@ -1,7 +1,7 @@
 namespace OMG.Unit.Monster
 {
     using MaloProduction.CustomAttributes;
-
+    using OMG.Battle;
     using OMG.Unit;
     using OMG.Unit.Monster.Brain;
     using UnityEngine;
@@ -43,6 +43,11 @@ namespace OMG.Unit.Monster
             {
                 brain.SearchAction();
             }
+        }
+
+        protected override void Death()
+        {
+            BattleSystem.Instance.MobDead(this);
         }
     }
 }

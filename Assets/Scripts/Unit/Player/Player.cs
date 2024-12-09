@@ -1,5 +1,6 @@
 namespace OMG.Unit.Oropo
 {
+    using OMG.Battle;
     using OMG.Card.Data;
     using UnityEngine;
 
@@ -12,6 +13,11 @@ namespace OMG.Unit.Oropo
         public override string GetName()
         {
             return "Player";
+        }
+
+        protected override void Death()
+        {
+            BattleSystem.Instance.OropoDeath();
         }
     }
 }

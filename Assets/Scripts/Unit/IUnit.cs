@@ -13,6 +13,6 @@ namespace OMG.Unit
         public void ClearStatus(StatusType status);
         public void ClearAllStatus();
 
-        public void UpdateUnit();
+        public bool UpdateUnit();
     }
 }

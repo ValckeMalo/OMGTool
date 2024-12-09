@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffe2bb26d27b09c458cffa80891c4e83, type: 3}
-  m_Name: Etheral
+  m_Name: Curse
   m_EditorClassIdentifier: 
-  background: 0
+  background: 5
   type: 0
-  value: 0
+  value: 20
   wakfu: 0
-  name: Etheral
-  icon: {fileID: -1864520909, guid: 052526c09a3fab242a2b8610f4dcfc22, type: 3}
-  isBoostable: 0
-  isEtheral: 1
+  name: Curse
+  icon: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
+  isBoostable: 1
+  isEtheral: 0
   needSacrifice: 0
-  target: 3
+  target: 1
   spells: []

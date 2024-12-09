@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: 3
   type: 3
-  value: 0
-  wakfu: 0
+  value: 1
+  wakfu: -1
   name: Neutral
-  icon: {fileID: 0}
-  isBoostable: 1
+  icon: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
+  isBoostable: 0
   isEtheral: 0
   needSacrifice: 0
   target: 1

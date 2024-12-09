@@ -30,7 +30,15 @@ namespace OMG.Battle.Data
         }
         public Monster GetFirstMonster()
         {
-            return monsters[0];
+            for (int i = 0; i < monsters.Length; i++)
+            {
+                if (monsters[i] != null)
+                {
+                    return monsters[i];
+                }
+            }
+
+            return null;
         }
         public Monster GetLastMonster()
         {
@@ -47,6 +55,14 @@ namespace OMG.Battle.Data
         public Monster[] GetAllMonsters()
         {
             return monsters.Where(x => x != null).ToArray();
+        }
+
+        public void DeadMob(Monster deadMonster)
+        {
+            for (int i = 0; i < monsters.Length; i++)
+            {
+                if (monsters[i] == deadMonster) monsters[i] = null;
+            }
         }
     }
 }

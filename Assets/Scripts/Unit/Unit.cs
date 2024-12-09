@@ -24,6 +24,22 @@ namespace OMG.Unit
             OnUnitDataModified?.Invoke(unitData);
         }
 
+        private bool IsDead()
+        {
+            if (unitData == null)
+            {
+                Debug.Log("HEUUU UN PTIT PB LA");
+                return false;
+            }
+            if (unitData.hp <= 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        protected abstract void Death();
+
         #region IUnit
         public virtual void AddArmor(int armor)
         {
@@ -87,7 +103,7 @@ namespace OMG.Unit
             unitData.hp -= damage;
             CallDataModified();
         }
-        public virtual void UpdateUnit()
+        public virtual bool UpdateUnit()
         {
             if (!HaveStatus(StatusType.Tenacite)) ClearArmor(); //Update Armor
 
@@ -95,6 +111,14 @@ namespace OMG.Unit
 
             UpdateAllStatus();
             CallDataModified();
+
+            if (IsDead())
+            {
+                Death();
+                return false;
+            }
+
+            return true;
         }
         private bool HaveStatus(StatusType statusType)
         {

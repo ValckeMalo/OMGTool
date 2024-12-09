@@ -8,12 +8,29 @@ namespace MaloProduction
 
     public partial class CardBuilder : EditorWindow
     {
+        private enum TargetBoostWrapper
+        {
+            AllCards = Target.AllCards,
+            OneCard = Target.OneCard,
+            RandomCard = Target.RandomCard,
+        }
+        private enum TargetWrapper
+        {
+            None = Target.None,
+            Oropo = Target.Oropo,
+            FirstMonster = Target.FirstMonster,
+            LastMonster = Target.LastMonster,
+            AllMonsters = Target.AllMonsters,
+            RandomUnit = Target.RandomUnit,
+        }
+
         //SerializedObject var
         private SerializedObject currentCard;
         private SerializedProperty propCardName;
         private SerializedProperty propCardValue;
         private SerializedProperty propCardWakfu;
         private SerializedProperty propCardIcon;
+        private SerializedProperty propBackground;
         private SerializedProperty propCardType;
         private SerializedProperty propCardTarget;
         private SerializedProperty propCardSpells;
@@ -103,24 +120,50 @@ namespace MaloProduction
         private void CardDataField()
         {
             currentCard.Update();
+            CardBackground cardBG = (CardBackground)propBackground.enumValueIndex;
+            Target cardTarget = (Target)propCardTarget.enumValueIndex;
+            CardAction cardType = (CardAction)propCardType.enumValueIndex;
+
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
             {
+
                 //CARD NAME
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
                     EditorGUILayout.PropertyField(propCardName);
                 }
 
+                //BACKGROUND CARD
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    EditorGUILayout.PropertyField(propBackground);
+                }
+                //TYPE CARD
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    GUI.enabled = false;
+
+                    if (cardBG == CardBackground.Divine || cardBG == CardBackground.Curse || cardBG == CardBackground.Finisher)
+                        GUI.enabled = true;
+
+                    EditorGUILayout.PropertyField(propCardType);
+                    GUI.enabled = true;
+                }
+
+                //NAME CARD
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    EditorGUILayout.PropertyField(propCardName);
+                }
                 //VALUE CARD
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
                     EditorGUILayout.PropertyField(propCardValue);
                 }
-
-                //WAKFU COST
+                //VALUE CARD
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
-                    EditorGUILayout.IntSlider(propCardWakfu, -6, 6);
+                    EditorGUILayout.PropertyField(propCardWakfu);
                 }
 
                 //ICON CARD
@@ -129,49 +172,86 @@ namespace MaloProduction
                     EditorGUILayout.PropertyField(propCardIcon);
                 }
 
-                //CARD TYPE
+                //BOOSTABLE CARD
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
-                    EditorGUILayout.PropertyField(propCardType);
-                }
-
-                //IS BOOSTABLE
-                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
-                {
-                    EditorGUILayout.PropertyField(propIsBoostable);
-                }
-
-                //NEED SACRIFICE
-                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
-                {
-                    EditorGUILayout.PropertyField(propNeedSacrifice);
-                }
-
-                //IS ETHERAL
-                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
-                {
-                    EditorGUILayout.PropertyField(propIsEtheral);
-                }
-
-                //TARGET
-                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
-                {
-                    EditorGUILayout.PropertyField(propCardTarget);
-                }
-
-                //SPELLS LIST
-                using (EditorGUILayout.ScrollViewScope scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition, GUILayout.MaxHeight(250f)))
-                {
-                    scrollPosition = scrollView.scrollPosition;
-                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                    if (cardBG == CardBackground.Divine || cardBG == CardBackground.Finisher)
                     {
-                        EditorGUILayout.PropertyField(propCardSpells);
+                        propIsBoostable.boolValue = false;
+                        GUI.enabled = false;
                     }
+
+                    EditorGUILayout.PropertyField(propIsBoostable);
+                    GUI.enabled = true;
+                }
+                //NEED SACRIFICE CARD
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    if (cardTarget == Target.OneCard || cardBG == CardBackground.Finisher)
+                    {
+                        propNeedSacrifice.boolValue = false;
+                        GUI.enabled = false;
+                    }
+
+                    EditorGUILayout.PropertyField(propNeedSacrifice);
+                    GUI.enabled = true;
+                }
+                //ETHERAL CARD
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    if (cardBG == CardBackground.Divine || cardBG == CardBackground.Finisher || cardBG == CardBackground.Curse)
+                    {
+                        propIsEtheral.boolValue = false;
+                        GUI.enabled = false;
+                    }
+
+                    EditorGUILayout.PropertyField(propIsEtheral);
+                    GUI.enabled = true;
+                }
+
+                //TARGET CARD
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    if (cardType == CardAction.Boost)
+                    {
+                        propCardTarget.enumValueIndex = (int)((CardAction)EditorGUILayout.EnumPopup("Target", (TargetBoostWrapper)propCardTarget.enumValueIndex));
+                    }
+                    else if (cardType == CardAction.Defense || cardType == CardAction.Neutral)
+                    {
+                        GUI.enabled = false;
+                        propCardTarget.enumValueIndex = (int)Target.Oropo;
+                        EditorGUILayout.PropertyField(propCardTarget);
+                        GUI.enabled = true;
+                    }
+                    else
+                    {
+                        propCardTarget.enumValueIndex = (int)((CardAction)EditorGUILayout.EnumPopup("Target", (TargetWrapper)propCardTarget.enumValueIndex));
+                    }
+                }
+
+                //SPELLS CARD
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    EditorGUILayout.PropertyField(propCardSpells);
                 }
             }
 
             // save
+            CardBackground newCardBG = (CardBackground)propBackground.enumValueIndex;
+            if (cardBG != newCardBG)
+            {
+                if (newCardBG == CardBackground.Attack)
+                    propCardType.enumValueIndex = (int)CardAction.Attack;
+                else if (newCardBG == CardBackground.Defense)
+                    propCardType.enumValueIndex = (int)CardAction.Defense;
+                else if (newCardBG == CardBackground.Boost)
+                    propCardType.enumValueIndex = (int)CardAction.Boost;
+                else if (newCardBG == CardBackground.Neutral)
+                    propCardType.enumValueIndex = (int)CardAction.Neutral;
+            }
+
             currentCard.ApplyModifiedProperties();
+
             if (LooseFocus())
             {
                 ModifyNameCardObject();
@@ -190,16 +270,22 @@ namespace MaloProduction
         {
             currentCard = new SerializedObject(cardLibrary.cards[indexCard]);
 
-            propCardName = currentCard.FindProperty("name");
+            propBackground = currentCard.FindProperty("background");
+            propCardType = currentCard.FindProperty("type");
+
             propCardValue = currentCard.FindProperty("value");
             propCardWakfu = currentCard.FindProperty("wakfu");
+            propCardName = currentCard.FindProperty("name");
+
             propCardIcon = currentCard.FindProperty("icon");
-            propCardType = currentCard.FindProperty("type");
-            propCardTarget = currentCard.FindProperty("target");
-            propCardSpells = currentCard.FindProperty("spells");
+
             propIsBoostable = currentCard.FindProperty("isBoostable");
             propNeedSacrifice = currentCard.FindProperty("needSacrifice");
             propIsEtheral = currentCard.FindProperty("isEtheral");
+
+            propCardTarget = currentCard.FindProperty("target");
+
+            propCardSpells = currentCard.FindProperty("spells");
 
             this.indexCard = indexCard;
         }
