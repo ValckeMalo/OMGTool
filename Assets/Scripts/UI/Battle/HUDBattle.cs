@@ -58,7 +58,7 @@ namespace OMG.Battle.UI
             #region PadLock
             public void BreakPadLock()
             {
-                padLocksContainer.GetChild(nbActivePadLocks - 1).GetComponent<Image>().sprite = padLockSprite[1];
+                padLocksContainer.GetChild(nbActivePadLocks - 1).GetComponentInChildren<Image>().sprite = padLockSprite[1];
             }
             public void ResetPadLock()
             {
