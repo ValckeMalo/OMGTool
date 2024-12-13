@@ -30,7 +30,7 @@ namespace OMG.Battle.UI
                 wakfuSlider.DoValue(wakfu, 0.2f);
             }
 
-            public void UpdatePreviewBar(int previewWakfu)
+            public void UpdatePreviewBar(int previewWakfu, int wakfu)
             {
                 if (tweenSlider != null)
                 {
@@ -38,8 +38,9 @@ namespace OMG.Battle.UI
                 }
 
                 tweenSlider = previewWakfuSlider.DoValue(previewWakfu, 0.2f);
+                wakfuSlider.value = wakfu;
             }
-            public void ResetPreviewBar()
+            public void ResetPreviewBar(int wakfu)
             {
                 if (tweenSlider != null)
                 {
@@ -47,10 +48,12 @@ namespace OMG.Battle.UI
                 }
 
                 previewWakfuSlider.value = 0f;
+
+                wakfuSlider.value = wakfu;
             }
             public void ResetGauges()
             {
-                ResetPreviewBar();
+                ResetPreviewBar(0);
                 wakfuSlider.value = 0f;
             }
             #endregion

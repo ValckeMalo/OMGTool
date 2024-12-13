@@ -124,7 +124,6 @@ namespace OMG.Battle.Manager
                 if (DoesCardNeedAnotherCard(playableCard.CardData)) //Search if the card does need another one
                 {
                     playableCard.FixHover(); //Let it in hover mode
-                    cardBoardManager.ToggleSacrificiableCard();
                     firstPlayableCard = playableCard;
                     HUDBattle.Instance.ToggleSelectSecondCard(true);
                     return;
@@ -138,7 +137,17 @@ namespace OMG.Battle.Manager
         }
         private bool DoesCardNeedAnotherCard(CardData card)
         {
-            return (card.needSacrifice || (card.background == CardBackground.Boost && card.target == Target.OneCard));
+            if (card.needSacrifice)
+            {
+                cardBoardManager.ToggleSacrificiableCard();
+                return true; 
+            }
+            else if(card.background == CardBackground.Boost && card.target == Target.OneCard)
+            {
+                cardBoardManager.ToggleBoostableCard();
+                return true;
+            }
+            return false;
         }
         private void ProcessCard(PlayableCard playableCard)
         {
