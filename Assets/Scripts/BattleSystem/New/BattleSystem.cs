@@ -6,12 +6,14 @@ namespace OMG.Battle
     using OMG.Battle.Data;
     using OMG.Battle.UI;
     using OMG.Unit.Monster;
+    using OMG.Unit;
 
     using System.Linq;
 
     using Unity.Behavior;
     using UnityEngine;
     using UnityEditor;
+    using System.Collections;
 
     public class BattleSystem : MonoBehaviour
     {
@@ -112,23 +114,11 @@ namespace OMG.Battle
             switch (newState)
             {
                 case BattleState.Oropo:
-                    HUDBattle.Instance.SwitchState(HUDBattle.BattleHUDState.Oropo);
-                    if (battleUnits.GetOropo().UpdateUnit())
-                    {
-                        GameBoard.StartOropoTurn();
-                    }
+                    StartCoroutine(OropoTurn());
                     break;
 
                 case BattleState.Monsters:
-                    HUDBattle.Instance.SwitchState(HUDBattle.BattleHUDState.Monsters);
-                    if (remainMonsterAlive >= 0)
-                    {
-                        MonstersBattleManager.UpdateMonstersTurn(battleUnits.GetAllMonsters(), battleUnits.GetOropo(), blackboardAsset.Blackboard);
-                        if (remainMonsterAlive >= 0)
-                        {
-                            SwitchBattleSate(BattleState.Oropo);
-                        }
-                    }
+                    StartCoroutine(MonsterTurn());
                     break;
 
                 case BattleState.Win:
@@ -145,6 +135,25 @@ namespace OMG.Battle
                     Debug.LogError($"Can't recognize the newState : {newState} , {(int)newState}");
                     return;
             }
+        }
+
+        private IEnumerator MonsterTurn()
+        {
+            HUDBattle.Instance.TweenTest(true);
+            HUDBattle.Instance.SwitchState(HUDBattle.BattleHUDState.Monsters);
+            yield return new WaitForSeconds(2f);
+
+            MonstersBattleManager.UpdateMonstersTurn(battleUnits.GetAllMonsters(), battleUnits.GetOropo(), blackboardAsset.Blackboard);
+            SwitchBattleSate(BattleState.Oropo);
+        }
+        private IEnumerator OropoTurn()
+        {
+            HUDBattle.Instance.TweenTest(false);
+            yield return new WaitForSeconds(2f);
+            HUDBattle.Instance.SwitchState(HUDBattle.BattleHUDState.Oropo);
+
+            battleUnits.GetOropo().UpdateUnit();
+            GameBoard.StartOropoTurn();
         }
     }
 }

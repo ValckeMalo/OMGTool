@@ -10,6 +10,9 @@ namespace OMG.Card.UI
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
+    using MaloProduction.Tween;
+    using System;
+    using OMG.Battle.UI;
 
     public class PlayableCard : UICard, IPointerEnterHandler, IPointerExitHandler
     {
@@ -48,7 +51,7 @@ namespace OMG.Card.UI
         public void FixHover()
         {
             isHoverFixed = true;
-            ScaleUp();
+            ScaleUp(false);
         }
         public void UnFixHover()
         {
@@ -99,13 +102,20 @@ namespace OMG.Card.UI
         }
 
         #region Tween
-        private void ScaleUp()
+        private void ScaleUp(bool addDelay)
         {
             if (tweenScale != null)
             {
                 TweenManager.Despawn(tweenScale);
             }
-            tweenScale = rect.DoScale(BaseSize * ratioScale, 0.1f);
+            if (addDelay)
+            {
+                tweenScale = rect.DoScale(BaseSize * ratioScale, 0.1f).AddDelay(0.1f);
+            }
+            else
+            {
+                tweenScale = rect.DoScale(BaseSize * ratioScale, 0.1f);
+            }
         }
         private void ScaleDown()
         {
@@ -122,12 +132,15 @@ namespace OMG.Card.UI
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
         {
-            ScaleUp();
+            ScaleUp(true);
+            TooltipManager.Instance.SpawnTooltipCard(cardData, rect);
             BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);
         }
+
         public void OnPointerExit(PointerEventData eventData)
         {
             ScaleDown();
+            TooltipManager.Instance.HideTooltipCard();
             BattleSystem.Instance.GameBoard.ResetPreviewBar();
         }
         #endregion

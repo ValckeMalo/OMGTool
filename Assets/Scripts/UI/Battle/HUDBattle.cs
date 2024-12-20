@@ -1,10 +1,14 @@
 namespace OMG.Battle.UI
 {
+    using MaloProduction.Tween;
     using MaloProduction.Tween.Core;
     using MaloProduction.Tween.DoTween.Module;
+
     using OMG.Battle.UI.Manager;
     using OMG.Unit;
+
     using System;
+    using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
 
@@ -30,7 +34,7 @@ namespace OMG.Battle.UI
                 wakfuSlider.DoValue(wakfu, 0.2f);
             }
 
-            public void UpdatePreviewBar(int previewWakfu, int wakfu)
+            public void UpdatePreviewBar(int previewWakfu)
             {
                 if (tweenSlider != null)
                 {
@@ -38,9 +42,8 @@ namespace OMG.Battle.UI
                 }
 
                 tweenSlider = previewWakfuSlider.DoValue(previewWakfu, 0.2f);
-                wakfuSlider.value = wakfu;
             }
-            public void ResetPreviewBar(int wakfu)
+            public void ResetPreviewBar()
             {
                 if (tweenSlider != null)
                 {
@@ -48,12 +51,10 @@ namespace OMG.Battle.UI
                 }
 
                 previewWakfuSlider.value = 0f;
-
-                wakfuSlider.value = wakfu;
             }
             public void ResetGauges()
             {
-                ResetPreviewBar(0);
+                ResetPreviewBar();
                 wakfuSlider.value = 0f;
             }
             #endregion
@@ -137,6 +138,8 @@ namespace OMG.Battle.UI
         [SerializeField] private WakfuGauge wakfuGauge;
         [SerializeField] private UnitsHUDManager unitsHUDManager; //NOT SURE ABOUT THIS CLASS IT'S SO EMPTY
         [SerializeField] private Button cancelSecondCard;
+        [SerializeField] private RectTransform turnName;
+        [SerializeField] private TextMeshProUGUI turnNameText;
 
         public void Start()
         {
@@ -153,6 +156,24 @@ namespace OMG.Battle.UI
         {
             Oropo,
             Monsters,
+        }
+
+        public void TweenTest(bool isMonster)
+        {
+            const float stayTime = 1.5f;
+            const float moveTime = 0.25f;
+            const float fadeTime = 0.25f;
+
+            turnNameText.text = isMonster ? "Monsters Turn" : "Player Turn";
+
+            turnName.GetComponent<Image>().DoFade(0.7f, fadeTime);
+            turnName.DoAnchorMove(new Vector2(0f, turnName.anchoredPosition.y), moveTime)
+                .OnComplete(
+                    () =>
+                    {
+                        turnName.DoAnchorMove(new Vector2(isMonster ? -500f : 500f, turnName.anchoredPosition.y), moveTime).AddDelay(stayTime);
+                        turnName.GetComponent<Image>().DoFade(0f, fadeTime).AddDelay(stayTime);
+                    });
         }
 
         public void SwitchState(BattleHUDState state)

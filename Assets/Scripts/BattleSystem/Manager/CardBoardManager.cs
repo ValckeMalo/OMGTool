@@ -60,6 +60,13 @@ namespace OMG.Battle.Manager
         }
 
         #region Toggle
+        public void ToggleAllCardUnusable()
+        {
+            foreach (PlayableCard playableCard in cardsOnBoard)
+            {
+                playableCard.UnusableCard();
+            }
+        }
         public void ToggleCardBasedOnWakfuRemain(int wakfuRemain)
         {
             foreach (PlayableCard playableCard in cardsOnBoard)

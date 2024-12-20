@@ -36,6 +36,7 @@ namespace OMG.Battle.Manager
         public void EndOropoTurn()
         {
             wakfuManager.UnlockWakfu();
+            cardBoardManager.ToggleAllCardUnusable();
         }
         #endregion
 
@@ -140,9 +141,9 @@ namespace OMG.Battle.Manager
             if (card.needSacrifice)
             {
                 cardBoardManager.ToggleSacrificiableCard();
-                return true; 
+                return true;
             }
-            else if(card.background == CardBackground.Boost && card.target == Target.OneCard)
+            else if (card.background == CardBackground.Boost && card.target == Target.OneCard)
             {
                 cardBoardManager.ToggleBoostableCard();
                 return true;

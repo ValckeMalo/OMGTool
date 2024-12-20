@@ -8,13 +8,14 @@ namespace MaloProduction.Tween.DoTween.Module
         public static TweenerCore<Vector2, Vector2> DoMove(this RectTransform target, Vector2 endValue, float duration)
         {
             TweenerCore<Vector2, Vector2> tween = DOTween.To(
-                () => new Vector2(target.position.x, target.position.y),
-                (value) =>
+                () => new Vector2(target.position.x, target.position.y),//setter
+                (value) => //getter
                 {
                     Vector3 newPos = new Vector3(value.x, value.y, target.position.z);
                     target.position = newPos;
                 },
-            endValue, duration);
+            endValue, //final value
+            duration);// duration
 
             tween.target = target;
             return tween;
