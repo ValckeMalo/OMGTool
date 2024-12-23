@@ -3,7 +3,7 @@ namespace MaloProduction.Tween.Core
     using MaloProduction.Tween.Delegate;
     using MaloProduction.Tween.Plugin;
 
-    public class TweenerCore<T1, T2> : Tweener
+    public class TweenerCore<T1, T2> : Tween
     {
         public T1 startValue;
         public T2 endValue;
@@ -19,7 +19,7 @@ namespace MaloProduction.Tween.Core
             if (plugin == null)
                 return true;
 
-
+            //plugin is here to make the changement for the tween
             plugin.EvalutateAndApply(this, startValue, endValue, changeValue, setter, getter, elapsedTime, duration);
 
             return false;
@@ -34,8 +34,18 @@ namespace MaloProduction.Tween.Core
             plugin = null;
         }
 
+        /// <summary>
+        /// Create all the tween variables that he need to work
+        /// </summary>
+        /// <param name="getter"></param>
+        /// <param name="setter"></param>
+        /// <param name="endValue"></param>
+        /// <param name="duration"></param>
+        /// <param name="plugin"></param>
+        /// <returns>return the congrats of it</returns>
         public bool Setup(TweenGetter<T1> getter, TweenSetter<T1> setter, T2 endValue, float duration, ABSPlugin<T1, T2> plugin = null)
         {
+            //if there is a custom plugin
             if (plugin != null)
             {
                 this.plugin = plugin;
@@ -44,11 +54,13 @@ namespace MaloProduction.Tween.Core
             {
                 if (this.plugin == null)
                 {
+                    // get the default tween
                     this.plugin = PluginsManager.GetDefaultPlugin<T1, T2>();
-                }
-                if (this.plugin == null)
-                {
-                    return false;
+                    if (this.plugin == null)
+                    {
+                        // if there no one return false to kill it
+                        return false;
+                    }
                 }
             }
 
@@ -58,8 +70,16 @@ namespace MaloProduction.Tween.Core
             this.endValue = endValue;
             this.duration = duration;
 
-            this.plugin.SetFrom(this);
-            this.plugin.SetChangeValue(this);
+            this.plugin.SetFrom(this);//to know where do we start
+            this.plugin.SetChangeValue(this);//plugin calculate the change value between each frame
+
+            return true;
+        }
+
+        public static bool DoStartup<Type1, Type2>(TweenerCore<Type1, Type2> tween)
+        {
+            tween.startupDone = true;
+            tween.active = true;
 
             return true;
         }

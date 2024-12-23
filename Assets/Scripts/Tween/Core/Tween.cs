@@ -3,10 +3,19 @@ namespace MaloProduction.Tween.Core
     using MaloProduction.Tween.Delegate;
     using MaloProduction.Tween.Ease;
 
+    public enum TweenRepeatMode
+    {
+        Once,
+        Infinity,
+        PingPong,
+        PingPongInfinity,
+    }
+
     public abstract class Tween
     {
         public Easing easeType = Easing.Linear;
 
+        public TweenCallback onStart = null;
         public TweenCallback onPlay = null;
         public TweenCallback onUpdate = null;
         public TweenCallback onPause = null;
@@ -24,6 +33,7 @@ namespace MaloProduction.Tween.Core
         public bool startupDone = false;
         public bool playedOnce = false;
         public bool active = false;
+        public TweenRepeatMode repeatMode = TweenRepeatMode.Once;
 
         public bool isPlaying = false;
         public bool isComplete = false;
@@ -40,6 +50,7 @@ namespace MaloProduction.Tween.Core
             timeScale = 0f;
 
             onPlay = null;
+            onStart = null;
             onUpdate = null;
             onPause = null;
             onComplete = null;
@@ -51,7 +62,7 @@ namespace MaloProduction.Tween.Core
         /// </summary>
         /// <param name="tween"></param>
         /// <param name="toPosition"></param>
-        /// <returns></returns>
+        /// <returns>if it false kill the tween</returns>
         public static bool DoGoto(Tween tween, float toPosition)
         {
             if (!tween.startupDone)
@@ -62,37 +73,36 @@ namespace MaloProduction.Tween.Core
                 }
             }
 
+            if (!tween.active)
+            {
+                return true;
+            }
+
+            //if the tween is it first update call the on play callback if there one
             if (!tween.playedOnce)
             {
                 tween.playedOnce = true;
-                if (tween.onPlay != null)
+                if (tween.onStart != null)
                 {
-                    OnTweenCallback(tween.onPlay);
-                    if (!tween.active)
-                    {
-                        return true;
-                    }
+                    OnTweenCallback(tween.onStart);
                 }
             }
 
-            float previousElapsedTime = tween.elapsedTime;
             bool wasComplete = tween.isComplete;
 
-            if (tween.elapsedTime > tween.duration)
+            //if the duration of the tween is complete
+            if (tween.elapsedTime > tween.duration && tween.repeatMode != TweenRepeatMode.Infinity)
             {
+                //to finish on the final value and don't overpass him
                 tween.elapsedTime = tween.duration;
                 tween.isComplete = true;
             }
             else if (tween.elapsedTime <= 0f)
             {
                 if (tween.isComplete)
-                {
                     tween.elapsedTime = tween.duration;
-                }
                 else
-                {
                     tween.elapsedTime = 0f;
-                }
             }
 
             if (!tween.isComplete)
@@ -119,10 +129,13 @@ namespace MaloProduction.Tween.Core
             {
                 OnTweenCallback(tween.onPause);
             }
+            if (tween.isPlaying && !wasPlaying && tween.onPlay != null)
+            {
+                OnTweenCallback(tween.onPlay);
+            }
 
             return tween.isComplete;
         }
-
 
         #region Callback
         public static bool OnTweenCallback(TweenCallback callback)

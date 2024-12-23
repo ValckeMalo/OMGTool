@@ -12,7 +12,7 @@ namespace OMG.Card.UI
     using UnityEngine.UI;
     using MaloProduction.Tween;
     using System;
-    using OMG.Battle.UI;
+    using OMG.Battle.UI.Tooltip;
 
     public class PlayableCard : UICard, IPointerEnterHandler, IPointerExitHandler
     {
@@ -83,6 +83,7 @@ namespace OMG.Card.UI
         public void Destroy()
         {
             TweenManager.Despawn(tweenScale);
+            TooltipManager.Instance.HideTooltipCard();
             Destroy(gameObject);
         }
 

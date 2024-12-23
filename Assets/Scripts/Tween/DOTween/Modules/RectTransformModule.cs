@@ -14,7 +14,7 @@ namespace MaloProduction.Tween.DoTween.Module
                     Vector3 newPos = new Vector3(value.x, value.y, target.position.z);
                     target.position = newPos;
                 },
-            endValue, //final value
+            endValue,  //final value
             duration);// duration
 
             tween.target = target;

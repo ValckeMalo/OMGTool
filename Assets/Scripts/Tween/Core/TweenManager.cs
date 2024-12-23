@@ -56,24 +56,7 @@ namespace MaloProduction.Tween.Core
         /// <returns></returns>
         private static bool UpdateTween(Tween tween, float deltaTime)
         {
-            if (!tween.active)
-            {
-                MarkForKilling(tween);
-                return true;
-            }
-
-            if (!tween.isDelayComplete)
-            {
-                UpdateTweenDelay(tween, deltaTime);
-                return false;
-            }
-
-            if (!tween.isPlaying)
-            {
-                return false;
-            }
-
-            float tweenDeltaTime = deltaTime * tween.timeScale;
+            //IF the tween havn't been start do it now
             if (!tween.startupDone)
             {
                 if (!tween.Startup())
@@ -83,19 +66,38 @@ namespace MaloProduction.Tween.Core
                 }
             }
 
+            // if the tween is not active or if the startup failed
+            if (!tween.active)
+            {
+                MarkForKilling(tween);
+                return true;
+            }
+
+            //check if the tween need to start later
+            if (!tween.isDelayComplete)
+            {
+                UpdateTweenDelay(tween, deltaTime);
+                return false;
+            }
+
+            //if the tween is paused
+            if (!tween.isPlaying)
+            {
+                return false;
+            }
+
+            float tweenDeltaTime = deltaTime * tween.timeScale;
             float tweenElapsedTime = tween.elapsedTime;
 
+            //if the tween duration is neg reset it
             if (tween.duration <= 0f)
-            {
                 tweenElapsedTime = 0f;
-            }
             else
-            {
                 tweenElapsedTime += tweenDeltaTime;
-            }
 
-            bool needsKilling = Tween.DoGoto(tween, tweenElapsedTime);
-            if (needsKilling)
+            //Update the tween
+            //if it return true -> tween finish or a issue
+            if (Tween.DoGoto(tween, tweenElapsedTime))
             {
                 MarkForKilling(tween);
                 return true;
@@ -116,9 +118,14 @@ namespace MaloProduction.Tween.Core
             if (tween.delay >= tween.delayDuration)
             {
                 tween.isDelayComplete = true;
+                tween.isPlaying = true;
             }
         }
 
+        /// <summary>
+        /// Add the tween in other list to kill it after
+        /// </summary>
+        /// <param name="tween"></param>
         private static void MarkForKilling(Tween tween)
         {
             tween.active = false;
@@ -137,6 +144,7 @@ namespace MaloProduction.Tween.Core
             tween.active = true;
             tween.isPlaying = true;
 
+            //just to handle if the user add a tween when iterate through it
             if (!isUpdating)
             {
                 activeTween.Add(tween);
@@ -152,6 +160,10 @@ namespace MaloProduction.Tween.Core
             activeTween.Remove(tween);
         }
 
+        /// <summary>
+        /// Reset the tween and nullify it
+        /// </summary>
+        /// <param name="tween"></param>
         public static void Despawn(Tween tween)
         {
             if (tween == null) return;
