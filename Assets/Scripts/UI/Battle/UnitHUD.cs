@@ -198,17 +198,29 @@ namespace OMG.Unit.HUD
                 statusUI.UpdateTextTurn(currentUnitStatus.turn); // Update the UI element with the new turn count
             }
         }
+        [System.Serializable]
+        private class PreviewAttack
+        {
+            [Title("Preview Attack")]
+            [SerializeField] private GameObject previewAttack;
+
+            public void ToogleVisibility(bool toggle) => previewAttack.SetActive(toggle);
+        }
         #endregion
 
         [Title("Unit HUD")]
         [SerializeField] private LifeSlider lifeSlider;
         [SerializeField] private Status status;
+        [SerializeField] private PreviewAttack previewAttack;
 
-        public void Initialize(Unit unit)
+        public void Initialize(Unit unit, bool isMonster)
         {
             lifeSlider.Initialize(unit.Data);
             status.UpdateStatus(unit.Data.status);
             unit.OnUnitDataModified += UpdateHUD;
+
+            if (isMonster) previewAttack.ToogleVisibility(true);
+            else previewAttack.ToogleVisibility(false);
         }
 
         private void UpdateHUD(UnitData unitData)

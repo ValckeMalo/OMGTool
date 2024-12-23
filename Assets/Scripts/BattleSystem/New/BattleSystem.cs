@@ -70,10 +70,10 @@ namespace OMG.Battle
             blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleUnits.GetOropo();
 
             //HUD
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[0].position, battleUnits.GetOropo());
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[1].position, battleUnits.GetAllMonsters()[0]);
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[2].position, battleUnits.GetAllMonsters()[1]);
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[3].position, battleUnits.GetAllMonsters()[2]);
+            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[0].position, battleUnits.GetOropo(), false);
+            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[1].position, battleUnits.GetAllMonsters()[0], true);
+            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[2].position, battleUnits.GetAllMonsters()[1], true);
+            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[3].position, battleUnits.GetAllMonsters()[2], true);
 
             gameBoard = new GameBoardManager(battleUnits.GetOropo().Deck);
             monstersBattleManager = new MonstersBattleManager(battleUnits.GetAllMonsters(), blackboardAsset.Blackboard);

@@ -18,4 +18,4 @@ MonoBehaviour:
     armor: 10
     status: []
     unitName: Oropo
-  deck: {fileID: 11400000, guid: b90d6d73cc5ee3545bb895b9080753e4, type: 2}
+  deck: {fileID: 11400000, guid: c9d8199f24a039b448bb47b45e6c39ff, type: 2}

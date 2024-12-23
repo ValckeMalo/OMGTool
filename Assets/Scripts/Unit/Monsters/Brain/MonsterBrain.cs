@@ -26,6 +26,7 @@ namespace OMG.Unit.Monster.Brain
         {
             if (nextAction == null) return;
 
+            Debug.Log($"Action play is {nextAction.name}");
             nextAction.Execute(player);
             nextAction = null;
         }

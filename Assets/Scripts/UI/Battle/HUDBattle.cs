@@ -227,9 +227,9 @@ namespace OMG.Battle.UI
         {
             turnButtonManager.AddCallback(clickFct);
         }
-        public void SpawnUnitHUD(Vector3 position, Unit unit)
+        public void SpawnUnitHUD(Vector3 position, Unit unit, bool isMonster)
         {
-            unitsHUDManager.SpawnUnitHUD(position, unit);
+            unitsHUDManager.SpawnUnitHUD(position, unit, isMonster);
         }
         #endregion
     }
