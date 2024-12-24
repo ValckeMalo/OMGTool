@@ -17,5 +17,10 @@ namespace OMG.Unit.Action
         {
             Heal(Health, units);
         }
+
+        public override int GetValue()
+        {
+            return Health;
+        }
     }
 }

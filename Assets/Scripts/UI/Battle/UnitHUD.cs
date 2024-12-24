@@ -5,7 +5,6 @@ namespace OMG.Unit.HUD
     using OMG.Unit.Status;
 
     using System.Collections.Generic;
-    using System.Linq;
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
@@ -203,7 +202,12 @@ namespace OMG.Unit.HUD
         {
             [Title("Preview Attack")]
             [SerializeField] private GameObject previewAttack;
+            [SerializeField] private TextMeshProUGUI textMesh;
 
+            public void UpdatePreview(int value)
+            {
+                textMesh.text = value.ToString();
+            }
             public void ToogleVisibility(bool toggle) => previewAttack.SetActive(toggle);
         }
         #endregion
@@ -221,6 +225,11 @@ namespace OMG.Unit.HUD
 
             if (isMonster) previewAttack.ToogleVisibility(true);
             else previewAttack.ToogleVisibility(false);
+        }
+
+        public void UpdatePreviewNextAttack(int value)
+        {
+            previewAttack.UpdatePreview(value);
         }
 
         private void UpdateHUD(UnitData unitData)

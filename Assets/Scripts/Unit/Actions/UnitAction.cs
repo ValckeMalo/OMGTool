@@ -5,6 +5,8 @@ namespace OMG.Unit.Action
 
     public abstract class UnitAction : UnityEngine.ScriptableObject
     {
+
+        public abstract int GetValue();
         public abstract void Execute(IUnit unit);
         public abstract void Execute(IUnit[] units);
 

@@ -13,14 +13,6 @@ namespace OMG.Unit.Monster
         [SerializeField] private MonsterBrain brain;
         public MonsterBrain Brain { get => brain; }
 
-        public void Action(IUnit player, IUnit[] monsters)
-        {
-            if (brain != null)
-            {
-                brain.Action(player, this, monsters);
-            }
-        }
-
         public void Action(IUnit player)
         {
             if (brain != null)
@@ -29,19 +21,12 @@ namespace OMG.Unit.Monster
             }
         }
 
-        public void SearchNextAction(IUnit player, IUnit[] monsters)
-        {
-            if (brain != null)
-            {
-                brain.SearchAction();
-            }
-        }
-
         public void SearchNextAction()
         {
             if (brain != null)
             {
                 brain.SearchAction();
+                unitHUD.UpdatePreviewNextAttack(brain.NextActionValue);
             }
         }
 

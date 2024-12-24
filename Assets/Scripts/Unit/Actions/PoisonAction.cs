@@ -17,5 +17,10 @@ namespace OMG.Unit.Action
         {
             AddStatus(NbTurn, Status.StatusType.Poison, units);
         }
+
+        public override int GetValue()
+        {
+            return NbTurn;
+        }
     }
 }

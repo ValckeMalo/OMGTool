@@ -6,14 +6,14 @@ namespace OMG.Battle
     using OMG.Battle.Data;
     using OMG.Battle.UI;
     using OMG.Unit.Monster;
-    using OMG.Unit;
 
     using System.Linq;
 
     using Unity.Behavior;
     using UnityEngine;
-    using UnityEditor;
     using System.Collections;
+    using OMG.Unit.HUD;
+    using System.Collections.Generic;
 
     public class BattleSystem : MonoBehaviour
     {
@@ -123,12 +123,12 @@ namespace OMG.Battle
 
                 case BattleState.Win:
                     Debug.LogError("WIN");
-                    EditorApplication.isPlaying = false;
+                    Application.Quit();
                     break;
 
                 case BattleState.Lose:
                     Debug.LogError("LOSE");
-                    EditorApplication.isPlaying = false;
+                    Application.Quit();
                     break;
 
                 default:

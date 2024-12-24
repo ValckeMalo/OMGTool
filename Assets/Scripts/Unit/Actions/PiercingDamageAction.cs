@@ -17,5 +17,10 @@ namespace OMG.Unit.Action
         {
             PiercingAttack(PiercingDamage, units);
         }
+
+        public override int GetValue()
+        {
+            return PiercingDamage;
+        }
     }
 }

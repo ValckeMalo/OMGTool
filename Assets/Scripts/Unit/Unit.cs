@@ -4,6 +4,7 @@ namespace OMG.Unit
     using UnityEngine;
     using OMG.Unit.Status;
     using MaloProduction.CustomAttributes;
+    using OMG.Unit.HUD;
 
     public abstract class Unit : ScriptableObject, IUnit
     {
@@ -12,8 +13,14 @@ namespace OMG.Unit
 
         [Title("Unit")]
         [SerializeField] protected UnitData unitData;
+        protected UnitHUD unitHUD = null;
         public UnitData Data { get => unitData; }
 
+        public void SetUnitHUD(UnitHUD unitHUD)
+        {
+            this.unitHUD = unitHUD;
+        }
+        
         public virtual string GetName()
         {
             return unitData.unitName;

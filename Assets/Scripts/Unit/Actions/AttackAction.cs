@@ -17,5 +17,10 @@ namespace OMG.Unit.Action
         {
             Attack(Damage, units);
         }
+
+        public override int GetValue()
+        {
+            return Damage;
+        }
     }
 }

@@ -6,7 +6,6 @@ namespace OMG.Battle.UI
 
     using OMG.Battle.UI.Manager;
     using OMG.Unit;
-
     using System;
     using TMPro;
     using UnityEngine;

@@ -16,5 +16,10 @@ namespace OMG.Unit.Action
         {
             AddArmor(Armor, units);
         }
+
+        public override int GetValue()
+        {
+            return Armor;
+        }
     }
 }

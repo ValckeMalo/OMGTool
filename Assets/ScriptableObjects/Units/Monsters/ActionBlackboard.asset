@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: ActionBlackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 638699397808077067
+  VersionTimestamp: 638706420690022186
   AssetID:
     m_Value0: 13008845659053860287
     m_Value1: 11305569922576233944
   m_Blackboard:
     m_Variables:
-    - rid: 7870095695079801544
-    - rid: 7870095695079801545
-    - rid: 7870095695079801546
-    - rid: 7870095695079801547
-    - rid: 7870095695079801548
+    - rid: 736264327162233343
+    - rid: 736264327162233344
+    - rid: 736264327162233345
+    - rid: 736264327162233346
+    - rid: 736264327162233347
   m_SharedBlackboardVariableGuids:
   - m_Value0: 17371438515361330379
     m_Value1: 16479237927845397871
@@ -37,7 +37,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 7870095695079801544
+    - rid: 736264327162233343
       type: {class: 'BlackboardVariable`1[[OMG.Unit.Action.UnitAction, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -46,7 +46,7 @@ MonoBehaviour:
           m_Value1: 16479237927845397871
         Name: Attack Action
         m_Value: {fileID: 11400000, guid: 943a27661e1932248b2ff896abb7e8f1, type: 2}
-    - rid: 7870095695079801545
+    - rid: 736264327162233344
       type: {class: 'BlackboardVariable`1[[OMG.Unit.Action.UnitAction, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -55,7 +55,7 @@ MonoBehaviour:
           m_Value1: 2354541153095038371
         Name: Armor Action
         m_Value: {fileID: 11400000, guid: 329aadaf58c4b6c458bf2ffb28b7c7cc, type: 2}
-    - rid: 7870095695079801546
+    - rid: 736264327162233345
       type: {class: 'BlackboardVariable`1[[OMG.Unit.Action.UnitAction, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -64,7 +64,7 @@ MonoBehaviour:
           m_Value1: 2903948764414597207
         Name: Poison Action
         m_Value: {fileID: 11400000, guid: e331393717ce5af43888ecb4fae7059d, type: 2}
-    - rid: 7870095695079801547
+    - rid: 736264327162233346
       type: {class: 'BlackboardVariable`1[[OMG.Unit.Action.UnitAction, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -73,7 +73,7 @@ MonoBehaviour:
           m_Value1: 11213417280141096424
         Name: Piercing Action
         m_Value: {fileID: 11400000, guid: 8be225ba8065b894b875a69dd0ed60fb, type: 2}
-    - rid: 7870095695079801548
+    - rid: 736264327162233347
       type: {class: 'BlackboardVariable`1[[OMG.Unit.Action.UnitAction, Assembly-CSharp]]',
         ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -103,7 +103,7 @@ MonoBehaviour:
   - rid: 7488679445030502452
   - rid: 7488679445030502453
   - rid: 7488679445030502454
-  m_VersionTimestamp: 638699397808077067
+  m_VersionTimestamp: 638706420690022186
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: -7535076197200999243}
