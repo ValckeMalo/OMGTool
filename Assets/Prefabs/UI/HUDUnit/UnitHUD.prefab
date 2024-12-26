@@ -428,6 +428,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b52da86afb56214ea7a44b374aec397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  previewAttack:
+    previewAttack: {fileID: 1896177416868741488}
+    textMesh: {fileID: 6538247546399963480}
+  body: {fileID: 5822823065477152972}
+  timeShowTooltip: 1
+  hoverImage: {fileID: 1060007520056950435}
   lifeSlider:
     lifeColor: {r: 0.85882354, g: 0.20784314, b: 0.32941177, a: 1}
     lifeBackgroundColor: {r: 0.3764706, g: 0.13725491, b: 0.19215687, a: 1}
@@ -444,9 +450,6 @@ MonoBehaviour:
     parent: {fileID: 806644774272572991}
     statusPrefab: {fileID: 7337716293431776750, guid: e6fe550901f1cdf43b1772fcdee64120,
       type: 3}
-  previewAttack:
-    previewAttack: {fileID: 1896177416868741488}
-    textMesh: {fileID: 6538247546399963480}
 --- !u!114 &5744652404199633562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1563,8 +1566,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5788682848684842609}
   - component: {fileID: 5822823065477152972}
+  - component: {fileID: 4556062807502289377}
+  - component: {fileID: 1060007520056950435}
   m_Layer: 5
-  m_Name: Spacing
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1609,6 +1614,44 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!222 &4556062807502289377
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038815876654964564}
+  m_CullTransparentMesh: 1
+--- !u!114 &1060007520056950435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038815876654964564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.09803922}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8060102113406590508
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,6 +27,8 @@ namespace OMG.Battle.UI.Tooltip
         }
         #endregion
 
+
+        //TODO Rework
         [Title("Tooltip Manager")]
         [Header("Tooltip Settings")]
         [SerializeField] private List<Tooltip> tooltipsPool = new List<Tooltip>();
@@ -34,6 +36,7 @@ namespace OMG.Battle.UI.Tooltip
         private float allSizeY = 0f;
         private const float marginTooltip = 5f;
 
+        #region First Throw
         public void SpawnTooltipCard(CardData card, RectTransform cardTransform)
         {
             StartCoroutine(DelayedSpawnTooltipCard(card, cardTransform));
@@ -88,6 +91,27 @@ namespace OMG.Battle.UI.Tooltip
             indexTootip = 0;
             allSizeY = 0f;
             StopAllCoroutines();
+        }
+        #endregion
+
+        private void UpdateTootlipText(string header, string content)
+        {
+            tooltipsPool[0].Header.text = header;
+            tooltipsPool[0].Content.text = content;
+        }
+        private void UpdateTootlipPos(Vector3 positionTooltip)
+        {
+            positionTooltip.x += marginTooltip;
+
+            tooltipsPool[0].GoTo(positionTooltip);
+        }
+
+        public void ShowTooltip(string header, string content, Vector3 positionTooltip)
+        {
+            UpdateTootlipText(header, content);
+            UpdateTootlipPos(positionTooltip);
+
+            tooltipsPool[0].Show();
         }
     }
 }

@@ -1,15 +1,16 @@
 namespace OMG.Unit.HUD
 {
     using MaloProduction.CustomAttributes;
-
+    using OMG.Battle.UI.Tooltip;
     using OMG.Unit.Status;
-
+    using System.Collections;
     using System.Collections.Generic;
     using TMPro;
     using UnityEngine;
+    using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
-    public class UnitHUD : MonoBehaviour
+    public class UnitHUD : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region Class
         [System.Serializable]
@@ -201,7 +202,7 @@ namespace OMG.Unit.HUD
         private class PreviewAttack
         {
             [Title("Preview Attack")]
-            [SerializeField] private GameObject previewAttack;
+            [SerializeField] public GameObject previewAttack;
             [SerializeField] private TextMeshProUGUI textMesh;
 
             public void UpdatePreview(int value)
@@ -213,18 +214,27 @@ namespace OMG.Unit.HUD
         #endregion
 
         [Title("Unit HUD")]
-        [SerializeField] private LifeSlider lifeSlider;
-        [SerializeField] private Status status;
+        [Header("Top")]
         [SerializeField] private PreviewAttack previewAttack;
 
-        public void Initialize(Unit unit, bool isMonster)
+        [Header("Body")]
+        [SerializeField] private LayoutElement body;
+        [SerializeField] private float timeShowTooltip = 1f;
+        [SerializeField] private Image hoverImage;
+
+        [Header("Bottom")]
+        [SerializeField] private LifeSlider lifeSlider;
+        [SerializeField] private Status status;
+
+        public void Initialize(Unit unit, float sizeUnit, bool isMonster)
         {
             lifeSlider.Initialize(unit.Data);
             status.UpdateStatus(unit.Data.status);
             unit.OnUnitDataModified += UpdateHUD;
 
-            if (isMonster) previewAttack.ToogleVisibility(true);
-            else previewAttack.ToogleVisibility(false);
+            previewAttack.ToogleVisibility(isMonster);
+            body.preferredHeight = sizeUnit;
+            hoverImage.enabled = false;
         }
 
         public void UpdatePreviewNextAttack(int value)
@@ -237,5 +247,27 @@ namespace OMG.Unit.HUD
             lifeSlider.UpdateSlider(unitData);
             status.UpdateStatus(unitData.status);
         }
+
+        #region IPointer
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            StartCoroutine(ShowTooltip());
+            hoverImage.enabled = true;
+        }
+        private IEnumerator ShowTooltip()
+        {
+            yield return new WaitForSeconds(timeShowTooltip);
+
+            print("Hi");
+            TooltipManager.Instance.ShowTooltip($"Attack", $"Deal X Damage", previewAttack.previewAttack.transform.position);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            StopAllCoroutines();
+            hoverImage.enabled = false;
+            TooltipManager.Instance.HideTooltipCard();
+        }
+        #endregion
     }
 }

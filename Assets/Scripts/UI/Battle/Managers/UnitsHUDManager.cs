@@ -20,7 +20,7 @@ namespace OMG.Battle.UI.Manager
 
             GameObject unitHUD = UnityEngine.Object.Instantiate(prefabUnitHUD, parent);
             unitHUD.GetComponent<RectTransform>().anchoredPosition = worldObjectScreenPosition;
-            unitHUD.GetComponent<UnitHUD>().Initialize(unit, isMonster);
+            unitHUD.GetComponent<UnitHUD>().Initialize(unit, 200f, isMonster);
             unit.SetUnitHUD(unitHUD.GetComponent<UnitHUD>());
         }
     }
