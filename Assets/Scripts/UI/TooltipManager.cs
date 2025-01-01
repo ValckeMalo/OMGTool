@@ -101,8 +101,7 @@ namespace OMG.Battle.UI.Tooltip
         }
         private void UpdateTootlipPos(Vector3 positionTooltip)
         {
-            positionTooltip.x += marginTooltip;
-
+            positionTooltip.x -= marginTooltip;
             tooltipsPool[0].GoTo(positionTooltip);
         }
 

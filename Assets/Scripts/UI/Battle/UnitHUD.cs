@@ -214,13 +214,14 @@ namespace OMG.Unit.HUD
         #endregion
 
         [Title("Unit HUD")]
+        [SerializeField] private GameObject hoverImage;
+        [SerializeField] private float timeShowTooltip = 1f;
+
         [Header("Top")]
         [SerializeField] private PreviewAttack previewAttack;
 
         [Header("Body")]
         [SerializeField] private LayoutElement body;
-        [SerializeField] private float timeShowTooltip = 1f;
-        [SerializeField] private Image hoverImage;
 
         [Header("Bottom")]
         [SerializeField] private LifeSlider lifeSlider;
@@ -234,7 +235,8 @@ namespace OMG.Unit.HUD
 
             previewAttack.ToogleVisibility(isMonster);
             body.preferredHeight = sizeUnit;
-            hoverImage.enabled = false;
+
+            hoverImage.SetActive(false);
         }
 
         public void UpdatePreviewNextAttack(int value)
@@ -251,21 +253,28 @@ namespace OMG.Unit.HUD
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
         {
-            StartCoroutine(ShowTooltip());
-            hoverImage.enabled = true;
+            if (previewAttack.previewAttack.activeSelf)
+                StartCoroutine(ShowTooltip());
+
+            hoverImage.SetActive(true);
         }
         private IEnumerator ShowTooltip()
         {
             yield return new WaitForSeconds(timeShowTooltip);
 
-            print("Hi");
-            TooltipManager.Instance.ShowTooltip($"Attack", $"Deal X Damage", previewAttack.previewAttack.transform.position);
+            Vector3 positionCornerTopRight = previewAttack.previewAttack.transform.position;
+            print(previewAttack.previewAttack.GetComponent<RectTransform>().sizeDelta.x / 2f);
+            positionCornerTopRight.x += previewAttack.previewAttack.GetComponent<RectTransform>().sizeDelta.x / 2f;
+
+            TooltipManager.Instance.ShowTooltip($"Attack", $"Deal X Damage", positionCornerTopRight);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             StopAllCoroutines();
-            hoverImage.enabled = false;
+
+            hoverImage.SetActive(false);
+
             TooltipManager.Instance.HideTooltipCard();
         }
         #endregion

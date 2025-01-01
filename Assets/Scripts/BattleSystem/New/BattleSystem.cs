@@ -14,6 +14,7 @@ namespace OMG.Battle
     using System.Collections;
     using OMG.Unit.HUD;
     using System.Collections.Generic;
+    using OMG.Battle.UI.Manager;
 
     public class BattleSystem : MonoBehaviour
     {
@@ -70,10 +71,10 @@ namespace OMG.Battle
             blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleUnits.GetOropo();
 
             //HUD
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[0].position, battleUnits.GetOropo(), false);
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[1].position, battleUnits.GetAllMonsters()[0], true);
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[2].position, battleUnits.GetAllMonsters()[1], true);
-            HUDBattle.Instance.SpawnUnitHUD(unitHUDPos[3].position, battleUnits.GetAllMonsters()[2], true);
+            UnitHUDSpawner.OnSpawnUnitHUD.Invoke(unitHUDPos[0].position, battleUnits.GetOropo(), false);
+            UnitHUDSpawner.OnSpawnUnitHUD.Invoke(unitHUDPos[1].position, battleUnits.GetAllMonsters()[0], true);
+            UnitHUDSpawner.OnSpawnUnitHUD.Invoke(unitHUDPos[2].position, battleUnits.GetAllMonsters()[1], true);
+            UnitHUDSpawner.OnSpawnUnitHUD.Invoke(unitHUDPos[3].position, battleUnits.GetAllMonsters()[2], true);
 
             gameBoard = new GameBoardManager(battleUnits.GetOropo().Deck);
             monstersBattleManager = new MonstersBattleManager(battleUnits.GetAllMonsters(), blackboardAsset.Blackboard);

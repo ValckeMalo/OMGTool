@@ -135,7 +135,6 @@ namespace OMG.Battle.UI
         [Header("UI Class")]
         [SerializeField] private TurnButtonManager turnButtonManager;
         [SerializeField] private WakfuGauge wakfuGauge;
-        [SerializeField] private UnitsHUDManager unitsHUDManager; //NOT SURE ABOUT THIS CLASS IT'S SO EMPTY
         [SerializeField] private Button cancelSecondCard;
         [SerializeField] private RectTransform turnName;
         [SerializeField] private TextMeshProUGUI turnNameText;
@@ -225,10 +224,6 @@ namespace OMG.Battle.UI
         public void TurnButtonAddCallback(Action clickFct)
         {
             turnButtonManager.AddCallback(clickFct);
-        }
-        public void SpawnUnitHUD(Vector3 position, Unit unit, bool isMonster)
-        {
-            unitsHUDManager.SpawnUnitHUD(position, unit, isMonster);
         }
         #endregion
     }
