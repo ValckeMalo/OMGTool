@@ -13,6 +13,7 @@ namespace OMG.Unit.Monster
         [SerializeField] private MonsterBrain brain;
         public MonsterBrain Brain { get => brain; }
 
+
         public void Action(IUnit player)
         {
             if (brain != null)

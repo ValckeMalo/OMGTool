@@ -12,7 +12,7 @@ namespace OMG.Unit.Oropo
 
         public override string GetName()
         {
-            return "Player";
+            return ("Oropo").ToUpper();
         }
 
         protected override void Death()

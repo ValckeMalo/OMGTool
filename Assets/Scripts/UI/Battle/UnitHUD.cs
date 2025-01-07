@@ -213,12 +213,13 @@ namespace OMG.Unit.HUD
         }
         #endregion
 
-        [Title("Unit HUD")]
-        [SerializeField] private GameObject hoverImage;
+        [Title("HUD Settings")]
+        [SerializeField] private RectTransform hoverImage;
         [SerializeField] private float timeShowTooltip = 1f;
 
         [Header("Top")]
         [SerializeField] private PreviewAttack previewAttack;
+        [SerializeField] private TextMeshProUGUI nameUnit;
 
         [Header("Body")]
         [SerializeField] private LayoutElement body;
@@ -236,7 +237,9 @@ namespace OMG.Unit.HUD
             previewAttack.ToogleVisibility(isMonster);
             body.preferredHeight = sizeUnit;
 
-            hoverImage.SetActive(false);
+            hoverImage.gameObject.SetActive(false);
+
+            nameUnit.text = unit.GetName();
         }
 
         public void UpdatePreviewNextAttack(int value)
@@ -256,24 +259,20 @@ namespace OMG.Unit.HUD
             if (previewAttack.previewAttack.activeSelf)
                 StartCoroutine(ShowTooltip());
 
-            hoverImage.SetActive(true);
+            hoverImage.gameObject.SetActive(true);
         }
         private IEnumerator ShowTooltip()
         {
             yield return new WaitForSeconds(timeShowTooltip);
-
-            Vector3 positionCornerTopRight = previewAttack.previewAttack.transform.position;
-            print(previewAttack.previewAttack.GetComponent<RectTransform>().sizeDelta.x / 2f);
-            positionCornerTopRight.x += previewAttack.previewAttack.GetComponent<RectTransform>().sizeDelta.x / 2f;
-
-            TooltipManager.Instance.ShowTooltip($"Attack", $"Deal X Damage", positionCornerTopRight);
+            print(hoverImage.anchoredPosition);
+            TooltipManager.Instance.ShowTooltip($"Attack", $"Deal X Damage", hoverImage.anchoredPosition);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             StopAllCoroutines();
 
-            hoverImage.SetActive(false);
+            hoverImage.gameObject.SetActive(false);
 
             TooltipManager.Instance.HideTooltipCard();
         }

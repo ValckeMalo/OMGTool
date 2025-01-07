@@ -23,7 +23,7 @@ namespace OMG.Unit
         
         public virtual string GetName()
         {
-            return unitData.unitName;
+            return unitData.unitName.ToUpper();
         }
 
         private void CallDataModified()
