@@ -1,7 +1,9 @@
 {
     "name": "MVEditor.Hierarchy",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:43edbdea7df297d4fafb0d084172a797"
+    ],
     "includePlatforms": [
         "Editor"
     ],
