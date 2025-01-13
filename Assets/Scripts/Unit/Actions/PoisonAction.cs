@@ -6,21 +6,14 @@ namespace OMG.Unit.Action
     [CreateAssetMenu(fileName = "PoisonAction",menuName = "Action/PoisonAction")]
     public class PoisonAction : UnitAction
     {
-        public int NbTurn = 0;
-
         public override void Execute(IUnit unit)
         {
-            AddStatus(NbTurn,Status.StatusType.Poison,unit);
+            AddStatus(Value,Status.StatusType.Poison,unit);
         }
 
         public override void Execute(IUnit[] units)
         {
-            AddStatus(NbTurn, Status.StatusType.Poison, units);
-        }
-
-        public override int GetValue()
-        {
-            return NbTurn;
+            AddStatus(Value, Status.StatusType.Poison, units);
         }
     }
 }

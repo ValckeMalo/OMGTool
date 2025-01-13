@@ -667,6 +667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverImage: {fileID: 7109238667229427620}
+  startTooltipPos: {fileID: 922690985498474257}
   timeShowTooltip: 1
   previewAttack:
     previewAttack: {fileID: 4348312151861065679}
@@ -681,7 +682,7 @@ MonoBehaviour:
     lifeSlider: {fileID: 6859437321353484500}
     lifeBackground: {fileID: 7329197618966192763}
     lifeFill: {fileID: 2222064539298539113}
-    hit: {fileID: 210046031331278857}
+    hitSlider: {fileID: 210046031331278857}
     armorImage: {fileID: 1486329793595757403}
     armorText: {fileID: 3001027583228572657}
     lifeText: {fileID: 3659976988661163967}

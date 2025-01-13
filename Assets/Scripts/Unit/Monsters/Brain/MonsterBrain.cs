@@ -14,7 +14,7 @@ namespace OMG.Unit.Monster.Brain
         [Title("Barin")]
         [SerializeReference] private BehaviorGraph behaviourTree;
         [SerializeField, ReadOnly] private UnitAction nextAction;
-        public int NextActionValue => nextAction.GetValue();
+        public UnitAction NextAction => nextAction;
 
         public void Action(IUnit player, IUnit monster, IUnit[] monsters)
         {

@@ -6,21 +6,14 @@ namespace OMG.Unit.Action
     [CreateAssetMenu(fileName = "AttackAction", menuName = "Action/AttackAction")]
     public class AttackAction : UnitAction
     {
-        public int Damage = 0;
-
         public override void Execute(IUnit unit)
         {
-            Attack(Damage, unit);
+            Attack(Value, unit);
         }
 
         public override void Execute(IUnit[] units)
         {
-            Attack(Damage, units);
-        }
-
-        public override int GetValue()
-        {
-            return Damage;
+            Attack(Value, units);
         }
     }
 }

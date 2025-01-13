@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a74d350898d964bb280c38c534aa66, type: 3}
   m_Name: ArmorAction
   m_EditorClassIdentifier: 
+  Description: Add {value} to the armor
+  Armor: 0

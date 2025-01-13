@@ -1,11 +1,18 @@
 namespace OMG.Unit.HUD
 {
     using MaloProduction.CustomAttributes;
+    using MaloProduction.Tween;
+    using MaloProduction.Tween.Core;
+    using MaloProduction.Tween.DoTween.Module;
+
     using OMG.Battle.UI.Tooltip;
+    using OMG.Unit.Action;
     using OMG.Unit.Status;
+
     using System.Collections;
     using System.Collections.Generic;
     using TMPro;
+
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
@@ -32,11 +39,14 @@ namespace OMG.Unit.HUD
             [SerializeField] private Slider lifeSlider;
             [SerializeField] private Image lifeBackground;
             [SerializeField] private Image lifeFill;
-            [SerializeField] private Slider hit;
+            [SerializeField] private Slider hitSlider;
 
             [SerializeField] private RectTransform armorImage;
             [SerializeField] private TextMeshProUGUI armorText;
             [SerializeField] private TextMeshProUGUI lifeText;
+
+            private TweenerCore<float, float> hitSliderTween = null;
+            private TweenerCore<float, float> lifeSliderTween = null;
 
             private SliderState cState = SliderState.Life;
 
@@ -96,10 +106,16 @@ namespace OMG.Unit.HUD
             {
                 if (hp != (int)lifeSlider.value)
                 {
-                    lifeSlider.value = hp;
-                    lifeText.text = $"{hp} / {maxHp}";
+                    hp = Mathf.Max(0, hp);// clamp the value to not go under 0
+                    lifeText.text = $"{hp} / {maxHp}";// update text
 
-                    //TODO Make Tween with the hit slider
+                    //If the previous tween was not complete despawn it to recreate them
+                    if (lifeSliderTween != null) TweenManager.Despawn(lifeSliderTween);
+                    if (hitSliderTween != null) TweenManager.Despawn(hitSliderTween);
+
+                    //tween/animate the value
+                    lifeSliderTween = lifeSlider.DoValue(hp, 0.1f);
+                    hitSliderTween = hitSlider.DoValue(hp, 0.5f).AddDelay(0.35f).SetEase(MaloProduction.Tween.Ease.Easing.OutCubic);
                 }
             }
         }
@@ -205,17 +221,19 @@ namespace OMG.Unit.HUD
             [SerializeField] public GameObject previewAttack;
             [SerializeField] private TextMeshProUGUI textMesh;
 
-            public void UpdatePreview(int value)
-            {
-                textMesh.text = value.ToString();
-            }
+            public void UpdatePreview(int value) => textMesh.text = value.ToString();
             public void ToogleVisibility(bool toggle) => previewAttack.SetActive(toggle);
         }
         #endregion
 
         [Title("HUD Settings")]
         [SerializeField] private RectTransform hoverImage;
-        [SerializeField] private float timeShowTooltip = 1f;
+        [SerializeField] private RectTransform startTooltipPos;
+        [SerializeField] private float timeShowTooltip = 0.5f;
+
+        //previewAttack
+        private string attackHeaderDescription = string.Empty;
+        private string attackDescription = string.Empty;
 
         [Header("Top")]
         [SerializeField] private PreviewAttack previewAttack;
@@ -242,8 +260,15 @@ namespace OMG.Unit.HUD
             nameUnit.text = unit.GetName();
         }
 
-        public void UpdatePreviewNextAttack(int value)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        public void UpdatePreviewNextAttack(int value, string tooltipDesc,string attackHeaderDescription)
         {
+            attackDescription = tooltipDesc;
+            this.attackHeaderDescription = attackHeaderDescription;
+
             previewAttack.UpdatePreview(value);
         }
 
@@ -264,8 +289,8 @@ namespace OMG.Unit.HUD
         private IEnumerator ShowTooltip()
         {
             yield return new WaitForSeconds(timeShowTooltip);
-            print(hoverImage.anchoredPosition);
-            TooltipManager.Instance.ShowTooltip($"Attack", $"Deal X Damage", hoverImage.anchoredPosition);
+
+            TooltipManager.Instance.ShowTooltip(attackHeaderDescription, attackDescription, startTooltipPos.position);
         }
 
         public void OnPointerExit(PointerEventData eventData)

@@ -21,7 +21,7 @@ MonoBehaviour:
   BlacklistIcons:
   - disabled: 0
     name: SpriteRenderer
-  - disabled: 0
+  - disabled: 1
     name: Camera
   - disabled: 0
     name: FlareLayer

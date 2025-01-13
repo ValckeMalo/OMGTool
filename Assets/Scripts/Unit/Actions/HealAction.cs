@@ -6,21 +6,14 @@ namespace OMG.Unit.Action
     [CreateAssetMenu(fileName = "HealAction", menuName = "Action/HealAction")]
     public class HealAction : UnitAction
     {
-        public int Health = 0;
-
         public override void Execute(IUnit unit)
         {
-            Heal(Health, unit);
+            Heal(Value, unit);
         }
 
         public override void Execute(IUnit[] units)
         {
-            Heal(Health, units);
-        }
-
-        public override int GetValue()
-        {
-            return Health;
+            Heal(Value, units);
         }
     }
 }

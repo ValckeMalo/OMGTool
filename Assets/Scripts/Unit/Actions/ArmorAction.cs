@@ -6,20 +6,14 @@ namespace OMG.Unit.Action
     [CreateAssetMenu(fileName = "ArmorAction", menuName = "Action/ArmorAction")]
     public class ArmorAction : UnitAction
     {
-        public int Armor = 0;
         public override void Execute(IUnit unit)
         {
-            AddArmor(Armor, unit);
+            AddArmor(Value, unit);
         }
 
         public override void Execute(IUnit[] units)
         {
-            AddArmor(Armor, units);
-        }
-
-        public override int GetValue()
-        {
-            return Armor;
+            AddArmor(Value, units);
         }
     }
 }
