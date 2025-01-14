@@ -19,55 +19,81 @@ MonoBehaviour:
   - StartString: Main
     Color: {r: 0.20445704, g: 1, b: 0, a: 0.18431373}
   BlacklistIcons:
-  - disabled: 0
-    name: SpriteRenderer
-  - disabled: 1
-    name: Camera
-  - disabled: 0
-    name: FlareLayer
-  - disabled: 0
-    name: ReflectionProbe
-  - disabled: 0
-    name: BillboardRenderer
-  - disabled: 0
-    name: Renderer
-  - disabled: 0
-    name: Projector
-  - disabled: 0
-    name: TrailRenderer
-  - disabled: 0
-    name: LineRenderer
-  - disabled: 0
-    name: OcclusionPortal
-  - disabled: 0
-    name: OcclusionArea
-  - disabled: 0
-    name: LensFlare
-  - disabled: 0
-    name: Light
-  - disabled: 0
-    name: Skybox
-  - disabled: 0
-    name: MeshFilter
-  - disabled: 0
-    name: Halo
-  - disabled: 0
-    name: LightProbeProxyVolume
-  - disabled: 0
-    name: SkinnedMeshRenderer
-  - disabled: 0
-    name: MeshRenderer
-  - disabled: 0
-    name: LightProbeGroup
-  - disabled: 0
-    name: LODGroup
-  - disabled: 0
-    name: Behaviour
-  - disabled: 0
-    name: MonoBehaviour
-  - disabled: 0
-    name: RectTransform
-  - disabled: 0
-    name: Transform
-  - disabled: 0
-    name: SortingGroup
+  - Disabled: 0
+    Name: UnityEngine.SpriteRenderer, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 1
+    Name: UnityEngine.Camera, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.FlareLayer, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.ReflectionProbe, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.BillboardRenderer, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Renderer, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Projector, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.TrailRenderer, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.LineRenderer, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.OcclusionPortal, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.OcclusionArea, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.LensFlare, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Light, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Skybox, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.MeshFilter, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Halo, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.LightProbeProxyVolume, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.SkinnedMeshRenderer, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.MeshRenderer, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.LightProbeGroup, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.LODGroup, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Behaviour, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.MonoBehaviour, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.RectTransform, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Disabled: 0
+    Name: UnityEngine.Rendering.SortingGroup, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

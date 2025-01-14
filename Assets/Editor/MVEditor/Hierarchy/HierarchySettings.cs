@@ -1,15 +1,14 @@
-namespace MaloProduction.Hierachy
+namespace MaloProduction.Hierarchy
 {
     using System.Collections.Generic;
     using System;
     using UnityEngine;
-    using UnityEngine.UI;
+
     using System.Reflection;
-    using MaloProduction.CustomAttributes;
     using System.Linq;
 
     [CreateAssetMenu(fileName = "HierarchySettings", menuName = "MV Editor/Hierarchy Settings")]
-    public class HierarchySettings : ScriptableObject
+    internal class HierarchySettings : ScriptableObject
     {
         [Serializable]
         public class Separator
@@ -21,29 +20,28 @@ namespace MaloProduction.Hierachy
         public bool Enabled = true;
         public Separator[] Separators;
 
-        [SerializeField] private List<BlackListIcons> BlacklistIcons = new List<BlackListIcons>();
-        public List<BlackListIcons> BlackListedIcons => BlacklistIcons.Where(entry => entry.IsBlackListed).Select(t => t).ToList();
+        [SerializeField] public List<BlackListIcons> BlacklistIcons = new List<BlackListIcons>();
+        public List<BlackListIcons> BlackListedType
+        {
+            get
+            {
+                return BlacklistIcons.Where(entry => entry.Disabled).Select(t => t).ToList();
+            }
+        }
 
         [Serializable]
         public class BlackListIcons
         {
-            [SerializeField] private bool disabled = false;
-            [SerializeField,ReadOnly] private string name = "";
-            [SerializeField] private Type type = null;
-
-            public Type Type => type;
-            public bool IsBlackListed => disabled;
+            public bool Disabled = false;
+            public string Name = "";
 
             public BlackListIcons(Type componentType)
             {
-                type = componentType;
-                disabled = false;
-                name = type.Name;
+                Disabled = false;
+                Name = componentType.AssemblyQualifiedName;
             }
         }
-
-        [Button("UpdateBlackListIcons")]
-        private void UpdateBlackListIcons()
+        public void UpdateBlackListIcons()
         {
             if (BlacklistIcons == null)
                 BlacklistIcons = new List<BlackListIcons>();
@@ -55,15 +53,12 @@ namespace MaloProduction.Hierachy
 
             foreach (Type componentType in allComponentsType)
             {
-                if (!BlacklistIcons.Any(entry => 
+                if (!BlacklistIcons.Any(entry =>
                     {
-                        Debug.Log($"In List : {entry.Type.FullName} -- New Comp: {componentType.FullName}");
-                        return entry.Type != null && entry.Type.FullName == componentType.FullName;
-                    }))
-                {
-                    
+                        return entry.Name != string.Empty && entry.Name == componentType.AssemblyQualifiedName;
+                    }
+                ))
                     BlacklistIcons.Add(new BlackListIcons(componentType));
-                }
             }
         }
     }

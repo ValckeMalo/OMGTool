@@ -1,8 +1,8 @@
-namespace MaloProduction.Hierachy
+namespace MaloProduction.Hierarchy
 {
     using UnityEngine;
     using UnityEditor;
-    using static MaloProduction.Hierachy.HierarchySettings;
+    using static MaloProduction.Hierarchy.HierarchySettings;
 
     [InitializeOnLoad]
     public class HierarchyIcons
@@ -78,9 +78,9 @@ namespace MaloProduction.Hierachy
         {
             if (component == null) return true;
 
-            foreach (BlackListIcons blackListIcons in hierarchySettings.BlackListedIcons)
+            foreach (BlackListIcons blackListIcons in hierarchySettings.BlackListedType)
             {
-                if (component.GetType() == blackListIcons.Type && component.GetType().FullName == blackListIcons.Type.FullName) return true;
+                if (component.GetType().AssemblyQualifiedName == blackListIcons.Name) return true;
             }
 
             return false;
