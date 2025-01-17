@@ -6,6 +6,7 @@ namespace MaloProduction.Hierarchy
 
     using System.Reflection;
     using System.Linq;
+    using UnityEngine.EventSystems;
 
     [CreateAssetMenu(fileName = "HierarchySettings", menuName = "MV Editor/Hierarchy Settings")]
     internal class HierarchySettings : ScriptableObject
@@ -50,6 +51,11 @@ namespace MaloProduction.Hierarchy
                 .GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract)
                 .ToList();
+
+            allComponentsType.AddRange(Assembly.GetAssembly(typeof(UIBehaviour))
+                .GetTypes()
+                .Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract)
+                .ToList());
 
             foreach (Type componentType in allComponentsType)
             {
