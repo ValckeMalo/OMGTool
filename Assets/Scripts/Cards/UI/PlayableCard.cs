@@ -83,7 +83,7 @@ namespace OMG.Card.UI
         public void Destroy()
         {
             TweenManager.Despawn(tweenScale);
-            TooltipManager.Instance.HideTooltipCard();
+            //TooltipManager.Instance.HideTooltipCard();
             Destroy(gameObject);
         }
 
@@ -134,14 +134,14 @@ namespace OMG.Card.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             ScaleUp(true);
-            TooltipManager.Instance.SpawnTooltipCard(cardData, rect);
+            //TooltipManager.Instance.SpawnTooltipCard(cardData, rect);
             BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             ScaleDown();
-            TooltipManager.Instance.HideTooltipCard();
+            //TooltipManager.Instance.HideTooltipCard();
             BattleSystem.Instance.GameBoard.ResetPreviewBar();
         }
         #endregion

@@ -1,35 +1,72 @@
 namespace OMG.Battle.UI.Tooltip
 {
     using MaloProduction.CustomAttributes;
-    using System;
+    using MaloProduction.Tween.Core;
+    using MaloProduction.Tween.DoTween.Module;
+
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
 
-    [ExecuteInEditMode]
+    using static OMG.Battle.UI.Tooltip.TooltipManager;
+
     public class Tooltip : MonoBehaviour
     {
         [Title("Tooltip")]
-        [Header("Toolip Stettings")]
-        [SerializeField] private TextMeshProUGUI headerField;
-        [SerializeField] private TextMeshProUGUI contentField;
-        [SerializeField] private LayoutElement layoutElement;
+        [Header("Toolip Settings")]
+        [SerializeField] private CanvasGroup tooltipGroup = null;
+
+        [Header("Toolip Header")]
+        [SerializeField] private Image icon;
+        [SerializeField] private TextMeshProUGUI typeText;
+        [SerializeField] private TextMeshProUGUI headerText;
+
+        [Header("Toolip Body")]
+        [SerializeField] private TextMeshProUGUI bodyText;
+
         private RectTransform rectTooltip = null;
+        private TweenerCore<float, float> fadeTween = null;
 
-        public TextMeshProUGUI Content => contentField;
-        public TextMeshProUGUI Header => headerField;
+        public void Init() => tooltipGroup.alpha = 0f;
 
-        public void Hide() => gameObject.SetActive(false);
-
-        public void Show()
+        public void FadeTooltip(float endValue, float duration)
         {
-            gameObject.SetActive(true);
+            if (fadeTween != null)
+                TweenManager.Despawn(fadeTween);
+
+            tooltipGroup.DoFade(endValue, duration);
+        }
+
+        public void UpdateToNewData(TooltipData data)
+        {
+            if (data == null)
+            {
+                Debug.LogError("Data pass in the Tooltip is null");
+                return;
+            }
+
+            if (data.TypeF == TooltipData.Type.CARD)
+            {
+                icon.enabled = false;
+                typeText.enabled = false;
+            }
+            else
+            {
+                icon.enabled = true;
+                typeText.enabled = true;
+
+                typeText.text = data.TypeF.ToString();
+            }
+
+            headerText.text = data.Header.ToUpper();
+            bodyText.text = data.Body;
         }
 
         public float GoTo(Vector3 position)
         {
             if (rectTooltip == null)
                 rectTooltip = GetComponent<RectTransform>();
+
             rectTooltip.position = position;
 
             return rectTooltip.sizeDelta.y;

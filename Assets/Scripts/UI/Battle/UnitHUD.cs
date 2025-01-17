@@ -255,6 +255,10 @@ namespace OMG.Unit.HUD
         [SerializeField] private LifeSlider lifeSlider;
         [SerializeField] private Status status;
 
+        //Tooltip
+        private TooltipManager.TooltipData tooltipAttackData = null;
+        private List<TooltipManager.TooltipData> tooltipStatusData = new List<TooltipManager.TooltipData>();
+
         public void Initialize(Unit unit, float sizeUnit, bool isMonster)
         {
             lifeSlider.Initialize(unit.Data);
@@ -284,12 +288,25 @@ namespace OMG.Unit.HUD
             this.attackHeaderDescription = attackHeaderDescription;
 
             previewAttack.UpdatePreview(value);
+
+            //TODO Icon + text (Tooltip)
+            tooltipAttackData = new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.ACTION, attackHeaderDescription, tooltipDesc, null);
         }
 
         private void UpdateHUD(UnitData unitData)
         {
             lifeSlider.UpdateSlider(unitData);
             status.UpdateStatus(unitData.status);
+            UpdateTooltipData(unitData.status);
+        }
+        private void UpdateTooltipData(List<UnitStatus> unitStatuses)
+        {
+            tooltipStatusData.Clear();
+            for (int i = 0; i < unitStatuses.Count; i++)
+            {
+                //TODO Icon + text (Tooltip)
+                tooltipStatusData.Add(new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.STATE, unitStatuses[i].status.ToString(), $"DealDamage{i}", null));
+            }
         }
 
         #region IPointer
@@ -305,9 +322,14 @@ namespace OMG.Unit.HUD
             yield return new WaitForSeconds(timeShowTooltip);
 
             FadeMoreInfoUnit(0.9f, 0.1f);
-            TooltipManager.Instance.ShowTooltip(attackHeaderDescription, attackDescription, startTooltipPos.position);
+
+            //TODO Watch For Error player!=monsters (Tooltip)
+            List<TooltipManager.TooltipData> data = new List<TooltipManager.TooltipData>() { tooltipAttackData };
+            data.AddRange(tooltipStatusData);
+
+            TooltipManager.Instance.ShowUnitData(cornerHoverImage[0].rectTransform.position, 0.1f, data.ToArray());
         }
-        
+
         public void OnPointerExit(PointerEventData eventData)
         {
             StopAllCoroutines();
@@ -315,7 +337,7 @@ namespace OMG.Unit.HUD
             FadeAllCorner(0f, 0.05f);
             FadeMoreInfoUnit(0f, 0.05f);
 
-            TooltipManager.Instance.HideTooltipCard();
+            TooltipManager.Instance.HideUnitData(0.05f);
         }
 
         private void FadeAllCorner(float endValue, float duration)
