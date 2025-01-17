@@ -622,8 +622,8 @@ GameObject:
   - component: {fileID: 4531711836756000963}
   - component: {fileID: 2588857811362990199}
   - component: {fileID: 3239674722262827003}
-  - component: {fileID: 8102730990581972965}
-  - component: {fileID: 2286666702561090134}
+  - component: {fileID: 3376644893718347039}
+  - component: {fileID: 9182278576114316343}
   m_Layer: 5
   m_Name: NewUnitHUD
   m_TagString: Untagged
@@ -666,9 +666,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b52da86afb56214ea7a44b374aec397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverImage: {fileID: 7109238667229427620}
+  cornerHoverImage:
+  - {fileID: 9112614398562590115}
+  - {fileID: 7166772110080200723}
+  - {fileID: 3373375202611344404}
+  - {fileID: 2731123000687454173}
   startTooltipPos: {fileID: 922690985498474257}
-  timeShowTooltip: 1
   previewAttack:
     previewAttack: {fileID: 4348312151861065679}
     textMesh: {fileID: 2625284248185808044}
@@ -730,7 +733,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!222 &8102730990581972965
+--- !u!222 &3376644893718347039
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -738,7 +741,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2641128290743867635}
   m_CullTransparentMesh: 1
---- !u!114 &2286666702561090134
+--- !u!114 &9182278576114316343
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1946,6 +1949,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7109238667229427620}
   - component: {fileID: 2058613065239263529}
+  - component: {fileID: 2011455900158458472}
   m_Layer: 5
   m_Name: HoverSprite&Name
   m_TagString: Untagged
@@ -1997,6 +2001,14 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!222 &2011455900158458472
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635380783002420555}
+  m_CullTransparentMesh: 1
 --- !u!1 &7801223910711817981
 GameObject:
   m_ObjectHideFlags: 0

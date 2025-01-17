@@ -6,7 +6,6 @@ namespace OMG.Unit.HUD
     using MaloProduction.Tween.DoTween.Module;
 
     using OMG.Battle.UI.Tooltip;
-    using OMG.Unit.Action;
     using OMG.Unit.Status;
 
     using System.Collections;
@@ -220,20 +219,30 @@ namespace OMG.Unit.HUD
             [Title("Preview Attack")]
             [SerializeField] public GameObject previewAttack;
             [SerializeField] private TextMeshProUGUI textMesh;
+            private bool visibility = false;
+            public bool Visibility => visibility;
 
             public void UpdatePreview(int value) => textMesh.text = value.ToString();
-            public void ToogleVisibility(bool toggle) => previewAttack.SetActive(toggle);
+            public void ToogleVisibility(bool toggle)
+            {
+                visibility = toggle;
+                previewAttack.SetActive(toggle);
+            }
         }
         #endregion
 
         [Title("HUD Settings")]
-        [SerializeField] private RectTransform hoverImage;
+        [SerializeField] private Image[] cornerHoverImage;
         [SerializeField] private RectTransform startTooltipPos;
-        [SerializeField] private float timeShowTooltip = 0.5f;
+        private float timeShowTooltip = 1f;
 
         //previewAttack
         private string attackHeaderDescription = string.Empty;
         private string attackDescription = string.Empty;
+
+        //Tween
+        TweenerCore<float, float>[] cornerFadeTween = null;
+        TweenerCore<float, float> nameFadeTween = null;
 
         [Header("Top")]
         [SerializeField] private PreviewAttack previewAttack;
@@ -255,7 +264,12 @@ namespace OMG.Unit.HUD
             previewAttack.ToogleVisibility(isMonster);
             body.preferredHeight = sizeUnit;
 
-            hoverImage.gameObject.SetActive(false);
+            if (cornerHoverImage == null || cornerHoverImage.Length <= 0)
+                Debug.LogError($"In UnitHUD the cornerHoverImage was empty or set to null.");
+
+            cornerFadeTween = new TweenerCore<float, float>[cornerHoverImage.Length];
+            FadeAllCorner(0f, 0.01f);
+            FadeMoreInfoUnit(0f, 0.01f);
 
             nameUnit.text = unit.GetName();
         }
@@ -264,7 +278,7 @@ namespace OMG.Unit.HUD
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public void UpdatePreviewNextAttack(int value, string tooltipDesc,string attackHeaderDescription)
+        public void UpdatePreviewNextAttack(int value, string tooltipDesc, string attackHeaderDescription)
         {
             attackDescription = tooltipDesc;
             this.attackHeaderDescription = attackHeaderDescription;
@@ -281,25 +295,45 @@ namespace OMG.Unit.HUD
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (previewAttack.previewAttack.activeSelf)
-                StartCoroutine(ShowTooltip());
+            if (previewAttack.Visibility)
+                StartCoroutine(HoverInfo());
 
-            hoverImage.gameObject.SetActive(true);
+            FadeAllCorner(0.9f, 0.1f);
         }
-        private IEnumerator ShowTooltip()
+        private IEnumerator HoverInfo()
         {
             yield return new WaitForSeconds(timeShowTooltip);
 
+            FadeMoreInfoUnit(0.9f, 0.1f);
             TooltipManager.Instance.ShowTooltip(attackHeaderDescription, attackDescription, startTooltipPos.position);
         }
-
+        
         public void OnPointerExit(PointerEventData eventData)
         {
             StopAllCoroutines();
 
-            hoverImage.gameObject.SetActive(false);
+            FadeAllCorner(0f, 0.05f);
+            FadeMoreInfoUnit(0f, 0.05f);
 
             TooltipManager.Instance.HideTooltipCard();
+        }
+
+        private void FadeAllCorner(float endValue, float duration)
+        {
+            for (int i = 0; i < cornerHoverImage.Length; i++)
+            {
+                if (cornerFadeTween[i] != null)
+                    TweenManager.Despawn(cornerFadeTween[i]);
+
+                cornerFadeTween[i] = cornerHoverImage[i].DoFade(endValue, duration);
+            }
+        }
+        private void FadeMoreInfoUnit(float endValue, float duration)
+        {
+            if (nameFadeTween != null)
+                TweenManager.Despawn(nameFadeTween);
+
+            nameFadeTween = nameUnit.DoFade(endValue, duration);
         }
         #endregion
     }
