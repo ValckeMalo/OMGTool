@@ -48,6 +48,8 @@ namespace MaloProduction.Hierarchy
             if (BlacklistIcons == null)
                 BlacklistIcons = new List<BlackListIcons>();
 
+            //TODO test
+#if false
             List<Type> allComponentsType = Assembly.GetAssembly(typeof(Component))
                 .GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract)
@@ -57,6 +59,9 @@ namespace MaloProduction.Hierarchy
                 .GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(UIBehaviour)) && !t.IsAbstract)
                 .ToList());
+#else
+            List<Type> allComponentsType = GetAllComponentTypes();
+#endif
 
             foreach (Type componentType in allComponentsType)
             {
@@ -67,6 +72,36 @@ namespace MaloProduction.Hierarchy
                 ))
                     BlacklistIcons.Add(new BlackListIcons(componentType));
             }
+        }
+        private static List<Type> GetAllComponentTypes()
+        {
+            // Get all loaded assemblies
+            Assembly[] allAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            // Collect all subclasses of Component and UIBehaviour
+            List<Type> allComponentsType = new List<Type>();
+            foreach (var assembly in allAssemblies)
+            {
+                try
+                {
+                    allComponentsType.AddRange(
+                        assembly.GetTypes()
+                            .Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract)
+                    );
+
+                    allComponentsType.AddRange(
+                        assembly.GetTypes()
+                            .Where(t => t.IsSubclassOf(typeof(UIBehaviour)) && !t.IsAbstract)
+                    );
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    // Handle types that cannot be loaded
+                    Debug.LogWarning($"Failed to load types from assembly {assembly.FullName}: {ex}");
+                }
+            }
+
+            return allComponentsType.Distinct().ToList(); // Ensure no duplicates
         }
     }
 }
