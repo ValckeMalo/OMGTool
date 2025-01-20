@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: HealAction
   m_EditorClassIdentifier: 
   Description: Heal {value}
-  Health: 0
+  Value: 5

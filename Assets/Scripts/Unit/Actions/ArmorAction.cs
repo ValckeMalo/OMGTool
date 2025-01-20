@@ -3,7 +3,7 @@ namespace OMG.Unit.Action
     using OMG.Unit;
     using UnityEngine;
 
-    [CreateAssetMenu(fileName = "ArmorAction", menuName = "Action/ArmorAction")]
+    [CreateAssetMenu(fileName = "ArmorAction", menuName = "Action/Base/Armor")]
     public class ArmorAction : UnitAction
     {
         public override void Execute(IUnit unit)

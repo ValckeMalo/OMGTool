@@ -6,6 +6,7 @@ namespace OMG.Unit.HUD
     using MaloProduction.Tween.DoTween.Module;
 
     using OMG.Battle.UI.Tooltip;
+    using OMG.Unit.Action;
     using OMG.Unit.Status;
 
     using System.Collections;
@@ -130,8 +131,8 @@ namespace OMG.Unit.HUD
             /// Updates the UI to reflect the provided list of UnitStatus.
             /// Adds new statuses, updates existing ones, and removes outdated ones.
             /// </summary>
-            /// <param name="unitStatuses">List of current UnitStatus data</param>
-            public void UpdateStatus(List<UnitStatus> unitStatuses)
+            /// <param name="unitStatus">List of current UnitStatus data</param>
+            public void UpdateStatus(List<UnitStatus> unitStatus)
             {
                 //Create a dictionary for fast lookup of existing StatusUI by their status identifier
                 Dictionary<string, StatusUI> statusUIDict = new Dictionary<string, StatusUI>();
@@ -143,7 +144,7 @@ namespace OMG.Unit.HUD
                 //Track which StatusUI elements are still in use
                 HashSet<StatusUI> usedUI = new HashSet<StatusUI>();
 
-                foreach (UnitStatus currentUnitStatus in unitStatuses)
+                foreach (UnitStatus currentUnitStatus in unitStatus)
                 {
                     // Check if the status already exists in the UI
                     if (statusUIDict.TryGetValue(currentUnitStatus.status.ToString(), out StatusUI statusUI))
@@ -219,10 +220,15 @@ namespace OMG.Unit.HUD
             [Title("Preview Attack")]
             [SerializeField] public GameObject previewAttack;
             [SerializeField] private TextMeshProUGUI textMesh;
+            [SerializeField] private Image imageIcon;
             private bool visibility = false;
             public bool Visibility => visibility;
 
-            public void UpdatePreview(int value) => textMesh.text = value.ToString();
+            public void UpdatePreview(int value, Sprite icon)
+            {
+                textMesh.text = value.ToString();
+                imageIcon.sprite = icon;
+            }
             public void ToogleVisibility(bool toggle)
             {
                 visibility = toggle;
@@ -236,13 +242,9 @@ namespace OMG.Unit.HUD
         [SerializeField] private RectTransform startTooltipPos;
         private float timeShowTooltip = 1f;
 
-        //previewAttack
-        private string attackHeaderDescription = string.Empty;
-        private string attackDescription = string.Empty;
-
         //Tween
-        TweenerCore<float, float>[] cornerFadeTween = null;
-        TweenerCore<float, float> nameFadeTween = null;
+        private TweenerCore<float, float>[] cornerFadeTween = null;
+        private TweenerCore<float, float> nameFadeTween = null;
 
         [Header("Top")]
         [SerializeField] private PreviewAttack previewAttack;
@@ -282,15 +284,16 @@ namespace OMG.Unit.HUD
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public void UpdatePreviewNextAttack(int value, string tooltipDesc, string attackHeaderDescription)
+        public void UpdatePreviewNextAction(int value, UnitActionUI uiAction)
         {
-            attackDescription = tooltipDesc;
-            this.attackHeaderDescription = attackHeaderDescription;
+            if (uiAction == null)
+            {
+                Debug.LogError($"The ui pass in the next action is equal to null : {uiAction}");
+                return;
+            }
 
-            previewAttack.UpdatePreview(value);
-
-            //TODO Icon + text (Tooltip)
-            tooltipAttackData = new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.ACTION, attackHeaderDescription, tooltipDesc, null);
+            previewAttack.UpdatePreview(value, uiAction.Icon);
+            tooltipAttackData = new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.ACTION, uiAction.Name, uiAction.Description, uiAction.Icon);
         }
 
         private void UpdateHUD(UnitData unitData)
@@ -298,23 +301,22 @@ namespace OMG.Unit.HUD
             lifeSlider.UpdateSlider(unitData);
             status.UpdateStatus(unitData.status);
             UpdateTooltipData(unitData.status);
+
+            Debug.LogWarning($"Update HUD {previewAttack.Visibility}");
         }
-        private void UpdateTooltipData(List<UnitStatus> unitStatuses)
+        private void UpdateTooltipData(List<UnitStatus> unitStatus)
         {
             tooltipStatusData.Clear();
-            for (int i = 0; i < unitStatuses.Count; i++)
-            {
-                //TODO Icon + text (Tooltip)
-                tooltipStatusData.Add(new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.STATE, unitStatuses[i].status.ToString(), $"DealDamage{i}", null));
+            for (int i = 0; i < unitStatus.Count; i++)
+            { //TODO check the note
+                tooltipStatusData.Add(new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.STATE, unitStatus[i].status.ToString(), $"DealDamage{i}", null));
             }
         }
 
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (previewAttack.Visibility)
-                StartCoroutine(HoverInfo());
-
+            StartCoroutine(HoverInfo());
             FadeAllCorner(0.9f, 0.1f);
         }
         private IEnumerator HoverInfo()
@@ -323,11 +325,13 @@ namespace OMG.Unit.HUD
 
             FadeMoreInfoUnit(0.9f, 0.1f);
 
-            //TODO Watch For Error player!=monsters (Tooltip)
-            List<TooltipManager.TooltipData> data = new List<TooltipManager.TooltipData>() { tooltipAttackData };
+            List<TooltipManager.TooltipData> data = new List<TooltipManager.TooltipData>();
+            if (previewAttack.Visibility)
+                data.Add(tooltipAttackData);
+
             data.AddRange(tooltipStatusData);
 
-            TooltipManager.Instance.ShowUnitData(cornerHoverImage[0].rectTransform.position, 0.1f, data.ToArray());
+            TooltipManager.Instance.ShowUnitData(cornerHoverImage[0].rectTransform.position, 0.1f, previewAttack.Visibility ? TooltipManager.Direction.Left : TooltipManager.Direction.Right, data.ToArray());
         }
 
         public void OnPointerExit(PointerEventData eventData)

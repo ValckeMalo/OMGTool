@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PoisonAction
   m_EditorClassIdentifier: 
   Description: Add {value} poison
-  NbTurn: 5
+  Value: 5

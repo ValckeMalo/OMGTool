@@ -56,19 +56,23 @@ namespace OMG.Battle.UI.Tooltip
                 typeText.enabled = true;
 
                 typeText.text = data.TypeF.ToString();
+                icon.sprite = data.Icon;
             }
 
             headerText.text = data.Header.ToUpper();
             bodyText.text = data.Body;
         }
 
-        public float GoTo(Vector3 position)
+        public void GoTo(Vector3 position)
         {
             if (rectTooltip == null)
                 rectTooltip = GetComponent<RectTransform>();
 
             rectTooltip.position = position;
+        }
 
+        public float GetHeight()
+        {
             return rectTooltip.sizeDelta.y;
         }
     }

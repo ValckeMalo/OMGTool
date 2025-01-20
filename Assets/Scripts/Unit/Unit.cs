@@ -20,7 +20,7 @@ namespace OMG.Unit
         {
             this.unitHUD = unitHUD;
         }
-        
+
         public virtual string GetName()
         {
             return unitData.unitName.ToUpper();
@@ -73,8 +73,8 @@ namespace OMG.Unit
         }
         public virtual void ClearArmor()
         {
+            if (unitData.armor > 0) CallDataModified();
             unitData.armor = 0;
-            CallDataModified();
         }
         public virtual void ClearStatus(StatusType statusType)
         {
@@ -117,7 +117,6 @@ namespace OMG.Unit
             if (HaveStatus(StatusType.Poison)) Damage(GetStatusValue(StatusType.Poison)); //Update Poison
 
             UpdateAllStatus();
-            CallDataModified();
 
             if (IsDead())
             {
@@ -135,7 +134,14 @@ namespace OMG.Unit
         {
             return unitData.GetStatusValue(statusType);
         }
-        private void UpdateAllStatus() => unitData.UpdateAllStatus();
+        private void UpdateAllStatus()
+        {
+            if (unitData.status.Count > 0)
+            {
+                unitData.UpdateAllStatus();
+                CallDataModified();
+            }
+        }
         #endregion
     }
 }

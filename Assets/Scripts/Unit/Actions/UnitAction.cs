@@ -8,8 +8,10 @@ namespace OMG.Unit.Action
     public abstract class UnitAction : UnityEngine.ScriptableObject
     {
         [Title("Unit Action")]
-        [UnityEngine.SerializeField] protected string Description = string.Empty;
         [UnityEngine.SerializeField] protected int Value = 0;
+        [UnityEngine.SerializeField] protected UnitActionUI unitActionUI = null;
+
+        public UnitActionUI UnitActionUI => unitActionUI;
 
         public abstract void Execute(IUnit unit);
         public abstract void Execute(IUnit[] units);
@@ -17,10 +19,6 @@ namespace OMG.Unit.Action
         public virtual int GetValue()
         {
             return Value;
-        }
-        public virtual string GetDescription()
-        {
-            return Description;
         }
 
         protected void Attack(int damage, IUnit unit)

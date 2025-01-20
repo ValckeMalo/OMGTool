@@ -27,7 +27,7 @@ namespace OMG.Unit.Monster
             if (brain != null)
             {
                 brain.SearchAction();
-                unitHUD.UpdatePreviewNextAttack(brain.NextAction.GetValue(), brain.NextAction.GetDescription(), "Attack");
+                unitHUD.UpdatePreviewNextAction(brain.NextAction.GetValue(), brain.NextAction.UnitActionUI);
             }
         }
 

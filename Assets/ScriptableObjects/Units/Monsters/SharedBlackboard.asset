@@ -39,7 +39,7 @@ MonoBehaviour:
           m_Value0: 12804617045084788335
           m_Value1: 16643772405632326405
         Name: Player
-        m_Value: {fileID: 11400000, guid: 2433c5dd1868ced4490a84039273ee40, type: 2}
+        m_Value: {fileID: 0}
     - rid: 736264327162233074
       type: {class: 'BlackboardVariable`1[[OMG.Unit.Unit, Assembly-CSharp]]', ns: Unity.Behavior,
         asm: Unity.Behavior}

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f15a93c9049c2044815ad8522470fe5, type: 3}
   m_Name: AttackAction
   m_EditorClassIdentifier: 
-  Description: Deal {value} damage
-  Damage: 15
+  Description: Deal damage
+  Value: 5
