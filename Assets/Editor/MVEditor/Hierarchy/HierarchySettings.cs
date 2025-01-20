@@ -48,20 +48,7 @@ namespace MaloProduction.Hierarchy
             if (BlacklistIcons == null)
                 BlacklistIcons = new List<BlackListIcons>();
 
-            //TODO test
-#if false
-            List<Type> allComponentsType = Assembly.GetAssembly(typeof(Component))
-                .GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract)
-                .ToList();
-
-            allComponentsType.AddRange(Assembly.GetAssembly(typeof(UIBehaviour))
-                .GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(UIBehaviour)) && !t.IsAbstract)
-                .ToList());
-#else
             List<Type> allComponentsType = GetAllComponentTypes();
-#endif
 
             foreach (Type componentType in allComponentsType)
             {
@@ -87,11 +74,6 @@ namespace MaloProduction.Hierarchy
                     allComponentsType.AddRange(
                         assembly.GetTypes()
                             .Where(t => t.IsSubclassOf(typeof(Component)) && !t.IsAbstract)
-                    );
-
-                    allComponentsType.AddRange(
-                        assembly.GetTypes()
-                            .Where(t => t.IsSubclassOf(typeof(UIBehaviour)) && !t.IsAbstract)
                     );
                 }
                 catch (ReflectionTypeLoadException ex)
