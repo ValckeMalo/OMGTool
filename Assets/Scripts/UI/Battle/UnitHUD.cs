@@ -307,7 +307,7 @@ namespace OMG.Unit.HUD
         {
             tooltipStatusData.Clear();
             for (int i = 0; i < unitStatus.Count; i++)
-            { //TODO check the note
+            { //TODO tooltip header/description/icon
                 tooltipStatusData.Add(new TooltipManager.TooltipData(Type.STATE, unitStatus[i].status.ToString(), $"DealDamage{i}", null));
             }
         }

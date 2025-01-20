@@ -3,7 +3,7 @@ namespace OMG.Battle.UI.Tooltip
     using MVProduction.CustomAttributes;
     using MVProduction.Tween.Core;
     using MVProduction.Tween.DoTween.Module;
-
+    using System;
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
@@ -74,6 +74,14 @@ namespace OMG.Battle.UI.Tooltip
         public float GetHeight()
         {
             return rectTooltip.sizeDelta.y;
+        }
+
+        public float GetWidht()
+        {
+            if (rectTooltip == null)
+                rectTooltip = GetComponent<RectTransform>();
+
+            return rectTooltip.sizeDelta.x;
         }
     }
 }

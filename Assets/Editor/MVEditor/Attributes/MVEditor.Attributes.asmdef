@@ -1,5 +1,5 @@
 {
-    "name": "MV.Attributes.Editor",
+    "name": "MVEditor.Attributes",
     "rootNamespace": "",
     "references": [
         "GUID:43edbdea7df297d4fafb0d084172a797"
