@@ -125,10 +125,11 @@ namespace OMG.Battle.UI.Tooltip
 
             EnsureTooltipPoolSize(tooltipDatas.Length);
 
+            Tooltip currentTooltip = null;
             Vector2 tooltipPos = CalculateInitialTooltipPosition(startPos, direction);
             for (int i = 0; i < tooltipDatas.Length; i++)
             {
-                Tooltip currentTooltip = tooltipPool[i];
+                currentTooltip = tooltipPool[i];
                 SetupTooltip(currentTooltip, tooltipDatas[i], tooltipPos, fadeDuration);
 
                 tooltipPos = CalculateNextTooltipPosition(tooltipPos, currentTooltip, direction);
@@ -171,7 +172,7 @@ namespace OMG.Battle.UI.Tooltip
         private Vector2 CalculateNextTooltipPosition(Vector2 currentPosition, Tooltip currentTooltip, Direction direction)
         {
             float tooltipHeight = currentTooltip.GetHeight(); // Assuming there's a method to get the tooltip height
-            return new Vector2(currentPosition.x, currentPosition.y - (tooltipHeight + HeightMargin));
+            return new Vector2(currentPosition.x, currentPosition.y - ((tooltipHeight * 2f /*WHY NOT*/) + HeightMargin));
         }
 
 

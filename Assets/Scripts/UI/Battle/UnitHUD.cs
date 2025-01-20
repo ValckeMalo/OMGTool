@@ -5,6 +5,7 @@ namespace OMG.Unit.HUD
     using MVProduction.Tween.Core;
     using MVProduction.Tween.DoTween.Module;
 
+    using static OMG.Battle.UI.Tooltip.TooltipManager.TooltipData;
     using OMG.Battle.UI.Tooltip;
     using OMG.Unit.Action;
     using OMG.Unit.Status;
@@ -293,7 +294,7 @@ namespace OMG.Unit.HUD
             }
 
             previewAttack.UpdatePreview(value, uiAction.Icon);
-            tooltipAttackData = new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.ACTION, uiAction.Name, uiAction.Description, uiAction.Icon);
+            tooltipAttackData = new TooltipManager.TooltipData(Type.ACTION, uiAction.Name, uiAction.Description, uiAction.Icon);
         }
 
         private void UpdateHUD(UnitData unitData)
@@ -301,15 +302,13 @@ namespace OMG.Unit.HUD
             lifeSlider.UpdateSlider(unitData);
             status.UpdateStatus(unitData.status);
             UpdateTooltipData(unitData.status);
-
-            Debug.LogWarning($"Update HUD {previewAttack.Visibility}");
         }
         private void UpdateTooltipData(List<UnitStatus> unitStatus)
         {
             tooltipStatusData.Clear();
             for (int i = 0; i < unitStatus.Count; i++)
             { //TODO check the note
-                tooltipStatusData.Add(new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.STATE, unitStatus[i].status.ToString(), $"DealDamage{i}", null));
+                tooltipStatusData.Add(new TooltipManager.TooltipData(Type.STATE, unitStatus[i].status.ToString(), $"DealDamage{i}", null));
             }
         }
 
@@ -331,7 +330,7 @@ namespace OMG.Unit.HUD
 
             data.AddRange(tooltipStatusData);
 
-            TooltipManager.Instance.ShowUnitData(cornerHoverImage[0].rectTransform.position, 0.1f, previewAttack.Visibility ? TooltipManager.Direction.Left : TooltipManager.Direction.Right, data.ToArray());
+            TooltipManager.Instance.ShowUnitData(cornerHoverImage[previewAttack.Visibility ? 0 : 1].rectTransform.position, 0.1f, previewAttack.Visibility ? TooltipManager.Direction.Left : TooltipManager.Direction.Right, data.ToArray());
         }
 
         public void OnPointerExit(PointerEventData eventData)
