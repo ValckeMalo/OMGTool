@@ -1,6 +1,6 @@
 namespace OMG.Unit.HUD
 {
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
 
     using OMG.Unit.Status;
 

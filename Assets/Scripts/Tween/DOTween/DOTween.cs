@@ -1,8 +1,8 @@
-namespace MaloProduction.Tween.DoTween
+namespace MVProduction.Tween.DoTween
 {
-    using MaloProduction.Tween.Core;
-    using MaloProduction.Tween.Plugin;
-    using MaloProduction.Tween.Delegate;
+    using MVProduction.Tween.Core;
+    using MVProduction.Tween.Plugin;
+    using MVProduction.Tween.Delegate;
     using UnityEngine;
 
     public static class DOTween

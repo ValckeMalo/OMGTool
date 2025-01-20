@@ -1,6 +1,6 @@
-namespace MaloProduction.Tween.Component
+namespace MVProduction.Tween.Component
 {
-    using MaloProduction.Tween.Core;
+    using MVProduction.Tween.Core;
     using UnityEngine;
 
     public class TweenComponent : MonoBehaviour

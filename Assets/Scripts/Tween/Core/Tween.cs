@@ -1,7 +1,7 @@
-namespace MaloProduction.Tween.Core
+namespace MVProduction.Tween.Core
 {
-    using MaloProduction.Tween.Delegate;
-    using MaloProduction.Tween.Ease;
+    using MVProduction.Tween.Delegate;
+    using MVProduction.Tween.Ease;
 
     public enum TweenRepeatMode
     {

@@ -1,8 +1,8 @@
 namespace OMG.Card.UI
 {
-    using MaloProduction.CustomAttributes;
-    using MaloProduction.Tween.DoTween.Module;
-    using MaloProduction.Tween.Core;
+    using MVProduction.CustomAttributes;
+    using MVProduction.Tween.DoTween.Module;
+    using MVProduction.Tween.Core;
 
     using OMG.Battle;
     using OMG.Card.Data;
@@ -10,7 +10,7 @@ namespace OMG.Card.UI
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
-    using MaloProduction.Tween;
+    using MVProduction.Tween;
     using System;
     using OMG.Battle.UI.Tooltip;
 

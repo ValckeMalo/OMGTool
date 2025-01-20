@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace MaloProduction
+namespace MVProduction
 {
     namespace CustomAttributes
     {

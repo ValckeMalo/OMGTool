@@ -1,6 +1,6 @@
 namespace OMG.Battle
 {
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
 
     using OMG.Battle.Manager;
     using OMG.Battle.Data;

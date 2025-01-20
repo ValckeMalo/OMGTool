@@ -2,7 +2,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace MaloProduction.CustomAttributes
+namespace MVProduction.CustomAttributes
 {
     [CustomEditor(typeof(UnityEngine.Object), true)]
     public class ButtonAttributeEditor : Editor

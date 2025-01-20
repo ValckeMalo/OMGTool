@@ -1,7 +1,7 @@
-namespace MaloProduction.Tween.DoTween.Module
+namespace MVProduction.Tween.DoTween.Module
 {
-    using MaloProduction.Tween.Core;
-    using MaloProduction.Tween.Delegate;
+    using MVProduction.Tween.Core;
+    using MVProduction.Tween.Delegate;
     using UnityEngine;
 
     public static class Vector3Module

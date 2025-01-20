@@ -1,7 +1,7 @@
-namespace MaloProduction.Tween.Core
+namespace MVProduction.Tween.Core
 {
-    using MaloProduction.Tween.Delegate;
-    using MaloProduction.Tween.Plugin;
+    using MVProduction.Tween.Delegate;
+    using MVProduction.Tween.Plugin;
 
     public class TweenerCore<T1, T2> : Tween
     {

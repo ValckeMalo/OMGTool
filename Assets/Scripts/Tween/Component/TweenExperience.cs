@@ -1,8 +1,8 @@
-using MaloProduction.Tween;
-using MaloProduction.Tween.DoTween.Module;
+using MVProduction.Tween;
+using MVProduction.Tween.DoTween.Module;
 using UnityEngine;
 using UnityEngine.UI;
-using MaloProduction.Tween.Ease;
+using MVProduction.Tween.Ease;
 
 public class TweenExperience : MonoBehaviour
 {

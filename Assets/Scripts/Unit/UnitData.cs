@@ -1,6 +1,6 @@
 namespace OMG.Unit
 {
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
 
     using System.Collections.Generic;
     using System.Linq;

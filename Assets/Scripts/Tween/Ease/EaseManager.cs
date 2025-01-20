@@ -1,4 +1,4 @@
-namespace MaloProduction.Tween.Ease
+namespace MVProduction.Tween.Ease
 {
     using UnityEngine;
 

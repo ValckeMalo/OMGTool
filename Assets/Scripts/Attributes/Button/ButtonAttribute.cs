@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace MaloProduction.CustomAttributes
+namespace MVProduction.CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class ButtonAttribute : PropertyAttribute

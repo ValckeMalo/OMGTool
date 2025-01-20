@@ -1,7 +1,7 @@
-namespace MaloProduction.Tween.Plugin
+namespace MVProduction.Tween.Plugin
 {
-    using MaloProduction.Tween.Delegate;
-    using MaloProduction.Tween.Core;
+    using MVProduction.Tween.Delegate;
+    using MVProduction.Tween.Core;
 
     public abstract class ABSPlugin<T1, T2> : IPlugin
     {

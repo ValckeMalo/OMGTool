@@ -1,6 +1,6 @@
-namespace MaloProduction.Tween.DoTween.Module
+namespace MVProduction.Tween.DoTween.Module
 {
-    using MaloProduction.Tween.Core;
+    using MVProduction.Tween.Core;
     using UnityEngine;
     using TMPro;
 

@@ -1,8 +1,8 @@
-namespace MaloProduction.Tween.Plugin
+namespace MVProduction.Tween.Plugin
 {
-    using MaloProduction.Tween.Delegate;
-    using MaloProduction.Tween.Ease;
-    using MaloProduction.Tween.Core;
+    using MVProduction.Tween.Delegate;
+    using MVProduction.Tween.Ease;
+    using MVProduction.Tween.Core;
 
     public class FloatPlugin : ABSPlugin<float, float>
     {

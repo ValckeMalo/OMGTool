@@ -1,4 +1,4 @@
-namespace MaloProduction.Tween.Delegate
+namespace MVProduction.Tween.Delegate
 {
     public delegate void TweenSetter<in T>(T newValue);
     public delegate T TweenGetter<out T>();

@@ -1,6 +1,6 @@
 namespace OMG.Battle.UI.Tooltip
 {
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
 
     using System.Collections.Generic;
     using UnityEngine;

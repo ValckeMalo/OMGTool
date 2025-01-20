@@ -1,4 +1,4 @@
-namespace MaloProduction.Tween.Plugin
+namespace MVProduction.Tween.Plugin
 {
     public interface IPlugin { }
 }

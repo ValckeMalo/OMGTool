@@ -6,7 +6,7 @@ namespace OMG.Battle.UI.Manager
 
     using OMG.Unit;
     using OMG.Unit.HUD;
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
 
     public class UnitHUDSpawner : MonoBehaviour
     {

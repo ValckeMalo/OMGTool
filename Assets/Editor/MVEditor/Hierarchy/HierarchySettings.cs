@@ -1,4 +1,4 @@
-namespace MaloProduction.Hierarchy
+namespace MVProduction.Hierarchy
 {
     using System.Collections.Generic;
     using System;
@@ -22,6 +22,19 @@ namespace MaloProduction.Hierarchy
         public bool Enabled = true;
         public Separator[] Separators;
 
+        #region Vertiacal Line
+        public VerticalLine verticalLine = null;
+        [Serializable]
+        public class VerticalLine
+        {
+            public bool ShowVerticalLine = true;
+            public Color Color = Color.white;
+            public float Offset = -20f;
+            public float Width = 2f;
+        }
+        #endregion
+
+        #region Blacklist
         [SerializeField] public List<BlackListIcons> BlacklistIcons = new List<BlackListIcons>();
         public List<BlackListIcons> BlackListedType
         {
@@ -85,5 +98,6 @@ namespace MaloProduction.Hierarchy
 
             return allComponentsType.Distinct().ToList(); // Ensure no duplicates
         }
+        #endregion
     }
 }

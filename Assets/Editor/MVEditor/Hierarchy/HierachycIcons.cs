@@ -1,8 +1,8 @@
-namespace MaloProduction.Hierarchy
+namespace MVProduction.Hierarchy
 {
     using UnityEngine;
     using UnityEditor;
-    using static MaloProduction.Hierarchy.HierarchySettings;
+    using static MVProduction.Hierarchy.HierarchySettings;
 
     [InitializeOnLoad]
     public class HierarchyIcons
@@ -23,6 +23,12 @@ namespace MaloProduction.Hierarchy
             GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
 
             if (obj == null) return;
+
+            if (hierarchySettings.verticalLine != null)
+            {
+                if (hierarchySettings.verticalLine.ShowVerticalLine && obj.transform.parent != null)
+                    DrawVerticalLine(selectionRect);
+            }
 
             Component[] components = obj.GetComponents<Component>();
             if (components == null || components.Length == 0) return;
@@ -84,6 +90,14 @@ namespace MaloProduction.Hierarchy
             }
 
             return false;
+        }
+
+        private static void DrawVerticalLine(Rect selectionRect)
+        {
+            Rect lineRect = new Rect(selectionRect.x + hierarchySettings.verticalLine.Offset, 
+                                     selectionRect.y, hierarchySettings.verticalLine.Width, selectionRect.height);
+
+            EditorGUI.DrawRect(lineRect, hierarchySettings.verticalLine.Color);
         }
     }
 }

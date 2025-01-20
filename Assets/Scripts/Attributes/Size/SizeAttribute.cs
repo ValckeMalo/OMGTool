@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace MaloProduction
+namespace MVProduction
 {
     namespace CustomAttributes
     {

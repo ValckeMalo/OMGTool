@@ -1,6 +1,6 @@
 namespace OMG.Battle.Manager
 {
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
     using OMG.Battle.UI;
     using OMG.Card;
     using OMG.Card.Data;

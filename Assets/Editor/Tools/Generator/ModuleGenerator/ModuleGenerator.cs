@@ -3,7 +3,7 @@ namespace OMG.Tools.ModuleGenerator
     using System.IO;
     using UnityEditor;
     using UnityEngine;
-    using MaloProduction;
+    using MVProduction;
 
     public class ModuleGenerator : EditorWindow
     {

@@ -1,4 +1,4 @@
-namespace MaloProduction.Tween.Core
+namespace MVProduction.Tween.Core
 {
     using System.Collections.Generic;
 

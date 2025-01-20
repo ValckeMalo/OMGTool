@@ -1,9 +1,9 @@
 namespace OMG.Unit.HUD
 {
-    using MaloProduction.CustomAttributes;
-    using MaloProduction.Tween;
-    using MaloProduction.Tween.Core;
-    using MaloProduction.Tween.DoTween.Module;
+    using MVProduction.CustomAttributes;
+    using MVProduction.Tween;
+    using MVProduction.Tween.Core;
+    using MVProduction.Tween.DoTween.Module;
 
     using OMG.Battle.UI.Tooltip;
     using OMG.Unit.Action;
@@ -115,7 +115,7 @@ namespace OMG.Unit.HUD
 
                     //tween/animate the value
                     lifeSliderTween = lifeSlider.DoValue(hp, 0.1f);
-                    hitSliderTween = hitSlider.DoValue(hp, 0.5f).AddDelay(0.35f).SetEase(MaloProduction.Tween.Ease.Easing.OutCubic);
+                    hitSliderTween = hitSlider.DoValue(hp, 0.5f).AddDelay(0.35f).SetEase(MVProduction.Tween.Ease.Easing.OutCubic);
                 }
             }
         }

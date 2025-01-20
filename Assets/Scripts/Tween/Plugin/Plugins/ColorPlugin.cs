@@ -1,8 +1,8 @@
-namespace MaloProduction.Tween.Plugin
+namespace MVProduction.Tween.Plugin
 {
-    using MaloProduction.Tween.Core;
-    using MaloProduction.Tween.Delegate;
-    using MaloProduction.Tween.Ease;
+    using MVProduction.Tween.Core;
+    using MVProduction.Tween.Delegate;
+    using MVProduction.Tween.Ease;
     using UnityEngine;
 
     public class ColorPlugin : ABSPlugin<Color, Color>

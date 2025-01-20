@@ -1,6 +1,6 @@
 namespace OMG.Card.UI
 {
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
 
     using OMG.Card.Data;
 

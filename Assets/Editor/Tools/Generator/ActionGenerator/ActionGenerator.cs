@@ -1,6 +1,6 @@
 namespace OMG.Tools.ModuleGenerator
 {
-    using MaloProduction;
+    using MVProduction;
     using System.IO;
     using UnityEditor;
     using UnityEngine;

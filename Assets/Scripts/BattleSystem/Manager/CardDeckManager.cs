@@ -6,7 +6,7 @@ namespace OMG.Battle.Manager
 
     using System.Collections.Generic;
     using System.Linq;
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
 
     [System.Serializable]
     public class CardDeckManager

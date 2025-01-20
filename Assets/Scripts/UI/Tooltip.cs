@@ -1,8 +1,8 @@
 namespace OMG.Battle.UI.Tooltip
 {
-    using MaloProduction.CustomAttributes;
-    using MaloProduction.Tween.Core;
-    using MaloProduction.Tween.DoTween.Module;
+    using MVProduction.CustomAttributes;
+    using MVProduction.Tween.Core;
+    using MVProduction.Tween.DoTween.Module;
 
     using TMPro;
     using UnityEngine;

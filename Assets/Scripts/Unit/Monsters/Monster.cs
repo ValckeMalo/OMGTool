@@ -1,6 +1,6 @@
 namespace OMG.Unit.Monster
 {
-    using MaloProduction.CustomAttributes;
+    using MVProduction.CustomAttributes;
     using OMG.Battle;
     using OMG.Unit;
     using OMG.Unit.Monster.Brain;
