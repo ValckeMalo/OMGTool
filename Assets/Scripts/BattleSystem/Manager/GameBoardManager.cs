@@ -131,7 +131,7 @@ namespace OMG.Battle.Manager
                 }
                 else
                 {
-                    CardUtils.ProcessCard(playableCard.CardData, playableCard.CardValue, false);
+                    CardProcessor.ProcessCard(playableCard.CardData, playableCard.CardValue, false);
                     ProcessCard(playableCard);
                 }
             }
@@ -182,7 +182,7 @@ namespace OMG.Battle.Manager
             DestroyCardOnBoard(secondPlayableCard);
             cardDeckManager.ReintroduceCard(secondPlayableCard.CardData);
 
-            CardUtils.ProcessCard(firstPlayableCard.CardData, firstPlayableCard.CardValue, false);
+            CardProcessor.ProcessCard(firstPlayableCard.CardData, firstPlayableCard.CardValue, false);
 
             ProcessCard(firstPlayableCard);
         }
@@ -190,7 +190,7 @@ namespace OMG.Battle.Manager
         {
             secondPlayableCard.BoostCardValue(firstPlayableCard.CardValue);
 
-            CardUtils.ProcessOnlyCardSpells(firstPlayableCard.CardData, false);
+            CardProcessor.ProcessOnlyCardSpells(firstPlayableCard.CardData, false);
             ProcessCard(firstPlayableCard);
         }
         public void CancelSecondCard()

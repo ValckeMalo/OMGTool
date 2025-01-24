@@ -12,7 +12,7 @@ namespace OMG.Card
 
     using UnityEngine;
 
-    public static class CardUtils
+    public static class CardProcessor
     {
         private static BattleData BattleData;
 
