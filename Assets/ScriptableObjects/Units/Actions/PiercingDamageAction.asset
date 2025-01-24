@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6051a26f5d33cc4d8453cacb9eb22bd, type: 3}
   m_Name: PiercingDamageAction
   m_EditorClassIdentifier: 
-  Description: Deal {value} damage under the armor
   Value: 5
+  unitActionUI:
+    icon: {fileID: 21300000, guid: c06132a5bc006d348881e200ee9de71f, type: 3}
+    name: d
+    description: dd

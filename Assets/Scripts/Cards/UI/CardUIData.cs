@@ -1,0 +1,55 @@
+namespace OMG.Card.UI
+{
+    using MVProduction.CustomAttributes;
+
+    using OMG.Card.Data;
+
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using UnityEngine;
+
+    [CreateAssetMenu(menuName = "Card/UI Data", fileName = "CardUIData")]
+    public class CardUIData : ScriptableObject
+    {
+        [System.Serializable]
+        public class CardUIValue
+        {
+            public SpellType key = SpellType.Poison;
+            public string title = string.Empty;
+            public string description = string.Empty;
+        }
+
+        [Title("Card UI Data")]
+        [SerializeField] private List<CardUIValue> cardUIData = new List<CardUIValue>();
+
+        [SerializeField, TextArea(5, 10)] private string initiativeDesc = string.Empty;
+        [SerializeField, TextArea(5, 10)] private string needSacrificeDesc = string.Empty;
+        [SerializeField, TextArea(5, 10)] private string etheralDesc = string.Empty;
+
+        public string InitiativeDesc => initiativeDesc;
+        public string NeedSacrificeDesc => needSacrificeDesc;
+        public string EtheralDesc => etheralDesc;
+
+        public CardUIValue GetValueByKey(SpellType key)
+        {
+            return cardUIData.Where(current => current.key == key).FirstOrDefault();
+        }
+
+        [Button("Check Unique Key")]
+        private void CheckUniqueKey()
+        {
+            HashSet<SpellType> seenKeys = new HashSet<SpellType>();
+
+            foreach (var cardUIData in cardUIData)
+            {
+                if (!seenKeys.Add(cardUIData.key))
+                {
+                    Debug.LogError($"Duplicate key found: {cardUIData.key}");
+                }
+            }
+
+            seenKeys.Clear();
+        }
+    }
+}

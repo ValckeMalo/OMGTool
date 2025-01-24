@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b651a744b1e8454cb03a6206f4d86b6, type: 3}
   m_Name: PoisonAction
   m_EditorClassIdentifier: 
-  Description: Add {value} poison
   Value: 5
+  unitActionUI:
+    icon: {fileID: 21300000, guid: 838c1942d2a07674fa51e22fc53bf3f1, type: 3}
+    name: Poison
+    description: Add poison
+  Effect: 0

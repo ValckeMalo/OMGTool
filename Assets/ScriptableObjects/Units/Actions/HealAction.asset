@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1b1d07a09c2eb4380b1df5dc32d59b, type: 3}
   m_Name: HealAction
   m_EditorClassIdentifier: 
-  Description: Heal {value}
   Value: 5
+  unitActionUI:
+    icon: {fileID: 21300000, guid: d44a36faabbf8ea4099397f242ca8483, type: 3}
+    name: f
+    description: ff

@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f15a93c9049c2044815ad8522470fe5, type: 3}
   m_Name: AttackAction
   m_EditorClassIdentifier: 
-  Description: Deal damage
   Value: 5
+  unitActionUI:
+    icon: {fileID: 21300000, guid: c06132a5bc006d348881e200ee9de71f, type: 3}
+    name: Charge
+    description: Deal damage

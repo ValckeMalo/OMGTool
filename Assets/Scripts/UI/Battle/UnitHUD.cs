@@ -17,6 +17,7 @@ namespace OMG.Unit.HUD
     using UnityEngine;
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
+    using static OMG.Battle.UI.Tooltip.TooltipManager;
 
     public class UnitHUD : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
@@ -307,10 +308,18 @@ namespace OMG.Unit.HUD
         private void UpdateTooltipData(List<UnitStatus> unitStatus)
         {
             tooltipStatusData.Clear();
-            for (int i = 0; i < unitStatus.Count; i++)
-            { //TODO tooltip header/description/icon
-                tooltipStatusData.Add(new TooltipManager.TooltipData(Type.STATE, unitStatus[i].status.ToString(), $"DealDamage{i}", null));
+
+            if (unitStatus == null || unitStatus.Count <= 0)
+                return;
+
+            TooltipData[] tooltipDatas = TooltipUtils.UnitStateToTooltipData(unitStatus);
+            if (tooltipDatas == null || tooltipDatas.Length <= 0)
+            {
+                Debug.LogError($"The tooltip return is null or empty : {tooltipDatas}");
+                return;
             }
+
+            tooltipStatusData.AddRange(tooltipDatas);
         }
 
         #region IPointer

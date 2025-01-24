@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a74d350898d964bb280c38c534aa66, type: 3}
   m_Name: ArmorAction
   m_EditorClassIdentifier: 
-  Description: Add armor
   Value: 5
+  unitActionUI:
+    icon: {fileID: 21300000, guid: bf7fd971c22658c4bac6a2eccfdc14a2, type: 3}
+    name: Blindage
+    description: Add some armor

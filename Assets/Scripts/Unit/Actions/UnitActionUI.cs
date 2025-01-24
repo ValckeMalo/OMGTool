@@ -4,12 +4,12 @@ namespace OMG.Unit.Action
 
     using UnityEngine;
 
-    [CreateAssetMenu(fileName = "NewUnitActionUI", menuName = "Action/Description", order = -1)]
-    public class UnitActionUI : ScriptableObject
+    [System.Serializable]
+    public class UnitActionUI
     {
         [Title("Unit Action UI")]
         [SerializeField,Sprite] private Sprite icon = null;
-        [SerializeField] private new string name = null;
+        [SerializeField] private string name = null;
         [SerializeField,TextArea(5,10)] private string description = null;
 
         public Sprite Icon => icon;

@@ -155,7 +155,7 @@ namespace OMG.Card.UI
             TooltipManager.Instance.ShowUnitData(cornerCardCanvas,
                                     0.1f,
                                     TooltipManager.Direction.Left,
-                                    new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.CARD, cardData.name, "HUUU attack", null));//TODO change that to a function that return a array of tooltip to handle evry needed case like etheral etc i think the function take the cardData directly
+                                    TooltipUtils.UnitStateToTooltipData(cardData));
         }
         private void HideTooltipCard()
         {
