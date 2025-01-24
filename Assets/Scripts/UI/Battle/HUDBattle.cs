@@ -61,7 +61,7 @@ namespace OMG.Battle.UI
             #region PadLock
             public void BreakPadLock()
             {
-                padLocksContainer.GetChild(nbActivePadLocks - 1).GetComponentInChildren<Image>().sprite = padLockSprite[1];
+                padLocksContainer.GetChild(maxPadLocks - nbActivePadLocks).GetComponentInChildren<Image>().sprite = padLockSprite[1];
             }
             public void ResetPadLock()
             {
@@ -97,7 +97,7 @@ namespace OMG.Battle.UI
             }
             private GameObject GetPadLock()
             {
-                return padLocksContainer.GetChild(nbActivePadLocks - 1).gameObject;
+                return padLocksContainer.GetChild(maxPadLocks - nbActivePadLocks).gameObject;
             }
             private GameObject GetPadLock(int index)
             {

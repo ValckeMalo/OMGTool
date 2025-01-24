@@ -7437,7 +7437,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'wakfuGauge.padLockSprite.Array.data[1]'
       value: 
-      objectReference: {fileID: 21300000, guid: 4308289842367004d87bbdd28fd91ccc,
+      objectReference: {fileID: 21300000, guid: d663b8666a66c0946b340d9465ce932e,
         type: 3}
     - target: {fileID: 6338046343827220521, guid: 1c0675cc3f9bd7c408df7d2991293698,
         type: 3}
