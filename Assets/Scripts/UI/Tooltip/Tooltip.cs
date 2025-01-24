@@ -63,12 +63,12 @@ namespace OMG.Battle.UI.Tooltip
             bodyText.text = data.Body;
         }
 
-        public void GoTo(Vector3 position)
+        public void GoTo(Vector3 anchoredPosition)
         {
             if (rectTooltip == null)
                 rectTooltip = GetComponent<RectTransform>();
 
-            rectTooltip.position = position;
+            rectTooltip.anchoredPosition = anchoredPosition;
         }
 
         public float GetHeight()

@@ -261,6 +261,7 @@ namespace OMG.Unit.HUD
         //Tooltip
         private TooltipManager.TooltipData tooltipAttackData = null;
         private List<TooltipManager.TooltipData> tooltipStatusData = new List<TooltipManager.TooltipData>();
+        private Canvas canvas = null;
 
         public void Initialize(Unit unit, float sizeUnit, bool isMonster)
         {
@@ -330,7 +331,15 @@ namespace OMG.Unit.HUD
 
             data.AddRange(tooltipStatusData);
 
-            TooltipManager.Instance.ShowUnitData(cornerHoverImage[previewAttack.Visibility ? 0 : 1].rectTransform.position, 0.1f, previewAttack.Visibility ? TooltipManager.Direction.Left : TooltipManager.Direction.Right, data.ToArray());
+            RectTransform cornerRectTransform = cornerHoverImage[(previewAttack.Visibility ? 0 : 1)].rectTransform;
+
+            if (canvas == null)
+                canvas = cornerRectTransform.GetComponentInParent<Canvas>();
+
+            TooltipManager.Instance.ShowUnitData(WorldScreen.UIObjectToCanvasPosition(canvas, cornerRectTransform),
+                                                0.1f,
+                                                previewAttack.Visibility ? TooltipManager.Direction.Left : TooltipManager.Direction.Right,
+                                                data.ToArray());
         }
 
         public void OnPointerExit(PointerEventData eventData)

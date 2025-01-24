@@ -42,4 +42,20 @@ public static class WorldScreen
         return new Vector2((viewportPosition.x * sizeDeltaCanvas.x) - (sizeDeltaCanvas.x * 0.5f),
                            (viewportPosition.y * sizeDeltaCanvas.y) - (sizeDeltaCanvas.y * 0.5f));
     }
+
+    public static Vector2 UIObjectToCanvasPosition(Canvas canvas, RectTransform uiObject)
+    {
+        Vector3 worldPos = uiObject.position;
+        Vector2 canvasPosition = Vector2.zero;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle
+        (
+            canvas.GetComponent<RectTransform>(),
+            RectTransformUtility.WorldToScreenPoint(null, worldPos),
+            canvas.worldCamera,
+            out canvasPosition
+        );
+
+        return canvasPosition;
+    }
 }

@@ -1,18 +1,21 @@
 namespace OMG.Card.UI
 {
+    using MVProduction.Tween;
+    using MVProduction.Tween.Core;
     using MVProduction.CustomAttributes;
     using MVProduction.Tween.DoTween.Module;
-    using MVProduction.Tween.Core;
 
     using OMG.Battle;
     using OMG.Card.Data;
+    using OMG.Battle.UI.Tooltip;
 
     using UnityEngine;
-    using UnityEngine.EventSystems;
     using UnityEngine.UI;
-    using MVProduction.Tween;
+    using UnityEngine.EventSystems;
+
     using System;
-    using OMG.Battle.UI.Tooltip;
+    using System.Collections;
+
 
     public class PlayableCard : UICard, IPointerEnterHandler, IPointerExitHandler
     {
@@ -23,7 +26,8 @@ namespace OMG.Card.UI
         private int boostValue = 0;
         private int wakfuBoost = 0;
 
-        private RectTransform rect;
+        private RectTransform rect = null;
+        private Canvas canvas = null;
 
         [SerializeField, Range(0.00f, 2.00f)] private float ratioScale = 1.5f;
         private static Vector2 BaseSize = Vector2.zero;
@@ -31,6 +35,7 @@ namespace OMG.Card.UI
         private TweenerCore<Vector2, Vector2> tweenScale = null;
 
         private bool isHoverFixed = false;
+        private float timeShowTooltip = 1f;
 
         public int WakfuCost => cardData.wakfu + wakfuBoost;
         public int CardValue => cardData.value + boostValue;
@@ -77,13 +82,14 @@ namespace OMG.Card.UI
 
             base.cardData = cardData;
             rect = GetComponent<RectTransform>();
+            canvas = GetComponentInParent<Canvas>();
             BaseSize = rect.sizeDelta;
         }
 
         public void Destroy()
         {
             TweenManager.Despawn(tweenScale);
-            //TooltipManager.Instance.HideTooltipCard();
+            HideTooltipCard();
             Destroy(gameObject);
         }
 
@@ -109,6 +115,7 @@ namespace OMG.Card.UI
             {
                 TweenManager.Despawn(tweenScale);
             }
+
             if (addDelay)
             {
                 tweenScale = rect.DoScale(BaseSize * ratioScale, 0.1f).AddDelay(0.1f);
@@ -134,15 +141,33 @@ namespace OMG.Card.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             ScaleUp(true);
-            //TooltipManager.Instance.SpawnTooltipCard(cardData, rect);
             BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);
+            StartCoroutine(HoverInfo());
+        }
+
+        private IEnumerator HoverInfo()
+        {
+            yield return new WaitForSeconds(timeShowTooltip);
+
+            Vector2 centerCardCanvas = WorldScreen.UIObjectToCanvasPosition(canvas, rect);
+            Vector2 cornerCardCanvas = new Vector2(centerCardCanvas.x - (rect.sizeDelta.x / 2f), centerCardCanvas.y + (rect.sizeDelta.y / 2f));
+
+            TooltipManager.Instance.ShowUnitData(cornerCardCanvas,
+                                    0.1f,
+                                    TooltipManager.Direction.Left,
+                                    new TooltipManager.TooltipData(TooltipManager.TooltipData.Type.CARD, cardData.name, "HUUU attack", null));//TODO change that to a function that return a array of tooltip to handle evry needed case like etheral etc i think the function take the cardData directly
+        }
+        private void HideTooltipCard()
+        {
+            StopAllCoroutines();
+            TooltipManager.Instance.HideUnitData(0.05f);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             ScaleDown();
-            //TooltipManager.Instance.HideTooltipCard();
             BattleSystem.Instance.GameBoard.ResetPreviewBar();
+            HideTooltipCard();
         }
         #endregion
     }

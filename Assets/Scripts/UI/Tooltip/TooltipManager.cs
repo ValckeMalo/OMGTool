@@ -65,17 +65,17 @@ namespace OMG.Battle.UI.Tooltip
         [SerializeField] private GameObject tooltipPrefab = null;
 
         [Header("Tooltip Settings")]
-        [SerializeField] private float tooltipMarginHorizontal = 20f;
+        [SerializeField] private float tooltipMarginHorizontal = 10f;
         [SerializeField] private float HeightMargin = 5f;
 
         /// <summary>
         /// Displays tooltips for unit data at a specified position and applies a fade-in effect.
         /// </summary>
-        /// <param name="startPos">The starting position where the first tooltip will appear.</param>
+        /// <param name="anchoredStartPos">The starting position where the first tooltip will appear.</param>
         /// <param name="fadeDuration">The duration of the fade-in effect for the tooltips.</param>
         /// <param name="direction">The direction in which the tooltips will appear (Left or Right).</param>
         /// <param name="tooltipDatas">An array of data objects used to populate the tooltips.</param>
-        public void ShowUnitData(Vector2 startPos, float fadeDuration, Direction direction, params TooltipData[] tooltipDatas)
+        public void ShowUnitData(Vector2 anchoredStartPos, float fadeDuration, Direction direction, params TooltipData[] tooltipDatas)
         {
             // Validate the input
             if (tooltipDatas == null || tooltipDatas.Length == 0)
@@ -87,7 +87,7 @@ namespace OMG.Battle.UI.Tooltip
             EnsureTooltipPoolSize(tooltipDatas.Length);
 
             Tooltip currentTooltip = tooltipPool[0];
-            Vector2 tooltipPos = CalculateInitialTooltipPosition(startPos, currentTooltip, direction);
+            Vector2 tooltipPos = CalculateInitialTooltipPosition(anchoredStartPos, currentTooltip, direction);
             for (int i = 0; i < tooltipDatas.Length; i++)
             {
                 currentTooltip = tooltipPool[i];
@@ -120,11 +120,11 @@ namespace OMG.Battle.UI.Tooltip
         /// <summary>
         /// Sets up the tooltip with data, fades it in, and positions it.
         /// </summary>
-        private void SetupTooltip(Tooltip tooltip, TooltipData data, Vector2 position, float fadeDuration)
+        private void SetupTooltip(Tooltip tooltip, TooltipData data, Vector2 anchoredPosition, float fadeDuration)
         {
             tooltip.UpdateToNewData(data);
             tooltip.FadeTooltip(1f, fadeDuration);
-            tooltip.GoTo(position);
+            tooltip.GoTo(anchoredPosition);
         }
 
         /// <summary>
