@@ -1,4 +1,4 @@
-namespace OMG.Tools.ModuleGenerator
+namespace OMG.Tools.ActionGenerator
 {
     using MVProduction;
     using System.IO;

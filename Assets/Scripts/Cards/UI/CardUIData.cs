@@ -23,13 +23,13 @@ namespace OMG.Card.UI
         [Title("Card UI Data")]
         [SerializeField] private List<CardUIValue> cardUIData = new List<CardUIValue>();
 
-        [SerializeField, TextArea(5, 10)] private string initiativeDesc = string.Empty;
-        [SerializeField, TextArea(5, 10)] private string needSacrificeDesc = string.Empty;
-        [SerializeField, TextArea(5, 10)] private string etheralDesc = string.Empty;
+        [SerializeField, TextArea(5, 10)] private string initiativeDescription = string.Empty;
+        [SerializeField, TextArea(5, 10)] private string needSacrificeDescription = string.Empty;
+        [SerializeField, TextArea(5, 10)] private string etheralDescription = string.Empty;
 
-        public string InitiativeDesc => initiativeDesc;
-        public string NeedSacrificeDesc => needSacrificeDesc;
-        public string EtheralDesc => etheralDesc;
+        public string InitiativeDesc => initiativeDescription;
+        public string NeedSacrificeDesc => needSacrificeDescription;
+        public string EtheralDesc => etheralDescription;
 
         public CardUIValue GetValueByKey(SpellType key)
         {
@@ -37,7 +37,7 @@ namespace OMG.Card.UI
         }
 
         [Button("Check Unique Key")]
-        private void CheckUniqueKey()
+        public void CheckUniqueKey()
         {
             HashSet<SpellType> seenKeys = new HashSet<SpellType>();
 

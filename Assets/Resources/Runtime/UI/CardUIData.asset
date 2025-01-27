@@ -19,6 +19,15 @@ MonoBehaviour:
   - key: 1
     title: Plaie
     description: Start turn plaie blablabla
-  initiativeDesc: Initiative yes
-  needSacrificeDesc: Sacrifice yes
-  etheralDesc: Etheral yes
+  - key: 1
+    title: Plaie
+    description: Start turn plaie blablabla
+  - key: 1
+    title: Plaie
+    description: Start turn plaie blablabla
+  - key: 1
+    title: Plaie
+    description: Start turn plaie blablabla
+  initiativeDescription: 
+  needSacrificeDescription: 
+  etheralDescription: 

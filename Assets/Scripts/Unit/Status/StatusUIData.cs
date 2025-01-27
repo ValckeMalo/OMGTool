@@ -7,6 +7,7 @@ namespace OMG.Unit.HUD
 
     using OMG.Unit.Status;
     using System.Linq;
+    using System;
 
     [CreateAssetMenu(menuName = "Unit/Status UI", fileName = "StatusUIData", order = 3)]
     public class StatusUIData : ScriptableObject
@@ -23,13 +24,15 @@ namespace OMG.Unit.HUD
         [Title("Status UI Data")]
         [SerializeField] private List<StatusUIValue> statusUIs = new List<StatusUIValue>();
 
+        public List<StatusUIValue> StatusUI => statusUIs;
+
         public StatusUIValue GetValueByKey(StatusType key)
         {
             return statusUIs.Where(current => current.key == key).FirstOrDefault();
         }
 
         [Button("Check Unique Key")]
-        private void CheckUniqueKey()
+        public void CheckUniqueKey()
         {
             HashSet<StatusType> seenKeys = new HashSet<StatusType>();
 
