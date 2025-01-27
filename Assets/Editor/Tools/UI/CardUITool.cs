@@ -1,5 +1,6 @@
 namespace OMG.Tools.UI.Status
 {
+    using MVProduction.EditorCode;
     using OMG.Card.Data;
     using OMG.Card.UI;
     using OMG.Unit.HUD;
@@ -66,48 +67,25 @@ namespace OMG.Tools.UI.Status
 
         private void DrawCardUIList()
         {
-            const int columns = 6; // Number of elements per row
-            int rows = Mathf.CeilToInt((float)(propListUIData.arraySize + 1) / columns); // Calculate the number of rows needed
             using (EditorGUILayout.ScrollViewScope scrollScope = new EditorGUILayout.ScrollViewScope(scrollPos))
             {
                 scrollPos = scrollScope.scrollPosition;
-                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+
+                using (EditorGrid grid = new EditorGrid(columns: 6, style: EditorStyles.helpBox))
                 {
-                    for (int row = 0; row < rows; row++)
+                    for (int i = 0; i < propListUIData.arraySize; i++)
                     {
-                        using (new EditorGUILayout.HorizontalScope())
+                        grid.AddCell(() =>
                         {
-
-                            for (int col = 0; col < columns; col++)
+                            if (DrawElement(propListUIData.GetArrayElementAtIndex(i)))
                             {
-                                int index = row * columns + col;
-
-                                if (index < propListUIData.arraySize)
-                                {
-                                    if (DrawElement(propListUIData.GetArrayElementAtIndex(index)))
-                                    {
-                                        propListUIData.DeleteArrayElementAtIndex(index);
-                                        break;
-                                    }
-                                }
-                                else if (index == propListUIData.arraySize)
-                                {
-                                    DrawAddElement();
-                                }
+                                propListUIData.DeleteArrayElementAtIndex(i);
+                                i--;
                             }
-
-                            GUILayout.FlexibleSpace();
-                        }
+                        });
                     }
 
-                    // Ensure the add button is visible if no elements exist
-                    if (propListUIData.arraySize == 0)
-                    {
-                        using (new EditorGUILayout.HorizontalScope())
-                        {
-                            DrawAddElement();
-                        }
-                    }
+                    grid.AddCell(DrawAddElement);
                 }
             }
 
