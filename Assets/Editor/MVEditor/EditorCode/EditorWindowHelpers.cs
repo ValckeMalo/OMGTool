@@ -1,6 +1,5 @@
 namespace MVProduction.EditorCode
 {
-    using OMG.Unit.Action;
     using System;
     using UnityEditor;
     using UnityEngine;
@@ -8,69 +7,65 @@ namespace MVProduction.EditorCode
 
     public static class EditorWindowHelpers
     {
-        public struct DragDropData
+        public static class DragDropArea
         {
-            public DragDropData(bool isDragValid, Object targetObject)
+            public struct DragDropData
             {
-                IsDragValid = isDragValid;
-                TargetObject = targetObject;
+                public DragDropData(bool isDragValid, Object targetObject)
+                {
+                    IsDragValid = isDragValid;
+                    TargetObject = targetObject;
+                }
+
+                public bool IsDragValid;
+                public Object TargetObject;
             }
 
-            public bool IsDragValid;
-            public Object TargetObject;
-
-        }
-
-        public static DragDropData HandleDragAndDrop(Rect dropArea, Type whiteList,EditorWindow window)
-        {
-            Event evt = Event.current;
-            DragDropData dragDropData = new DragDropData(false, null);
-
-            switch (evt.type)
+            public static DragDropData? HandleDragAndDrop(Rect dropArea, Type whiteList, EditorWindow window)
             {
-                case EventType.DragUpdated:
-                case EventType.DragPerform:
-                    if (!dropArea.Contains(evt.mousePosition))
-                    {
-                        Debug.LogError("OUTSIDE");
-                        dragDropData.IsDragValid = false;
-                        return dragDropData;
-                    }
+                Event evt = Event.current;
+                DragDropData dragDropData = new DragDropData(false, null);
 
-                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                    dragDropData.IsDragValid = false;
-                    if (DragAndDrop.objectReferences == null || DragAndDrop.objectReferences.Length <= 0)
-                        Debug.LogError("NULL");
-                    foreach (Object draggedObject in DragAndDrop.objectReferences)
-                    {
-                        //if (draggedObject.GetType().IsAssignableFrom(whiteList)) // same type by inheritance
-                        if (draggedObject is EffectAction) // same type by inheritance
+                switch (evt.type)
+                {
+                    case EventType.DragUpdated:
+                    case EventType.DragPerform:
+                        if (!dropArea.Contains(evt.mousePosition))
                         {
-                            Debug.LogError("SAME");
-                            dragDropData.IsDragValid = true;
+                            dragDropData.IsDragValid = false;
+                            window.Repaint();
+                            return dragDropData;
+                        }
 
-                            if (evt.type == EventType.DragPerform)//if the user drop the object
+                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                        dragDropData.IsDragValid = false;
+
+                        foreach (Object draggedObject in DragAndDrop.objectReferences)
+                        {
+                            if (draggedObject != null && whiteList.IsAssignableFrom(draggedObject.GetType()))
                             {
-                                DragAndDrop.AcceptDrag();
-                                dragDropData.TargetObject = draggedObject;
                                 dragDropData.IsDragValid = true;
-                                window.Repaint();
-                                return dragDropData;
+
+                                if (evt.type == EventType.DragPerform)
+                                {
+                                    DragAndDrop.AcceptDrag();
+                                    dragDropData.TargetObject = draggedObject;
+                                    window.Repaint();
+                                    return dragDropData;
+                                }
                             }
                         }
-                    }
+                        return dragDropData;
 
-                    return dragDropData;
+                    case EventType.DragExited:
+                        dragDropData.IsDragValid = false;
+                        window.Repaint();
+                        return dragDropData;
+                }
 
-                case EventType.DragExited:
-                    Debug.LogError("EXITED");
-                    dragDropData.IsDragValid = false;
-                    return dragDropData;
+                window.Repaint();
+                return null;
             }
-
-            Debug.LogError("NONE");
-            return dragDropData;
         }
-
     }
 }
