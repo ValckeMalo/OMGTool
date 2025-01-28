@@ -1,9 +1,8 @@
-namespace OMG.Tools.UI.Status
+namespace OMG.Tools.UI
 {
     using MVProduction.EditorCode;
     using OMG.Unit.HUD;
     using OMG.Unit.Status;
-    using System;
     using UnityEditor;
     using UnityEngine;
 

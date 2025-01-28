@@ -1,11 +1,8 @@
-namespace OMG.Tools.UI.Status
+namespace OMG.Tools.UI
 {
     using MVProduction.EditorCode;
-    using OMG.Card.Data;
     using OMG.Card.UI;
-    using OMG.Unit.HUD;
     using OMG.Unit.Status;
-    using System;
     using UnityEditor;
     using UnityEngine;
 
