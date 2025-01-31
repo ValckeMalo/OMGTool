@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   oropo: {fileID: 11400000, guid: 2433c5dd1868ced4490a84039273ee40, type: 2}
   monsters:
-  - {fileID: 11400000, guid: 89228a1fbffedbe46977808e1600b112, type: 2}
+  - {fileID: 11400000, guid: f79f6617870cf3e4b9b0de1c2264e3bf, type: 2}
   - {fileID: 11400000, guid: 938e6e8b7e65224448365890e9200727, type: 2}
-  - {fileID: 11400000, guid: 89228a1fbffedbe46977808e1600b112, type: 2}
+  - {fileID: 11400000, guid: f79f6617870cf3e4b9b0de1c2264e3bf, type: 2}
