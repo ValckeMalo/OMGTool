@@ -1,20 +1,13 @@
 namespace OMG.Battle
 {
     using MVProduction.CustomAttributes;
-
-    using OMG.Battle.Manager;
     using OMG.Battle.Data;
+    using OMG.Battle.Manager;
     using OMG.Battle.UI;
-    using OMG.Unit.Monster;
-
-    using System.Linq;
-
-    using Unity.Behavior;
-    using UnityEngine;
-    using System.Collections;
-    using OMG.Unit.HUD;
-    using System.Collections.Generic;
     using OMG.Battle.UI.Manager;
+    using OMG.Unit.Monster;
+    using System.Collections;
+    using UnityEngine;
 
     public class BattleSystem : MonoBehaviour
     {
@@ -43,23 +36,22 @@ namespace OMG.Battle
         [Title("Battle System")]
         [SerializeField] private BattleData battleUnits;
         [SerializeField] private Transform[] unitHUDPos;
-        [SerializeField] private RuntimeBlackboardAsset blackboardAsset;
         [SerializeField] private GameBoardManager gameBoard;
         [SerializeField] private MonstersBattleManager monstersBattleManager;
 
-        public GameBoardManager GameBoard { get => gameBoard; }
-        public MonstersBattleManager MonstersBattleManager { get => monstersBattleManager; }
+        public GameBoardManager GameBoard { get => gameBoard; } //TODO MEH
+        public MonstersBattleManager MonstersBattleManager { get => monstersBattleManager; }//TODO MEH
         public BattleData BattleData { get => battleUnits; }
         public int TurnIndex { get; private set; } /*I think i need to put it in the gameBoard it's more natural TODO*/
-        private int remainMonsterAlive => battleUnits.GetAllMonsters().Length;
+        private int remainMonsterAlive => battleUnits.GetAllMonsters().Length;//TODO REDO ALL THE DEATH LOGIC
 
         public void Start() => StartBattle();
 
         public void StartBattle()
         {
-            if (battleUnits == null || unitHUDPos == null || unitHUDPos.Length <= 0 || blackboardAsset == null)
+            if (battleUnits == null || unitHUDPos == null || unitHUDPos.Length <= 0)
             {
-                Debug.LogError($"Some Variable Are Not Set in the BattleSystem\n battleUnits : {battleUnits}\n unitHUDPos : {unitHUDPos}\n blackboardAsset : {blackboardAsset}");
+                Debug.LogError($"Some Variable Are Not Set in the BattleSystem\n battleUnits : {battleUnits}\n unitHUDPos : {unitHUDPos}\n ");
                 return;
             }
 
@@ -68,7 +60,6 @@ namespace OMG.Battle
             //duplicate the data because it's scriptable objects
             battleUnits = Instantiate(battleUnits);
             battleUnits.Duplicate();
-            blackboardAsset.Blackboard.Variables.Where(x => x.Name == "Player").First().ObjectValue = battleUnits.GetOropo();
 
             //HUD
             UnitHUDSpawner.OnSpawnUnitHUD.Invoke(unitHUDPos[0].position, battleUnits.GetOropo(), false);
@@ -77,7 +68,7 @@ namespace OMG.Battle
             UnitHUDSpawner.OnSpawnUnitHUD.Invoke(unitHUDPos[3].position, battleUnits.GetAllMonsters()[2], true);
 
             gameBoard = new GameBoardManager(battleUnits.GetOropo().Deck);
-            monstersBattleManager = new MonstersBattleManager(battleUnits.GetAllMonsters(), blackboardAsset.Blackboard);
+            monstersBattleManager = new MonstersBattleManager(battleUnits.GetAllMonsters());
 
             if (GameBoard == null || MonstersBattleManager == null)
             {
@@ -85,17 +76,17 @@ namespace OMG.Battle
                 return;
             }
 
-            HUDBattle.Instance.TurnButtonAddCallback(EndOropoTurn);
+            HUDBattle.Instance.TurnButtonAddCallback(EndOropoTurn);//TODO MEH
             SwitchBattleSate(BattleState.Oropo);
         }
 
-        public void EndOropoTurn()
+        public void EndOropoTurn()//TODO EVENT ??
         {
             GameBoard.EndOropoTurn();
             SwitchBattleSate(BattleState.Monsters);
         }
 
-        public void OropoDeath()
+        public void OropoDeath()//TODO EVENT ??
         {
             SwitchBattleSate(BattleState.Lose);
         }
@@ -144,7 +135,7 @@ namespace OMG.Battle
             HUDBattle.Instance.SwitchState(HUDBattle.BattleHUDState.Monsters);
             yield return new WaitForSeconds(2f);
 
-            MonstersBattleManager.UpdateMonstersTurn(battleUnits.GetAllMonsters(), battleUnits.GetOropo(), blackboardAsset.Blackboard);
+            MonstersBattleManager.UpdateMonstersTurn(battleUnits.GetAllMonsters(), battleUnits.GetOropo());
             SwitchBattleSate(BattleState.Oropo);
         }
         private IEnumerator OropoTurn()

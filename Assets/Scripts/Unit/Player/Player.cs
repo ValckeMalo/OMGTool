@@ -17,7 +17,7 @@ namespace OMG.Unit.Oropo
 
         protected override void Death()
         {
-            BattleSystem.Instance.OropoDeath();
+            BattleSystem.Instance.OropoDeath();//TODO REDO ALL THE DEATH LOGIC
         }
     }
 }

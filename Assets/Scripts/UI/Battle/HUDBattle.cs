@@ -144,7 +144,7 @@ namespace OMG.Battle.UI
             cancelSecondCard.onClick.AddListener(() =>
             {
                 ToggleSelectSecondCard(false);
-                BattleSystem.Instance.GameBoard.CancelSecondCard();
+                BattleSystem.Instance.GameBoard.CancelSecondCard();//TODO FIND A BETTER WAY TO LINK UI AND DATA
             });
         }
 

@@ -11,8 +11,8 @@ namespace OMG.Card.UI
         [System.Serializable]
         private class ShaderCards
         {
-            public CardBackground background;
-            public Material shaderMaterial;
+            public CardBackground background = CardBackground.Attack;
+            public Material shaderMaterial = null;
         }
         #endregion
 

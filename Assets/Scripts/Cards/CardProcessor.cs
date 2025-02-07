@@ -81,11 +81,11 @@ namespace OMG.Card
                     break;
 
                 case CardAction.Boost:
-                    BattleSystem.Instance.GameBoard.BoostAllCard(value);
+                    BattleSystem.Instance.GameBoard.BoostAllCard(value);//TODO EVENT ??
                     break;
 
                 case CardAction.Neutral:
-                    BattleSystem.Instance.GameBoard.SpawnCardsInHands(value);
+                    BattleSystem.Instance.GameBoard.SpawnCardsInHands(value);//TODO EVENT ??
                     break;
 
                 default:
@@ -149,7 +149,7 @@ namespace OMG.Card
                 return false;
             }
 
-            if (BattleData == null) BattleData = BattleSystem.Instance.BattleData;
+            if (BattleData == null) BattleData = BattleSystem.Instance.BattleData;//TODO ??
 
             return UnitTestBattleData();
         }

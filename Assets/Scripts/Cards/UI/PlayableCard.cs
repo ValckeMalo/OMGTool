@@ -78,7 +78,7 @@ namespace OMG.Card.UI
         {
             base.Init(cardData, options);
 
-            cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCard(this));
+            cardButton.onClick.AddListener(() => BattleSystem.Instance.GameBoard.UseCard(this));//TODO Not illogical but find better way
 
             base.cardData = cardData;
             rect = GetComponent<RectTransform>();
@@ -141,7 +141,7 @@ namespace OMG.Card.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             ScaleUp(true);
-            BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);
+            BattleSystem.Instance.GameBoard.UpdatePreviewGauge(WakfuCost);//TODO FIND A BETTER WAY TO LINK UI AND DATA
             StartCoroutine(HoverInfo());
         }
 
@@ -166,7 +166,7 @@ namespace OMG.Card.UI
         public void OnPointerExit(PointerEventData eventData)
         {
             ScaleDown();
-            BattleSystem.Instance.GameBoard.ResetPreviewBar();
+            BattleSystem.Instance.GameBoard.ResetPreviewBar();//TODO FIND A BETTER WAY TO LINK UI AND DATA
             HideTooltipCard();
         }
         #endregion

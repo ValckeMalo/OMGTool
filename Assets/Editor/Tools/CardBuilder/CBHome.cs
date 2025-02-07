@@ -8,6 +8,7 @@ namespace MVProduction
 
     using OMG.Tools.PreviewCard;
     using OMG.Card.Data;
+    using OMG.Data.Utils;
 
     public partial class CardBuilder : EditorWindow
     {
@@ -27,14 +28,14 @@ namespace MVProduction
                     new FilterLine(new List<FilterElement>()
                     {
                         new FilterElement("Wakfu Cost :"),
-                        new FilterElement(Comparison.Equal),
+                        new FilterElement(ComparisonOperator.Equal),
                         new FilterElement(0,-6,6)
                     }),
 
                     new FilterLine(new List<FilterElement>()
                     {
                         new FilterElement("Value Card :"),
-                        new FilterElement(Comparison.Equal),
+                        new FilterElement(ComparisonOperator.Equal),
                         new FilterElement(0),
                     }),
 
@@ -47,7 +48,7 @@ namespace MVProduction
                     new FilterLine(new List<FilterElement>()
                     {
                         new FilterElement(SpellType.Poison),
-                        new FilterElement(Comparison.Equal),
+                        new FilterElement(ComparisonOperator.Equal),
                         new FilterElement(0),
                     }),
                 });
@@ -232,14 +233,14 @@ namespace MVProduction
                                 new FilterLine(new List<FilterElement>()
                                 {
                                     new FilterElement("Wakfu Cost :"),
-                                    new FilterElement(Comparison.Equal),
+                                    new FilterElement(ComparisonOperator.Equal),
                                     new FilterElement(0,-6,6)
                                 }),
 
                                 new FilterLine(new List<FilterElement>()
                                 {
                                     new FilterElement("Value Card :"),
-                                    new FilterElement(Comparison.Equal),
+                                    new FilterElement(ComparisonOperator.Equal),
                                     new FilterElement(0),
                                 }),
 
@@ -252,7 +253,7 @@ namespace MVProduction
                                 new FilterLine(new List<FilterElement>()
                                 {
                                     new FilterElement(SpellType.Poison),
-                                    new FilterElement(Comparison.Equal),
+                                    new FilterElement(ComparisonOperator.Equal),
                                     new FilterElement(0),
                                 }),
                             });
@@ -403,11 +404,11 @@ namespace MVProduction
                                 FilterElement antepenultimateElement = line.GetElementAt(lastIndex - 2);
                                 if (TryEnumSpell(antepenultimateElement))
                                 {
-                                    filteredList = ComparisonSpell(filteredList, (Comparison)penultimateElement.EnumValue, (SpellType)antepenultimateElement.EnumValue, lastElement.IntValue);
+                                    filteredList = ComparisonSpell(filteredList, (ComparisonOperator)penultimateElement.EnumValue, (SpellType)antepenultimateElement.EnumValue, lastElement.IntValue);
                                 }
                                 else
                                 {
-                                    filteredList = ComparisonCardValue(filteredList, (Comparison)penultimateElement.EnumValue, lastElement.IntValue);
+                                    filteredList = ComparisonCardValue(filteredList, (ComparisonOperator)penultimateElement.EnumValue, lastElement.IntValue);
                                 }
                             }
                             break;
@@ -415,7 +416,7 @@ namespace MVProduction
                         case FilterElementType.IntSlider:
                             if (TryEnumComparison(penultimateElement))
                             {
-                                filteredList = ComparisonWakfuCost(filteredList, (Comparison)penultimateElement.EnumValue, lastElement.IntValue);
+                                filteredList = ComparisonWakfuCost(filteredList, (ComparisonOperator)penultimateElement.EnumValue, lastElement.IntValue);
                             }
                             break;
 
@@ -431,7 +432,7 @@ namespace MVProduction
 
         private bool TryEnumComparison(FilterElement element)
         {
-            return (element.Type == FilterElementType.Enum && element.EnumValue is Comparison);
+            return (element.Type == FilterElementType.Enum && element.EnumValue is ComparisonOperator);
         }
         private bool TryEnumTarget(FilterElement element)
         {
@@ -442,47 +443,47 @@ namespace MVProduction
             return (element.Type == FilterElementType.Enum && element.EnumValue is SpellType);
         }
 
-        private List<CardData> ComparisonWakfuCost(List<CardData> filteredList, Comparison comparison, int intValue)
+        private List<CardData> ComparisonWakfuCost(List<CardData> filteredList, ComparisonOperator comparison, int intValue)
         {
             switch (comparison)
             {
-                case Comparison.GreaterOrEqual:
+                case ComparisonOperator.GreaterOrEqual:
                     return filteredList.Where(card => card.wakfu >= intValue).Select(card => card).ToList();
-                case Comparison.Equal:
+                case ComparisonOperator.Equal:
                     return filteredList.Where(card => card.wakfu == intValue).Select(card => card).ToList();
-                case Comparison.LessOrEqual:
+                case ComparisonOperator.LessOrEqual:
                     return filteredList.Where(card => card.wakfu <= intValue).Select(card => card).ToList();
                 default:
                     return filteredList;
             }
         }
-        private List<CardData> ComparisonCardValue(List<CardData> filteredList, Comparison comparison, int intValue)
+        private List<CardData> ComparisonCardValue(List<CardData> filteredList, ComparisonOperator comparison, int intValue)
         {
             switch (comparison)
             {
-                case Comparison.GreaterOrEqual:
+                case ComparisonOperator.GreaterOrEqual:
                     return filteredList.Where(card => card.value >= intValue).Select(card => card).ToList();
-                case Comparison.Equal:
+                case ComparisonOperator.Equal:
                     return filteredList.Where(card => card.value == intValue).Select(card => card).ToList();
-                case Comparison.LessOrEqual:
+                case ComparisonOperator.LessOrEqual:
                     return filteredList.Where(card => card.value <= intValue).Select(card => card).ToList();
                 default:
                     return filteredList;
             }
         }
-        private List<CardData> ComparisonSpell(List<CardData> filteredList, Comparison comparison, SpellType spell, int intValue)
+        private List<CardData> ComparisonSpell(List<CardData> filteredList, ComparisonOperator comparison, SpellType spell, int intValue)
         {
             switch (comparison)
             {
-                case Comparison.GreaterOrEqual:
+                case ComparisonOperator.GreaterOrEqual:
                     return filteredList
                             .Where(card => card.spells.Any(spells => spells.type == spell && spells.value >= intValue))
                             .ToList();
-                case Comparison.Equal:
+                case ComparisonOperator.Equal:
                     return filteredList
                             .Where(card => card.spells.Any(spells => spells.type == spell && spells.value == intValue))
                             .ToList();
-                case Comparison.LessOrEqual:
+                case ComparisonOperator.LessOrEqual:
                     return filteredList
                             .Where(card => card.spells.Any(spells => spells.type == spell && spells.value <= intValue))
                             .ToList();

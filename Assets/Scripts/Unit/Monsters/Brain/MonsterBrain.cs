@@ -4,7 +4,6 @@ namespace OMG.Unit.Monster.Brain
     using OMG.Unit;
 
     using UnityEngine;
-    using Unity.Behavior;
 
     using MVProduction.CustomAttributes;
 
@@ -12,7 +11,6 @@ namespace OMG.Unit.Monster.Brain
     public class MonsterBrain
     {
         [Title("Barin")]
-        [SerializeReference] private BehaviorGraph behaviourTree;
         [SerializeField, ReadOnly] private UnitAction nextAction;
         public UnitAction NextAction => nextAction;
 
@@ -29,12 +27,7 @@ namespace OMG.Unit.Monster.Brain
 
         public void SearchAction()
         {
-            behaviourTree.Start();
 
-            if (nextAction == null)
-            {
-                Debug.LogError($"The beahaviour tree cannot found any action to play in {behaviourTree.name}.");
-            }
         }
 
         public bool SetAction(UnitAction unitAction)

@@ -33,7 +33,7 @@ namespace OMG.Battle.Manager
             SpawnCardsInHands(cardBoardManager.NbCardToSpawn);
             cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
         }
-        public void EndOropoTurn()
+        public void EndOropoTurn()//rename
         {
             wakfuManager.UnlockWakfu();
             cardBoardManager.ToggleAllCardUnusable();
@@ -102,7 +102,7 @@ namespace OMG.Battle.Manager
                 {
                     cardBoardManager.DespawnFinishers();
                     HUDBattle.Instance.ToggleFinishersMode(false);
-                    BattleSystem.Instance.EndOropoTurn();
+                    BattleSystem.Instance.EndOropoTurn();//TODO pass it in an EVENT ??
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace OMG.Battle.Manager
 
             cardBoardManager.ToggleCardBasedOnWakfuRemain(wakfuManager.WakfuRemain);
         }
-        private void DestroyCardOnBoard(PlayableCard playableCard)
+        private void DestroyCardOnBoard(PlayableCard playableCard)//TODO throw in the CBM
         {
             cardBoardManager.RemoveCardOnBoard(playableCard);
             cardBoardManager.DestroyPlayableCard(playableCard);
