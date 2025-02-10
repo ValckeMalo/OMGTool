@@ -15,7 +15,8 @@ namespace OMG.Game.Fight.Entities
         //TODO add UI
 
         public float EntityPercentHealth => currentHealth / maxHealth;
-        public float EntityCurrentHealth => currentHealth;
+        public int EntityCurrentHealth => currentHealth;
+        public int Currentarmor => currentArmor;
 
         protected void InitializeEntity(int currentHealth, int maxHealth/*,TODO add UI*/)
         {

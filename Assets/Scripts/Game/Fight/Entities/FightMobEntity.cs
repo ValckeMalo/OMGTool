@@ -1,9 +1,10 @@
 namespace OMG.Game.Fight.Entities
 {
+    using MVProduction.CustomAttributes;
+    using OMG.Data.Character;
     using OMG.Data.Mobs.Actions;
     using OMG.Data.Mobs.Behaviour;
     using OMG.Data.Utils;
-    using OMG.Unit.Monster;
 
     using System;
     using UnityEngine;
@@ -11,11 +12,12 @@ namespace OMG.Game.Fight.Entities
     [Serializable]
     public class FightMobEntity : FightEntity
     {
-        private Monster/*Rename to MobData*/ mobData;
-        private MobActionTarget nextMobAction;
+        [Title("Fight Mob Entity")]
+        [SerializeField] private MobData mobData;
+        [SerializeField,ReadOnly] private MobActionTarget nextMobAction;
         private Action<MobActionTarget> onNextActionUpdate = null;
 
-        public void InitializeMob(int currentHealth, int maxHealth, Monster mobData/*,TODO add UI*/)
+        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData/*,TODO add UI*/)
         {
             this.mobData = mobData;
             InitializeEntity(currentHealth, maxHealth);
@@ -35,9 +37,9 @@ namespace OMG.Game.Fight.Entities
 
         private void SearchNextAction()
         {
-            if (mobData == null || mobData.MobFightBehaviours == null) return;
+            if (mobData == null || mobData.MobFightBehaviourList == null) return;
 
-            foreach (MobFightBehaviour behaviour in mobData.MobFightBehaviours)
+            foreach (MobFightBehaviour behaviour in mobData.MobFightBehaviourList)
             {
                 if (behaviour == null) continue;
                 if (behaviour.PrimaryFightCondition == null) continue;
@@ -70,9 +72,10 @@ namespace OMG.Game.Fight.Entities
         {
             if (nextMobAction == null) return;
 
-            FightEntity fightEntityTarget = GetTarget(nextMobAction.Target);
-
-            //nextMobAction.MobAction.Execute(fightEntityTarget);//TODO change the execute line with the fight entity
+            if (nextMobAction.Target == FightEntityTarget.AllMobs)
+                nextMobAction.MobAction.Execute(FightManager.Instance.FightData.AllMobs.ToArray());
+            else
+                nextMobAction.MobAction.Execute(GetTarget(nextMobAction.Target));
 
             nextMobAction = null;
         }
@@ -84,32 +87,30 @@ namespace OMG.Game.Fight.Entities
                     return this;
 
                 case FightEntityTarget.Player:
-                    return FightLogic.instance.FightCharacterEntity;
+                    return FightManager.Instance.FightData.FightCharacterEntity;
 
                 case FightEntityTarget.FirstMob:
-                    return FightLogic.instance.FirstFightMobEntity;
+                    return FightManager.Instance.FightData.FirstFightMobEntity;
 
                 case FightEntityTarget.LastMob:
-                    return FightLogic.instance.LastFightMobEntity;
+                    return FightManager.Instance.FightData.LastFightMobEntity;
 
                 case FightEntityTarget.RandomMob:
-                    return FightLogic.instance.GetRandomMob();
-
-                case FightEntityTarget.AllMobs:
-                    return null; /*FightLogic.instance.FightMobEntities;//TODO MEH Found a way to correct that*/
+                    return FightManager.Instance.FightData.GetRandomMob();
 
                 case FightEntityTarget.WeakestMob:
-                    return FightLogic.instance.WeakestFightMobEntity();
+                    return FightManager.Instance.FightData.WeakestFightMobEntity();
 
                 case FightEntityTarget.RandomMobOther:
-                    return FightLogic.instance.GetRandomMob();//TODO set the pos of the current mob to execpt it for the random
+                    return FightManager.Instance.FightData.GetRandomMob();//TODO set the pos of the current mob to execpt it for the random
 
                 case FightEntityTarget.RandomMobWithState:
-                    return FightLogic.instance.GetRandomMobWithStatus(Unit.Status.StatusType.Poison); //TODO add a wrapper on the status type to add specific data like in the condition behaviour
+                    return FightManager.Instance.FightData.GetRandomMobWithStatus(Unit.Status.StatusType.Poison);
 
                 case FightEntityTarget.RandomAll:
-                    return FightLogic.instance.GetRandomEntity();
+                    return FightManager.Instance.FightData.GetRandomEntity();
 
+                case FightEntityTarget.AllMobs:
                 default:
                     Debug.LogError($"Default switch reach {target} for target");
                     return null;
@@ -175,19 +176,19 @@ namespace OMG.Game.Fight.Entities
                     return ComparisonOperatorValue(fightConditon.ComparisionOperator, EntityPercentHealth, fightConditon.SpecificValue);
 
                 case FightConditionType.CharacterHealthPercent:
-                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightLogic.instance.FightCharacterEntity.EntityPercentHealth, fightConditon.SpecificValue);
+                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightManager.Instance.FightData.FightCharacterEntity.EntityPercentHealth, fightConditon.SpecificValue);
 
                 case FightConditionType.MobsCount:
-                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightLogic.instance.MobCount, fightConditon.SpecificValue);
+                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightManager.Instance.FightData.MobCount, fightConditon.SpecificValue);
 
                 case FightConditionType.FightTurn:
-                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightLogic.instance.NbTurn, fightConditon.SpecificValue);
+                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightManager.Instance.FightData.NbTurn, fightConditon.SpecificValue);
 
                 case FightConditionType.MobOnBoardWithHealth:
                     return ComparisonOperatorValue(fightConditon.ComparisionOperator, EntityPercentHealth, fightConditon.SpecificValue);//TODO change to search one mob
 
                 case FightConditionType.CharacterArmor:
-                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, EntityPercentHealth, fightConditon.SpecificValue);//TODO change to the character armor
+                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightManager.Instance.FightData.FightCharacterEntity.Currentarmor, fightConditon.SpecificValue);
 
                 case FightConditionType.CharacterWithState:
                     return HasStatus(fightConditon.SpecificStatus);//TODO change to call on the chara

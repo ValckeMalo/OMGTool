@@ -7696,6 +7696,7 @@ Transform:
   - {fileID: 182293701}
   - {fileID: 73624437}
   - {fileID: 1596260393}
+  - {fileID: 1742528020}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1570353664 stripped
@@ -8832,6 +8833,72 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf22a2db10f09a34495e9f83913738c8, type: 3}
+--- !u!1 &1742528019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1742528020}
+  - component: {fileID: 1742528021}
+  m_Layer: 0
+  m_Name: FightManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1742528020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742528019}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1564751253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1742528021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742528019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 912198f0105b3ea41aa6730cc4e254fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fightData:
+    fightCharacter:
+      characterDungeon:
+        charcterManager:
+          characerData: {fileID: 0}
+          characerInventory:
+            deck: {fileID: 0}
+            finishersUnlock: []
+            kamas: 0
+          characterLevel:
+            level: 0
+            experience: 0
+            experienceTreshold: 
+        dungeonInventory:
+          deck: []
+        health: 0
+    fightMobEntities:
+    - mobData: {fileID: 0}
+      nextMobAction:
+        mobAction: {fileID: 0}
+        target: 0
+    nbTurn: 0
 --- !u!4 &1747688966 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,

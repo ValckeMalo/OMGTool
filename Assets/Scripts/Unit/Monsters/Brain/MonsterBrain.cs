@@ -11,16 +11,16 @@ namespace OMG.Unit.Monster.Brain
     public class MonsterBrain
     {
         [Title("Barin")]
-        [SerializeField, ReadOnly] private UnitAction nextAction;
-        public UnitAction NextAction => nextAction;
+        [SerializeField, ReadOnly] private MobAction nextAction;
+        public MobAction NextAction => nextAction;
 
         public void Action(IUnit player, IUnit monster)
         {
             if (nextAction == null) return;
 
-            if (nextAction.name.Split("Blindage").Length > 1)
-                nextAction.Execute(monster);
-            else nextAction.Execute(player);
+            //if (nextAction.name.Split("Blindage").Length > 1)
+            //    nextAction.Execute(monster);
+            //else nextAction.Execute(player);
 
             nextAction = null;
         }
@@ -30,7 +30,7 @@ namespace OMG.Unit.Monster.Brain
 
         }
 
-        public bool SetAction(UnitAction unitAction)
+        public bool SetAction(MobAction unitAction)
         {
             if (unitAction == null)
             {

@@ -1,24 +1,20 @@
 namespace OMG.Game.Fight
 {
+    using MVProduction.CustomAttributes;
     using OMG.Game.Fight.Entities;
     using OMG.Unit.Status;
     using System.Collections.Generic;
     using System.Linq;
+
     using UnityEngine;
 
-    public class FightLogic
+    [System.Serializable]
+    public class FightData
     {
-        public static FightLogic instance;//TODO CHANGE THAT QUICKLY TEMP FOR EASLY DEBUG
-
-        private FightCharacterEntity fightCharacter;
-        private List<FightMobEntity> fightMobEntities;
-        private int nbTurn = 0;
-
-        public FightLogic(FightCharacterEntity character, List<FightMobEntity> fightMobEntities)
-        {
-            fightCharacter = character;
-            this.fightMobEntities = fightMobEntities;
-        }
+        [Title("Fight Data")]
+        [SerializeField] private FightCharacterEntity fightCharacter;
+        [SerializeField] private List<FightMobEntity> fightMobEntities;
+        [SerializeField, ReadOnly] private int nbTurn = 0;
 
         public int NbTurn => nbTurn;
 
@@ -26,7 +22,7 @@ namespace OMG.Game.Fight
         public FightCharacterEntity FightCharacterEntity { get => fightCharacter; }
         public FightMobEntity FirstFightMobEntity { get => fightMobEntities.First(); }
         public FightMobEntity LastFightMobEntity { get => fightMobEntities.Last(); }
-        public List<FightMobEntity> FightMobEntities { get => fightMobEntities; }
+        public List<FightMobEntity> AllMobs { get => fightMobEntities; }
         public FightMobEntity WeakestFightMobEntity()
         {
             FightMobEntity weakestMob = null;
@@ -74,6 +70,14 @@ namespace OMG.Game.Fight
 
             return allEntities[Random.Range(0, allEntities.Count)];
 
+        }
+
+
+        public void InitializeData(FightCharacterEntity fightCharacter, List<FightMobEntity> fightMobEntities)
+        {
+            this.fightCharacter = fightCharacter;
+            this.fightMobEntities = fightMobEntities;
+            nbTurn = 0;
         }
     }
 }

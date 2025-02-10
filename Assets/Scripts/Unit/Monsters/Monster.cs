@@ -32,7 +32,7 @@ namespace OMG.Unit.Monster
             if (brain != null)
             {
                 brain.SearchAction();
-                unitHUD.UpdatePreviewNextAction(brain.NextAction.GetValue(), brain.NextAction.UnitActionUI);
+                //unitHUD.UpdatePreviewNextAction(brain.NextAction.GetValue(), brain.NextAction.UnitActionUI);
             }
         }
 

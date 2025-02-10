@@ -1,19 +1,14 @@
 namespace OMG.Unit.Action
 {
-    using OMG.Unit;
+    using OMG.Game.Fight.Entities;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "HealAction", menuName = "Action/Base/Heal")]
-    public class HealAction : UnitAction
+    public class HealAction : MobAction
     {
-        public override void Execute(IUnit unit)
+        public override void Execute(params FightEntity[] entity)
         {
-            Heal(Value, unit);
-        }
-
-        public override void Execute(IUnit[] units)
-        {
-            Heal(Value, units);
+            //Heal(entity);
         }
     }
 }

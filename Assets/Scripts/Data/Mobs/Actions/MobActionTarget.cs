@@ -7,11 +7,11 @@ namespace OMG.Data.Mobs.Actions
     [System.Serializable]
     public class MobActionTarget
     {
-        [Title("Mob Action Weight")]
-        [SerializeField] private UnitAction mobAction = null;
+        [Title("Mob Action Target")]
+        [SerializeField] private MobAction mobAction = null;
         [SerializeField] private FightEntityTarget target = FightEntityTarget.Me;
 
-        public UnitAction MobAction { get => mobAction; }
+        public MobAction MobAction { get => mobAction; }
         public FightEntityTarget Target { get => target; }
     }
 }

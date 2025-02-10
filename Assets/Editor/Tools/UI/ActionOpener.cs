@@ -11,7 +11,7 @@ namespace OMG.Tools.UI
         {
             Object obj = EditorUtility.InstanceIDToObject(instanceID);
 
-            if (obj is UnitAction myAsset)
+            if (obj is MobAction myAsset)
             {
                 ActionUITool.OpenWindow(myAsset);
                 return true;

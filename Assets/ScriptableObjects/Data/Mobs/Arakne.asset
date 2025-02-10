@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8913a87bcc9a33e4691bcbd412a34852, type: 3}
+  m_Name: Arakne
+  m_EditorClassIdentifier: 
+  mobBehaviours:
+  - primaryFightCondition:
+      conditionType: 1
+      comparisionOperator: 0
+      specificStatus: 0
+      specificValue: 0.75
+      specificPosition: 0
+    conditionOperator: 0
+    secondaryFightCondition:
+      conditionType: 0
+      comparisionOperator: 0
+      specificStatus: 0
+      specificValue: 0
+      specificPosition: 0
+  experience: 10
+  cardLootable: []
+  baseHealth: 75

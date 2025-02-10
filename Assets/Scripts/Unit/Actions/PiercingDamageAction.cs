@@ -1,19 +1,15 @@
 namespace OMG.Unit.Action
 {
+    using OMG.Game.Fight.Entities;
     using OMG.Unit;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "PiercingDamageAction", menuName = "Action/Base/Piercing Damage")]
-    public class PiercingDamageAction : UnitAction
+    public class PiercingDamageAction : MobAction
     {
-        public override void Execute(IUnit unit)
+        public override void Execute(params FightEntity[] entity)
         {
-            PiercingAttack(Value,unit);
-        }
-
-        public override void Execute(IUnit[] units)
-        {
-            PiercingAttack(Value, units);
+            throw new System.NotImplementedException();
         }
     }
 }

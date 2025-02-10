@@ -19,7 +19,7 @@ namespace OMG.Tools.UI
             window.Show();
         }
 
-        public static void OpenWindow(UnitAction obj = null)
+        public static void OpenWindow(MobAction obj = null)
         {
             window = GetWindow<ActionUITool>("Action UI Tool");
             window.targetObject = obj;
@@ -126,7 +126,7 @@ namespace OMG.Tools.UI
         }
         private void HandleDragAndDrop(Rect dropArea)
         {
-            var data = EditorWindowHelpers.DragDropArea.HandleDragAndDrop(dropArea, typeof(UnitAction), this);
+            var data = EditorWindowHelpers.DragDropArea.HandleDragAndDrop(dropArea, typeof(MobAction), this);
 
             if (data != null && data.HasValue)
             {

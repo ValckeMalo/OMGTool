@@ -1,19 +1,15 @@
 namespace OMG.Unit.Action
 {
+    using OMG.Game.Fight.Entities;
     using OMG.Unit;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "AttackAction", menuName = "Action/Base/Attack")]
-    public class AttackAction : UnitAction
+    public class AttackAction : MobAction
     {
-        public override void Execute(IUnit unit)
+        public override void Execute(params FightEntity[] entity)
         {
-            Attack(Value, unit);
-        }
-
-        public override void Execute(IUnit[] units)
-        {
-            Attack(Value, units);
+            throw new System.NotImplementedException();
         }
     }
 }

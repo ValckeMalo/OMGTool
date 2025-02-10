@@ -1,25 +1,20 @@
 namespace OMG.Unit.Action
 {
+    using UnityEngine;
     using MVProduction.CustomAttributes;
 
     using OMG.Unit;
     using OMG.Unit.Status;
 
-    public abstract class UnitAction : UnityEngine.ScriptableObject
-    {
-        [Title("Unit Action")]
-        [UnityEngine.SerializeField] protected int Value = 0;
-        [UnityEngine.SerializeField] protected UnitActionUI unitActionUI = null;
+    using OMG.Game.Fight.Entities;
 
+    public abstract class MobAction : ScriptableObject
+    {
+        [Title("Mob Action")]
+        [SerializeField] protected UnitActionUI unitActionUI = null;
         public UnitActionUI UnitActionUI => unitActionUI;
 
-        public abstract void Execute(IUnit unit);
-        public abstract void Execute(IUnit[] units);
-
-        public virtual int GetValue()
-        {
-            return Value;
-        }
+        public abstract void Execute(params FightEntity[] entity);
 
         protected void Attack(int damage, IUnit unit)
         {

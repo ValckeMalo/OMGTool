@@ -1,23 +1,19 @@
 namespace OMG.Unit.Action
 {
     using MVProduction.CustomAttributes;
+    using OMG.Game.Fight.Entities;
     using OMG.Unit;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "effectAction", menuName = "Action/Base/Effect")]
-    public class EffectAction : UnitAction
+    public class EffectAction : MobAction
     {
-        [Title("State Action")]
-        [SerializeField] private Status.StatusType Effect = Status.StatusType.Poison;
+        //[Title("State Action")]
+        //[SerializeField] private Status.StatusType Effect = Status.StatusType.Poison;
 
-        public override void Execute(IUnit unit)
+        public override void Execute(params FightEntity[] entity)
         {
-            AddStatus(Value, Effect, unit);
-        }
-
-        public override void Execute(IUnit[] units)
-        {
-            AddStatus(Value, Effect, units);
+            throw new System.NotImplementedException();
         }
     }
 }
