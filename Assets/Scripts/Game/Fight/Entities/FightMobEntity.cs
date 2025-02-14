@@ -7,6 +7,7 @@ namespace OMG.Game.Fight.Entities
     using OMG.Data.Utils;
 
     using System;
+    using System.Collections;
     using UnityEngine;
 
     [Serializable]
@@ -14,19 +15,19 @@ namespace OMG.Game.Fight.Entities
     {
         [Title("Fight Mob Entity")]
         [SerializeField] private MobData mobData;
-        [SerializeField,ReadOnly] private MobActionTarget nextMobAction;
-        private Action<MobActionTarget> onNextActionUpdate = null;
+        [SerializeField, ReadOnly] private MobActionData nextMobAction;
+        private Action<MobActionData> onNextActionUpdate = null;
 
-        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData/*,TODO add UI*/)
+        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData, FightMobEnityUI mobEntityUI)
         {
             this.mobData = mobData;
-            InitializeEntity(currentHealth, maxHealth);
+            InitializeEntity(currentHealth, maxHealth, mobEntityUI);
+            SearchNextAction();
         }
 
         public override void NewTurn()
         {
             base.NewTurn();
-
             PlayNextAction();
         }
 
@@ -39,6 +40,7 @@ namespace OMG.Game.Fight.Entities
         {
             if (mobData == null || mobData.MobFightBehaviourList == null) return;
 
+            //iterate throught all the behaviour of the mob and test all condition set to it and if true get the action from the list
             foreach (MobFightBehaviour behaviour in mobData.MobFightBehaviourList)
             {
                 if (behaviour == null) continue;
@@ -73,9 +75,9 @@ namespace OMG.Game.Fight.Entities
             if (nextMobAction == null) return;
 
             if (nextMobAction.Target == FightEntityTarget.AllMobs)
-                nextMobAction.MobAction.Execute(FightManager.Instance.FightData.AllMobs.ToArray());
+                nextMobAction.ExecuteAction(FightManager.Instance.FightData.AllMobs.ToArray());
             else
-                nextMobAction.MobAction.Execute(GetTarget(nextMobAction.Target));
+                nextMobAction.ExecuteAction(GetTarget(nextMobAction.Target));
 
             nextMobAction = null;
         }
@@ -117,7 +119,7 @@ namespace OMG.Game.Fight.Entities
             }
         }
 
-        private void SetNextAction(MobActionTarget nextMobAction)
+        private void SetNextAction(MobActionData nextMobAction)
         {
             this.nextMobAction = nextMobAction;
             onNextActionUpdate?.Invoke(nextMobAction);

@@ -12,18 +12,19 @@ namespace OMG.Game.Fight.Entities
         private int maxHealth;
         protected int currentArmor;
         protected List<UnitStatus> currentStatus;
-        //TODO add UI
+        protected FightEntityUI entityUI;
 
         public float EntityPercentHealth => currentHealth / maxHealth;
         public int EntityCurrentHealth => currentHealth;
         public int Currentarmor => currentArmor;
 
-        protected void InitializeEntity(int currentHealth, int maxHealth/*,TODO add UI*/)
+        protected void InitializeEntity(int currentHealth, int maxHealth, FightEntityUI entityUI)
         {
             this.currentHealth = currentHealth;
             this.maxHealth = maxHealth;
             currentArmor = 0;
             currentStatus = new List<UnitStatus>();
+            this.entityUI = entityUI;
         }
         public virtual void NewTurn()
         {
@@ -31,27 +32,29 @@ namespace OMG.Game.Fight.Entities
 
             currentStatus.ForEach((unitStatus) => UpdateStatus(unitStatus));
         }
-
         public abstract void EndTurn();
 
         public void LoseHealth(int damage, bool isPiercingDamage = false)
         {
-            //if (HasStatus(Invincibility)) return; //TODO
+            if (HasStatus(StatusType.Invincibility)) return;
 
             if (!isPiercingDamage) //damage the armor
             {
                 if (currentArmor < damage)
                 {
                     damage -= currentArmor;
+                    currentArmor = 0;
                 }
                 else
                 {
                     currentArmor -= damage;
-                    damage = 0;
+                    return;
                 }
             }
 
             currentHealth -= damage;
+
+
         }
         public void Heal(int valueHeal)
         {

@@ -14,7 +14,7 @@ namespace OMG.Data.Mobs.Actions
 		
 		public List<MobActionWeight> MobActionsWeightList { get => mobActionsWeightList; }
 		
-		public override MobActionTarget GetMobAction()
+		public override MobActionData GetMobAction()
 		{
 			int sum = mobActionsWeightList.Sum(x => x.Weight);
 			int roll = Random.Range(0,sum);

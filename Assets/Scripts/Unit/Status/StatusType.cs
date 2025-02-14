@@ -9,5 +9,6 @@ namespace OMG.Unit.Status
         Sacrifice,
         Bousculade,
         Eveil,
+        Invincibility,
     }
 }

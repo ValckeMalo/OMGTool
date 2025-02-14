@@ -6,9 +6,12 @@ namespace OMG.Unit.Action
     [CreateAssetMenu(fileName = "HealAction", menuName = "Action/Base/Heal")]
     public class HealAction : MobAction
     {
-        public override void Execute(params FightEntity[] entity)
+        public override void Execute(int value, params FightEntity[] entities)
         {
-            //Heal(entity);
+            foreach (FightEntity entity in entities)
+            {
+                entity.Heal(value);
+            }
         }
     }
 }

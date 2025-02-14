@@ -1,7 +1,11 @@
 namespace OMG.Game.Fight
 {
     using MVProduction.CustomAttributes;
+
+    using OMG.Game.Fight.Entities;
+
     using System.Collections;
+    using System.Collections.Generic;
     using UnityEngine;
 
     public class FightManager : MonoBehaviour
@@ -21,39 +25,61 @@ namespace OMG.Game.Fight
 
         [Title("Fight Manager")]
         [SerializeField, ReadOnly] private FightData fightData;
+        private bool mobsSpawned = false;
 
         public FightData FightData => fightData;
 
         private void Start()
         {
-            
+            StartCoroutine(InitializeFight());
         }
 
-        private void InitializeFight()
+        private IEnumerator InitializeFight()
         {
-            //fightData.InitializeData();
+            fightData.InitializeData(new FightCharacterEntity(),new List<FightMobEntity>());
+            StartCoroutine(SpawnMobs());
+            PrepareMobs();
+
+            yield return new WaitUntil(() => mobsSpawned);
+
+            PrepareCharacter();
         }
 
-        //TODO: Possibli a StateMachine with each state for one coroutine
+        //TODO: Possibl a StateMachine with each state for one coroutine
         //And we can stock the coroutine in a variable to stop it and start another one
         //Coroutine fightStateCoroutine;
         //A méditer
 
         private IEnumerator SpawnMobs()
         {
+            mobsSpawned = true;
             yield return null;
+            //spawn the ui of the entity
         }
-        private IEnumerator PrepareMobs()
+        private void PrepareMobs()
         {
-            yield return null;
+            foreach (FightMobEntity mob in fightData.AllMobs)
+            {
+                mob.InitializeMob(250,250,null,null);
+            }
         }
-        private IEnumerator PrepareCharacter()
+        private void PrepareCharacter()
         {
-            yield return null;
+            //spawn card etc...
         }
         private IEnumerator NewMobsTurn()
         {
-            yield return null;
+            foreach (FightMobEntity mob in fightData.AllMobs)
+            {
+                yield return null;// new WaitUntil(() => mob.NewTurn());
+            }
+        }
+        private void EndMobsTurn()
+        {
+            foreach (FightMobEntity mob in fightData.AllMobs)
+            {
+                mob.EndTurn();
+            }
         }
         private IEnumerator NewCharacterTurn()
         {

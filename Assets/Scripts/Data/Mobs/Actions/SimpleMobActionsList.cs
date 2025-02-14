@@ -5,14 +5,15 @@ namespace OMG.Data.Mobs.Actions
 
     using MVProduction.CustomAttributes;
 
-	public class SimpleMobActionsList : MobActionsList
+    [System.Serializable]
+    public class SimpleMobActionsList : MobActionsList
 	{
 		[Title("Simple Mob Actions List")]
-		[SerializeField] private List<MobActionTarget> mobActionsList;
+		[SerializeField] private List<MobActionData> mobActionsList;
 		
-		public List<MobActionTarget> MobActionsList { get => mobActionsList; }
+		public List<MobActionData> MobActionsList { get => mobActionsList; }
 		
-		public override MobActionTarget GetMobAction()
+		public override MobActionData GetMobAction()
 		{
 			int randomIndex = Random.Range(0,mobActionsList.Count);
 			

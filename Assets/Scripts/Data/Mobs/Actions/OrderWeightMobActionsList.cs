@@ -16,7 +16,7 @@ namespace OMG.Data.Mobs.Actions
 		public List<MobActionWeight> MobActionsWeightList { get => mobActionsWeightList; }
 		public List<MobActionWeight> OrderMobActionsWeightList { get => mobActionsWeightList; }
 		
-		public override MobActionTarget GetMobAction()
+		public override MobActionData GetMobAction()
 		{
             mobActionsWeightList.Sort((first, second) => first.Weight.CompareTo(second.Weight));
 			int sum = mobActionsWeightList.Sum(x => x.Weight);
