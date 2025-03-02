@@ -2,7 +2,6 @@ namespace OMG.Game.Fight
 {
     using MVProduction.CustomAttributes;
     using OMG.Game.Fight.Entities;
-    using OMG.Unit.Status;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -14,9 +13,10 @@ namespace OMG.Game.Fight
         [Title("Fight Data")]
         [SerializeField] private FightCharacterEntity fightCharacter;
         [SerializeField] private List<FightMobEntity> fightMobEntities;
-        [SerializeField, ReadOnly] private int nbTurn = 0;
+        [SerializeField, ReadOnly] private int turnCount = 0;
 
-        public int NbTurn => nbTurn;
+        public int TurnCount => turnCount;
+        public void NewTurn() => turnCount++;
 
         public int MobCount => fightMobEntities.Count;
         public FightCharacterEntity FightCharacterEntity { get => fightCharacter; }
@@ -77,7 +77,7 @@ namespace OMG.Game.Fight
         {
             this.fightCharacter = fightCharacter;
             this.fightMobEntities = fightMobEntities;
-            nbTurn = 0;
+            turnCount = 1;
         }
     }
 }

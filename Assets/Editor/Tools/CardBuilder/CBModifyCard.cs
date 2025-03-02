@@ -4,7 +4,7 @@ namespace MVProduction
     using UnityEditor;
 
     using OMG.Tools.PreviewCard;
-    using OMG.Card.Data;
+    using OMG.Data.Card;
 
     public partial class CardBuilder : EditorWindow
     {
@@ -21,7 +21,7 @@ namespace MVProduction
             FirstMonster = Target.FirstMonster,
             LastMonster = Target.LastMonster,
             AllMonsters = Target.AllMonsters,
-            RandomUnit = Target.RandomUnit,
+            RandomUnit = Target.RandomEntity,
         }
 
         //SerializedObject var

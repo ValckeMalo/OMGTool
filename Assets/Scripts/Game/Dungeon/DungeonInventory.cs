@@ -3,7 +3,7 @@ namespace OMG.Game.Dungeon
     using MVProduction.CustomAttributes;
     using UnityEngine;
     using System.Collections.Generic;
-    using OMG.Card.Data;
+    using OMG.Data.Card;
 
     [System.Serializable]
     public class DungeonInventory

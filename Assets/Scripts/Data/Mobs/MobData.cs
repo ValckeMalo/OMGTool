@@ -4,7 +4,7 @@ namespace OMG.Data.Mobs
     using System.Collections.Generic;
     using OMG.Data.Mobs.Behaviour;
     using UnityEngine;
-    using OMG.Card.Data;
+    using OMG.Data.Card;
 
     [CreateAssetMenu(fileName = "NewMobData", menuName = "Mobs/Data", order = 0)]
     public class MobData : ScriptableObject
@@ -14,5 +14,8 @@ namespace OMG.Data.Mobs
         [SerializeField] private int experience;
         [SerializeField] private List<CardData> cardLootable;
         [SerializeField] private int baseHealth;
+		
+		public int BaseHealth => baseHealth;
+        public List<MobFightBehaviour> MobFightBehaviourList => mobBehaviours;
     }
 }

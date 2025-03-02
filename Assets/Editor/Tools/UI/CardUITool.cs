@@ -1,8 +1,8 @@
 namespace OMG.Tools.UI
 {
     using MVProduction.EditorCode;
-    using OMG.Card.UI;
-    using OMG.Unit.Status;
+    using OMG.Data.Card;
+    using OMG.Game.Fight.Entities;
     using UnityEditor;
     using UnityEngine;
 

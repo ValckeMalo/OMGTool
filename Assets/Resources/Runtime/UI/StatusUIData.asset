@@ -9,23 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a095d6483cb4fb048a04bfc38e717f89, type: 3}
+  m_Script: {fileID: 11500000, guid: 5796dec26ca253d41b08f7e772ea4892, type: 3}
   m_Name: StatusUIData
   m_EditorClassIdentifier: 
   statusUIs:
   - key: 0
     title: Poison
-    description: Deal damage
+    description: Deal damage each turn
     icon: {fileID: 21300000, guid: 838c1942d2a07674fa51e22fc53bf3f1, type: 3}
-  - key: 1
-    title: Plaie
-    description: Plaie card is in your deck
-    icon: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
-  - key: 3
-    title: Tenacite
-    description: Keep the armor
-    icon: {fileID: 21300000, guid: 2ddd3603ba0a114478f5add994a3a1c8, type: 3}
-  - key: 4
-    title: Sacrifice
-    description: sacrifice
-    icon: {fileID: 21300000, guid: d0df08988c7562f4e97736a6a96c96ee, type: 3}

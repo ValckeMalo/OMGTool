@@ -1,9 +1,7 @@
 namespace OMG.Tools.UI
 {
     using MVProduction.EditorCode;
-    using OMG.Unit.Action;
-    using OMG.Unit.HUD;
-    using OMG.Unit.Status;
+    using OMG.Game.Fight.Entities;
     using UnityEditor;
     using UnityEngine;
 
@@ -11,7 +9,7 @@ namespace OMG.Tools.UI
     {
         private static StatusUITool window;
 
-        private StatusUIData statusUIData = null;
+        private EntityStatusUIData statusUIData = null;
         private SerializedObject soStatusUIData = null;
         private SerializedProperty propListUIData = null;
 
@@ -39,7 +37,7 @@ namespace OMG.Tools.UI
 
         private void LoadAssets()
         {
-            statusUIData = Resources.Load<StatusUIData>("Runtime/UI/StatusUIData");
+            statusUIData = Resources.Load<EntityStatusUIData>("Runtime/UI/StatusUIData");
             soStatusUIData = new SerializedObject(statusUIData);
             propListUIData = soStatusUIData.FindProperty("statusUIs");
         }

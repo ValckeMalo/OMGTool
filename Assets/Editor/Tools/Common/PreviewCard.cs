@@ -2,7 +2,7 @@ namespace OMG.Tools.PreviewCard
 {
     using UnityEditor;
     using UnityEngine;
-    using OMG.Card.Data;
+    using OMG.Data.Card;
 
     public static class PreviewCardEditor
     {
@@ -23,7 +23,7 @@ namespace OMG.Tools.PreviewCard
         private const float centerpPercent = 0.6f;
         private const float bottompPercent = 0.3f;
 
-        public static void PreviewCard(CardData cardData, CardOptions settings, float width)
+        public static void PreviewCard(CardData cardData, CardSettings settings, float width)
         {
             if (cardData == null)
             {
@@ -48,7 +48,7 @@ namespace OMG.Tools.PreviewCard
             {
                 LogError($"No Icon card for : {cardData.type}.");
             }
-            if (settings.wakfu == null)
+            if (settings.energy == null)
             {
                 LogError($"No Wakfu Sprite inside the settings");
             }
@@ -68,7 +68,7 @@ namespace OMG.Tools.PreviewCard
 
                 Rect backgroundRect = Background(backgroundTexture, scopeRect, ratioScale);
                 Rect topRect = TopCard(cardData.value, (iconType != null) ? iconType.texture : null,
-                                       cardData.wakfu, (settings.wakfu != null) ? settings.wakfu.texture : null, backgroundRect);
+                                       cardData.energy, (settings.energy != null) ? settings.energy.texture : null, backgroundRect);
                 Rect centerRect = CenterCard((cardData.icon != null) ? cardData.icon.texture : null, topRect, backgroundRect);
                 BottomCard(cardData, centerRect, backgroundRect);
 
@@ -208,7 +208,7 @@ namespace OMG.Tools.PreviewCard
                 GUI.Label(sacrificeRect, sacrificeContent, TargetStyle);
             }
         }
-        private static Rect Spells(Spell[] spells, Rect targetRect)
+        private static Rect Spells(CardSpell[] spells, Rect targetRect)
         {
             if (spells != null)
             {
@@ -217,7 +217,7 @@ namespace OMG.Tools.PreviewCard
                 {
                     string spellsText = string.Empty;
 
-                    foreach (Spell spellBonus in spells)
+                    foreach (CardSpell spellBonus in spells)
                     {
                         if (spellBonus != null && spellBonus.shownOnCard)
                         {

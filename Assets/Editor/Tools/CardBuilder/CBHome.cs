@@ -7,7 +7,7 @@ namespace MVProduction
     using UnityEngine;
 
     using OMG.Tools.PreviewCard;
-    using OMG.Card.Data;
+    using OMG.Data.Card;
     using OMG.Data.Utils;
 
     public partial class CardBuilder : EditorWindow
@@ -448,11 +448,11 @@ namespace MVProduction
             switch (comparison)
             {
                 case ComparisonOperator.GreaterOrEqual:
-                    return filteredList.Where(card => card.wakfu >= intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.energy >= intValue).Select(card => card).ToList();
                 case ComparisonOperator.Equal:
-                    return filteredList.Where(card => card.wakfu == intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.energy == intValue).Select(card => card).ToList();
                 case ComparisonOperator.LessOrEqual:
-                    return filteredList.Where(card => card.wakfu <= intValue).Select(card => card).ToList();
+                    return filteredList.Where(card => card.energy <= intValue).Select(card => card).ToList();
                 default:
                     return filteredList;
             }

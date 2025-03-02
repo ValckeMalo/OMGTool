@@ -1,9 +1,8 @@
 namespace OMG.Data.Character
 {
     using UnityEngine;
-    using Card.Data;
-    using MVProduction.CustomAttributes;
     using System.Collections.Generic;
+    using MVProduction.CustomAttributes;
 
     [System.Serializable]
     public class CharacterLevel

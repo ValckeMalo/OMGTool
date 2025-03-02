@@ -4,7 +4,6 @@ namespace OMG.Data.Mobs.Actions
     using MVProduction.CustomAttributes;
 
     using OMG.Game.Fight.Entities;
-    using OMG.Unit.Action;
 
     [System.Serializable]
     public class MobActionData
@@ -14,6 +13,8 @@ namespace OMG.Data.Mobs.Actions
         [SerializeField] private FightEntityTarget target = FightEntityTarget.Me;
         [SerializeField] private int value = 0;
 
+        public int Value => value;
+        public MobActionUI ActionUI => mobAction.MobActionUI;
         public FightEntityTarget Target { get => target; }
 
         public void ExecuteAction(params FightEntity[] targets)

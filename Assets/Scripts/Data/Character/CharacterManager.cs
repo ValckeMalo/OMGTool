@@ -7,8 +7,12 @@ namespace OMG.Data.Character
     public class CharacterManager
     {
         [Title("Character Manager")]
-        [SerializeField, ReadOnly] private MobData characerData;
-        [SerializeField, ReadOnly] private CharacterInventory characerInventory;
-        [SerializeField, ReadOnly] private CharacterLevel characterLevel;
+        [SerializeField] private CharacterData characterData;
+        [SerializeField] private CharacterInventory characerInventory;
+        [SerializeField] private CharacterLevel characterLevel;
+		
+		public CharacterInventory Inventory => characerInventory;
+		public int BaseHealth => characterData.BaseHealth;
+		public int MaxHealth => characterData.MaxHealth;
     }
 }

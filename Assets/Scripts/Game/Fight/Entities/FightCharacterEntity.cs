@@ -8,16 +8,12 @@ namespace OMG.Game.Fight.Entities
     public class FightCharacterEntity : FightEntity
     {
         [Title("Fight Character Entity")]
-        [SerializeField] private CharacterDungeon characterDungeon;
+        [SerializeField] private DungeonCharacter dungeonCharacter;
 
-        public override void EndTurn()
+        public void InitializeCharacter(DungeonCharacter dungeonCharacter, FightCharacterEntityUI characterUI)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void InitializeCharacter(CharacterDungeon characterDungeon)
-        {
-            this.characterDungeon = characterDungeon;
+            this.dungeonCharacter = dungeonCharacter;
+            InitializeEntity(dungeonCharacter.Health, dungeonCharacter.MaxHealth, characterUI);
         }
     }
 }

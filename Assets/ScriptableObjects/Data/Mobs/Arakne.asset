@@ -14,18 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mobBehaviours:
   - primaryFightCondition:
-      conditionType: 1
+      conditionType: 0
       comparisionOperator: 0
       specificStatus: 0
       specificValue: 0.75
       specificPosition: 0
-    conditionOperator: 0
+    conditionOperator: 1
     secondaryFightCondition:
       conditionType: 0
       comparisionOperator: 0
       specificStatus: 0
       specificValue: 0
       specificPosition: 0
+    mobActionList:
+      mobActionsList:
+      - mobAction: {fileID: 11400000, guid: 943a27661e1932248b2ff896abb7e8f1, type: 2}
+        target: 1
+        value: 10
   experience: 10
   cardLootable: []
   baseHealth: 75

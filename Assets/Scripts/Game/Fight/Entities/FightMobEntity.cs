@@ -1,7 +1,8 @@
 namespace OMG.Game.Fight.Entities
 {
     using MVProduction.CustomAttributes;
-    using OMG.Data.Character;
+
+    using OMG.Data.Mobs;
     using OMG.Data.Mobs.Actions;
     using OMG.Data.Mobs.Behaviour;
     using OMG.Data.Utils;
@@ -17,26 +18,26 @@ namespace OMG.Game.Fight.Entities
         [SerializeField] private MobData mobData;
         [SerializeField, ReadOnly] private MobActionData nextMobAction;
         private Action<MobActionData> onNextActionUpdate = null;
+        private FightMobEntityUI mobUI;
 
-        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData, FightMobEnityUI mobEntityUI)
+        public IEnumerator RequestDie(Action<FightMobEntity> OnMobDie)
+        {
+            yield return entityUI.AnimationDeath();
+
+            OnMobDie?.Invoke(this);
+        }
+
+        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData, FightMobEntityUI mobUI)
         {
             this.mobData = mobData;
-            InitializeEntity(currentHealth, maxHealth, mobEntityUI);
+            this.mobUI = mobUI;
+
+            InitializeEntity(currentHealth, maxHealth, mobUI);
             SearchNextAction();
         }
 
-        public override void NewTurn()
-        {
-            base.NewTurn();
-            PlayNextAction();
-        }
-
-        public override void EndTurn()
-        {
-            SearchNextAction();
-        }
-
-        private void SearchNextAction()
+        #region Brain & Action
+        public void SearchNextAction()
         {
             if (mobData == null || mobData.MobFightBehaviourList == null) return;
 
@@ -70,16 +71,20 @@ namespace OMG.Game.Fight.Entities
             }
 
         }
-        private void PlayNextAction()
+        public IEnumerator PlayNextAction()
         {
-            if (nextMobAction == null) return;
+            if (nextMobAction != null)
+            {
+                if (nextMobAction.Target == FightEntityTarget.AllMobs)
+                    nextMobAction.ExecuteAction(FightManager.Instance.FightData.AllMobs.ToArray());
+                else
+                    nextMobAction.ExecuteAction(GetTarget(nextMobAction.Target));
 
-            if (nextMobAction.Target == FightEntityTarget.AllMobs)
-                nextMobAction.ExecuteAction(FightManager.Instance.FightData.AllMobs.ToArray());
-            else
-                nextMobAction.ExecuteAction(GetTarget(nextMobAction.Target));
+                mobUI.AttackUsed();
+                nextMobAction = null;
 
-            nextMobAction = null;
+                yield return new WaitForSeconds(1.0f);
+            }
         }
         private FightEntity GetTarget(FightEntityTarget target)
         {
@@ -107,7 +112,7 @@ namespace OMG.Game.Fight.Entities
                     return FightManager.Instance.FightData.GetRandomMob();//TODO set the pos of the current mob to execpt it for the random
 
                 case FightEntityTarget.RandomMobWithState:
-                    return FightManager.Instance.FightData.GetRandomMobWithStatus(Unit.Status.StatusType.Poison);
+                    return FightManager.Instance.FightData.GetRandomMobWithStatus(StatusType.Poison);
 
                 case FightEntityTarget.RandomAll:
                     return FightManager.Instance.FightData.GetRandomEntity();
@@ -121,6 +126,7 @@ namespace OMG.Game.Fight.Entities
 
         private void SetNextAction(MobActionData nextMobAction)
         {
+            mobUI.NewAttack(nextMobAction.Value, nextMobAction.ActionUI);
             this.nextMobAction = nextMobAction;
             onNextActionUpdate?.Invoke(nextMobAction);
         }
@@ -184,7 +190,7 @@ namespace OMG.Game.Fight.Entities
                     return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightManager.Instance.FightData.MobCount, fightConditon.SpecificValue);
 
                 case FightConditionType.FightTurn:
-                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightManager.Instance.FightData.NbTurn, fightConditon.SpecificValue);
+                    return ComparisonOperatorValue(fightConditon.ComparisionOperator, FightManager.Instance.FightData.TurnCount, fightConditon.SpecificValue);
 
                 case FightConditionType.MobOnBoardWithHealth:
                     return ComparisonOperatorValue(fightConditon.ComparisionOperator, EntityPercentHealth, fightConditon.SpecificValue);//TODO change to search one mob
@@ -221,5 +227,6 @@ namespace OMG.Game.Fight.Entities
                     return false;
             }
         }
+        #endregion
     }
 }

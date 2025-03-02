@@ -3,8 +3,8 @@ namespace OMG.Data.Mobs.Behaviour
     using UnityEngine;
     using MVProduction.CustomAttributes;
 
-    using OMG.Unit.Status;
     using OMG.Data.Utils;
+    using OMG.Game.Fight.Entities;
 
     [System.Serializable]
     public class FightCondition

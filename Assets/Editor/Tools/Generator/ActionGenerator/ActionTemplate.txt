@@ -1,17 +1,14 @@
-namespace OMG.Unit.Action
+namespace OMG.Data.Mobs.Actions
 {
-    using OMG.Unit;
+    using OMG.Game.Fight.Entity;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "{0}Action",menuName = "Action/{0}Action")]
-    public class {0}Action : UnitAction
+    public class {0}Action : MobAction
     {
-        public override void Execute(IUnit unit)
+        public override void Execute(FightEntity[] fightEntity)
         {
-        }
 
-        public override void Execute(IUnit[] units)
-        {
         }
     }
 }

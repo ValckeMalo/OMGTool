@@ -2,7 +2,6 @@ namespace MVProduction
 {
     using UnityEngine;
     using UnityEditor;
-    using OMG.Card.Data;
 
     public partial class CardBuilder : EditorWindow
     {

@@ -3,7 +3,7 @@ namespace MVProduction
     using UnityEditor;
     using UnityEngine;
 
-    using OMG.Card.Data;
+    using OMG.Data.Card;
 
     public partial class CardBuilder : EditorWindow
     {
@@ -40,7 +40,7 @@ namespace MVProduction
         private Vector2 scrollPosition;
 
         //Load Asset
-        private CardOptions cardSettings;
+        private CardSettings cardSettings;
         private CardLibrary cardLibrary;
 
         private Texture2D hoverButtonTexture;
@@ -99,7 +99,7 @@ namespace MVProduction
 
         private void LoadAssets()
         {
-            cardSettings = Resources.Load("CardOptions") as CardOptions;
+            cardSettings = Resources.Load("CardOptions") as CardSettings;
             hoverButtonTexture = Resources.Load("HoverButtonTexture") as Texture2D;
             OpaqueBackgroundTexture = Resources.Load("OpaqueBackground") as Texture2D;
             cardLibrary = Resources.Load("CardLibrary") as CardLibrary;
