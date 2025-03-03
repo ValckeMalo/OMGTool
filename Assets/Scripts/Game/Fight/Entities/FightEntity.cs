@@ -73,10 +73,12 @@ namespace OMG.Game.Fight.Entities
         public void EraseArmor()
         {
             currentArmor = 0;
+            entityUI.UpdateHealthUI(currentHealth, currentArmor);
         }
         public void AddArmor(int armorToAdd)
         {
             currentArmor += armorToAdd;
+            entityUI.UpdateHealthUI(currentHealth, currentArmor);
         }
 
         public void AddStatus(StatusType statusType, int value)

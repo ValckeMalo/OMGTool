@@ -259,11 +259,13 @@ namespace OMG.Game.Fight
         #region Cards
         public void CardOver(FightCard fightCard)
         {
-            fightUI.UpdatePreviewEnergyUI(currentEnergy + fightCard.Energy);
+            if (!needSecondCardToSelect)
+                fightUI.UpdatePreviewEnergyUI(currentEnergy + fightCard.Energy);
         }
         public void CardExit(FightCard fightCard)
         {
-            fightUI.UpdatePreviewEnergyUI(currentEnergy);
+            if (!needSecondCardToSelect)
+                fightUI.UpdatePreviewEnergyUI(currentEnergy);
         }
 
         public void TryUseCard(FightCard fightCard)
@@ -286,6 +288,12 @@ namespace OMG.Game.Fight
 
                 AddEnergy(fightCard.Energy);
                 UseCard(fightCard);
+
+                if (fightCard.IsPerfectCard)
+                {
+                    RequestEndCharacterTurn();
+                    return;
+                }
 
                 if (CanDoPerfect)
                 {
@@ -378,7 +386,7 @@ namespace OMG.Game.Fight
 //TODO les mobs n'ont pas leur place dans la list
 //TODO les mobs ne peuvent pas changer de place lors de la mort d'un autre
 
-//TODO Make All Todo in code if possible
+//TODO Make All Todo in code
 
 //TODO Debug new Fight System
 

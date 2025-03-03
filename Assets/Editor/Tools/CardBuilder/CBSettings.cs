@@ -67,7 +67,7 @@ namespace MVProduction
 
         //VAR
         private SerializedObject settings;
-        private SerializedProperty wakfuIcon;
+        private SerializedProperty energyIcon;
         private SerializedProperty backgroundsSprite;
         private SerializedProperty iconsSprite;
 
@@ -78,7 +78,7 @@ namespace MVProduction
         {
             settings = new SerializedObject(cardSettings);
 
-            wakfuIcon = settings.FindProperty("wakfu");
+            energyIcon = settings.FindProperty("energy");
             backgroundsSprite = settings.FindProperty("backgroundSprite");
             iconsSprite = settings.FindProperty("iconSprite");
 
@@ -114,7 +114,7 @@ namespace MVProduction
             }
 
             linesSettings[3].section[0] = new SettingsSection("Wakfu", 1);
-            linesSettings[3].section[0].field[0] = new SettingsField(wakfuIcon, "Sprite");
+            linesSettings[3].section[0].field[0] = new SettingsField(energyIcon, "Sprite");
         }
         #endregion
 

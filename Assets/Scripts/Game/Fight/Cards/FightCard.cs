@@ -15,6 +15,7 @@ namespace OMG.Game.Fight.Cards
         public int Energy => card.energy + energyBonus;
         public int Value => card.value + valueBonus;
 
+        public bool IsPerfectCard => card.background == CardBackground.Finisher;
         public bool HadValueBonus => valueBonus != 0;
         public bool HadEnergyBonus => energyBonus != 0;
         public bool NeedAnotherCard => card.needSacrifice || card.target == Target.OneCard;

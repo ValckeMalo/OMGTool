@@ -8,6 +8,7 @@ namespace OMG.Game.Fight
     using OMG.Data.Card;
 
     using OMG.Game.Fight.Cards;
+    using System.Linq;
 
     public class FightDeck
 	{
@@ -127,9 +128,9 @@ namespace OMG.Game.Fight
 		{
 			OnSecuredAllCards?.Invoke();
 			
-			securedCard = handCard;
-			handCard.Clear();
-			
+			securedCard = handCard.ToList();//make a shallow copy;
+            handCard.Clear();
+
 			OnDrawMultiplesCard?.Invoke(finishersCard);
 			
 			handCard.AddRange(finishersCard);
@@ -146,7 +147,7 @@ namespace OMG.Game.Fight
 			//readd the previous card before the perfect request back in hand
 			OnUnsecuredAllCards?.Invoke();
 			
-			handCard = securedCard;
+			handCard = securedCard.ToList();//make a shallow copy
 			securedCard.Clear();
 			securedCard = null;
 		}
