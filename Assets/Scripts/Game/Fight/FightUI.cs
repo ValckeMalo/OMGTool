@@ -17,8 +17,10 @@ namespace OMG.Game.Fight
     using MVProduction.Tween.DoTween.Module;
 
     public class FightUI : MonoBehaviour
-	{
-		[Title("UI")]		
+    {
+        [Title("UI")]
+        [SerializeField] private RectTransform fightUIRect;
+
 		[Header("Cards")]
 		[SerializeField] private Transform cardsContainer;
         [SerializeField] private GameObject fightCardUIPrefab;
@@ -53,7 +55,8 @@ namespace OMG.Game.Fight
 		[SerializeField] private TextMeshProUGUI turnBannerText;
 		private const float turnBannerStay = 1.5f;
 		private const float turnBannerSlide = 0.25f;
-		private const float turnBannerFade = 0.25f;
+		private const float turnBannerFadeIn = 0.25f;
+		private const float turnBannerFadeOut = 0.25f;
 		
 		public void Initialize(FightDeck fightDeck)
 		{
@@ -282,26 +285,38 @@ namespace OMG.Game.Fight
 		#region Turn Banner
 		public void PlayBannerTurnMobs()
 		{			
-			turnBannerText.text = "Player Turn";
-			TurnBannerTween(-500f);
-		}
-		public void PlayBannerTurnCharacter()
-		{
 			turnBannerText.text = "Opponent Turn";
 			TurnBannerTween(500f);
 		}
+		public void PlayBannerTurnCharacter()
+		{
+			turnBannerText.text = "Player Turn";
+			TurnBannerTween(-500f);
+		}
 		private void TurnBannerTween(float finalPosX)
 		{
-			turnBannerGroup.DoFade(1f,turnBannerFade);
+			turnBannerGroup.DoFade(1f,turnBannerFadeIn);
 			turnBannerTransform.DoAnchorMove(new Vector2(0f, turnBannerTransform.anchoredPosition.y), turnBannerSlide)
 				.OnComplete(
 					() =>
 					{
 						turnBannerTransform.DoAnchorMove(new Vector2(finalPosX,turnBannerTransform.anchoredPosition.y),turnBannerSlide)
-							.AddDelay(turnBannerStay);
-						turnBannerGroup.DoFade(0f,turnBannerFade);
-					});
+							               .AddDelay(turnBannerStay)
+                                           .OnStart(() =>
+                                           {
+                                               turnBannerGroup.DoFade(0f, turnBannerFadeOut);
+                                           });
+                    });
 		}
-		#endregion	
-	}
+        #endregion
+
+        #region Entities
+        public Vector2 WorldTofightCanvas(Vector3 worldPos)
+        {
+            Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(worldPos);
+            return new Vector2((ViewportPosition.x * fightUIRect.sizeDelta.x) - (fightUIRect.sizeDelta.x * 0.5f),
+                                (ViewportPosition.y * fightUIRect.sizeDelta.y) - (fightUIRect.sizeDelta.y * 0.5f));
+        }
+        #endregion
+    }
 }

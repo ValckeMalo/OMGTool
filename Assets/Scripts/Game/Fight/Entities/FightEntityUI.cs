@@ -71,11 +71,11 @@ namespace OMG.Game.Fight.Entities
         #endregion
 
         #region Health Slider
-        public void InitHealthUI(int currentHealth, int maxHealth,int currentArmor)
+        public void InitHealthUI(int currentHealth, int maxHealth, int currentArmor)
         {
             healthSlider.maxValue = maxHealth;
             hitSlider.maxValue = maxHealth;
-            
+
             UpdateHealthUI(currentHealth, currentArmor);
         }
         public void UpdateHealthUI(int currentHealth, int currentArmor)
@@ -111,7 +111,7 @@ namespace OMG.Game.Fight.Entities
             if (hasArmor)
             {
                 healthFill.color = armorColor;
-                healthBackground.color= armorBackgroundColor;
+                healthBackground.color = armorBackgroundColor;
             }
             else
             {
@@ -203,10 +203,10 @@ namespace OMG.Game.Fight.Entities
         }
         protected List<TooltipData> GetStatusTooltip()
         {
-            if (dicStatusUI.Count <= 0)
-                return null;
-
             List<TooltipData> statusTooltip = new List<TooltipData>();
+
+            if (dicStatusUI.Count <= 0)
+                return statusTooltip;
 
             foreach (FightEntityStatusUI statusUI in dicStatusUI.Values)
             {
@@ -229,15 +229,18 @@ namespace OMG.Game.Fight.Entities
                         continue;
                     }
 
-                    tooltipObject.transform.parent = containerTooltip;
+                    tooltipObject.transform.SetParent(containerTooltip, false);
                 }
             }
         }
         private void ReleaseTooltip()
         {
-            TooltipManager.OnReleaseTooltipObject?.Invoke(allTooltipsObject);
-            allTooltipsObject.Clear();
-            allTooltipsObject = null;
+            if (allTooltipsObject != null)
+            {
+                TooltipManager.OnReleaseTooltipObject?.Invoke(allTooltipsObject);
+                allTooltipsObject.Clear();
+                allTooltipsObject = null;
+            }
         }
         #endregion
     }

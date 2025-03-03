@@ -36,4 +36,4 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 90253d2a213d2544c8b9aa27b5b3351a, type: 3}
   - type: 3
     sprite: {fileID: 21300000, guid: d0df08988c7562f4e97736a6a96c96ee, type: 3}
-  wakfu: {fileID: 2112375095, guid: b5b84f74a1ef92548a9e21e45354cb64, type: 3}
+  energy: {fileID: 2112375095, guid: b5b84f74a1ef92548a9e21e45354cb64, type: 3}

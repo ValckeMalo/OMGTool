@@ -126,15 +126,18 @@ namespace OMG.Game.Fight.Cards
                         continue;
                     }
 
-                    tooltipObject.transform.parent = containerTooltip;
+                    tooltipObject.transform.SetParent(containerTooltip, false);
                 }
             }
         }
         private void ReleaseTooltip()
         {
-            TooltipManager.OnReleaseTooltipObject?.Invoke(allTooltipsObject);
-            allTooltipsObject.Clear();
-            allTooltipsObject = null;
+            if (allTooltipsObject != null)
+            {
+                TooltipManager.OnReleaseTooltipObject?.Invoke(allTooltipsObject);
+                allTooltipsObject.Clear();
+                allTooltipsObject = null;
+            }
         }
         private void ShowTooltip()
         {

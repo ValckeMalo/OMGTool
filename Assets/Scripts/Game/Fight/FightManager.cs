@@ -40,7 +40,6 @@ namespace OMG.Game.Fight
         [SerializeField] private FightContext context = null;
         private FightData fightData = null;
         private FightState currentState = FightState.None;
-        private FightState previousState = FightState.None;
         public FightData FightData => fightData;
 
         [Header("UI")]
@@ -75,13 +74,15 @@ namespace OMG.Game.Fight
             //initialize card/deck
             fightDeck = new FightDeck(context.characterManager.Inventory.Deck);
 
-            //Spawn entity
+            //Spawn mobs
             List<FightMobEntity> allMobsFightEntity = new List<FightMobEntity>();
             int i = 0;
             foreach (MobData mobData in context.mobsData)
             {
-                GameObject newMobs = Instantiate(mobFightEntityPrefab, mobsPosition[i].position, Quaternion.identity, null);
-                FightMobEntityUI fightMobEntityUI = newMobs.GetComponent<FightMobEntityUI>();
+                GameObject newMobsUI = Instantiate(mobFightEntityPrefab, mobsPosition[i].position, Quaternion.identity, fightUI.transform);
+                newMobsUI.GetComponent<RectTransform>().anchoredPosition = fightUI.WorldTofightCanvas(mobsPosition[i].position);
+
+                FightMobEntityUI fightMobEntityUI = newMobsUI.GetComponent<FightMobEntityUI>();
                 FightMobEntity fightMobEntity = new FightMobEntity();
                 fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, fightMobEntityUI);
                 allMobsFightEntity.Add(fightMobEntity);
@@ -90,11 +91,13 @@ namespace OMG.Game.Fight
 
             //Spawn Character
             DungeonCharacter dungeonCharacter = new DungeonCharacter(context.characterManager);
-            GameObject characterObject = Instantiate(characterFightEntityPrefab, null);
-            FightCharacterEntityUI fightCharacterEntityUI = characterObject.GetComponent<FightCharacterEntityUI>();
+            GameObject characterUI = Instantiate(characterFightEntityPrefab, fightUI.transform);
+            characterUI.GetComponent<RectTransform>().anchoredPosition = fightUI.WorldTofightCanvas(characterPosition.position);
+
+            FightCharacterEntityUI fightCharacterEntityUI = characterUI.GetComponent<FightCharacterEntityUI>();
             FightCharacterEntity fightCharacterEntity = new FightCharacterEntity();
             fightCharacterEntity.InitializeCharacter(dungeonCharacter, fightCharacterEntityUI);
-            
+
             //spawn the entities and their UI
             InitsMobs();
             InitCharacter();
@@ -105,11 +108,13 @@ namespace OMG.Game.Fight
 
             fightUI.Initialize(fightDeck);
 
+            fightUI.OnRequestCharacterEndTurn += RequestEndCharacterTurn;
+            fightUI.OnCancelCardSelect += CancelSelectCard;
+
             SetState(FightState.PlayerTurn);
         }
         private void SetState(FightState fightState)
         {
-            previousState = currentState;
             currentState = fightState;
 
             UpdateFightProgress();
@@ -204,7 +209,7 @@ namespace OMG.Game.Fight
         #region Character
         private void InitCharacter()
         {
-            
+
         }
         private void CharacterTurn()
         {
@@ -243,27 +248,13 @@ namespace OMG.Game.Fight
             else if (unlockEnergy < MaxEnergy)
             {
                 unlockEnergy = Mathf.Min(unlockEnergy + 1, MaxEnergy);
-                fightUI.RemovePadlock(MaxEnergy - unlockEnergy);//TODO break and in the start of the new turn remove
+                fightUI.RemovePadlock(Mathf.Abs(MaxEnergy - unlockEnergy - 2));//TODO break and in the start of the new turn remove
             }
 
             currentEnergy = MinEnergy;
-            unlockEnergy = MinUnlockEnergy;
 
             fightUI.UpdateCurrentEnergyUI(currentEnergy);
             fightUI.UpdatePreviewEnergyUI(currentEnergy);
-
-            fightUI.OnRequestCharacterEndTurn += RequestEndCharacterTurn;
-            fightUI.OnCancelCardSelect += CancelSelectCard;
-        }
-        public bool TryAddEnergy(int energyToAdd)
-        {
-            if (CanAddEnergy(energyToAdd))
-            {
-                AddEnergy(energyToAdd);
-                return true;
-            }
-
-            return false;
         }
         private bool CanAddEnergy(int energyToAdd)
         {
@@ -380,12 +371,8 @@ namespace OMG.Game.Fight
 //TODO les mobs n'ont pas leur place dans la list
 //TODO les mobs ne peuvent pas changer de place lors de la mort d'un autre
 
-//TODO Launch Unity and clean all Errors
 //TODO Make All Todo in code if possible
-//TODO Rename Class/Function that need it
-//TODO Assign all values in the inspector
 
-//TODO Clean Files in Directory
 //TODO Debug new Fight System
 
 //TODO Made Mobs Creator Tool

@@ -44,7 +44,7 @@ namespace OMG.Game.Fight.Entities
             previewAttackUI = data;
             previewAttackText.text = attackValue.ToString();
             previewAttackIcon.sprite = previewAttackUI.Icon;
-            FadePreviewAttack(0f, 0.1f);
+            FadePreviewAttack(1f, 0.1f);
         }
         public void UpdateAttackUI(int newAttackValue)
         {

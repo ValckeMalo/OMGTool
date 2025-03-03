@@ -21,14 +21,20 @@ namespace OMG.Game.Tooltip
         private const float tooltipFade = 0.1f;
         private TweenerCore<float, float> fadeTween = null;
 
-        public void Hide() => tooltipGroup.alpha = 0f;
+        public void Hide()
+        {
+            if (fadeTween != null)
+                TweenManager.Despawn(fadeTween);
+
+            tooltipGroup.alpha = 0f;
+        }
 
         public void Show()
         {
             if (fadeTween != null)
                 TweenManager.Despawn(fadeTween);
 
-            tooltipGroup.DoFade(1f, tooltipFade);
+            fadeTween = tooltipGroup.DoFade(1f, tooltipFade);
         }
 
         public void SetTooltipData(TooltipData data)

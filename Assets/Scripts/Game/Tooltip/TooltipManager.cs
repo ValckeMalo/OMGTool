@@ -81,7 +81,7 @@ namespace OMG.Game.Tooltip
                     continue;
 
                 obj.GetComponent<TooltipUI>().Hide();
-                obj.transform.parent = containerPoolTooltip;
+                obj.transform.SetParent(containerPoolTooltip, false);
                 poolTooltips.Add(obj);
             }
         }

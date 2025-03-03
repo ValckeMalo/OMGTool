@@ -575,6 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd20eee9b58ffeb4d8e6d700dc293a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fightUIRect: {fileID: 6600512601327192411}
   cardsContainer: {fileID: 8376383350851603179}
   fightCardUIPrefab: {fileID: 3698871205998410595, guid: e1a8a50167efb8545b20658c94c914cb,
     type: 3}
