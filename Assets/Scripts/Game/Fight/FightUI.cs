@@ -15,6 +15,7 @@ namespace OMG.Game.Fight
     using MVProduction.Tween;
     using MVProduction.Tween.Core;
     using MVProduction.Tween.DoTween.Module;
+    using OMG.Game.Fight.Entities;
 
     public class FightUI : MonoBehaviour
     {
@@ -57,8 +58,12 @@ namespace OMG.Game.Fight
 		private const float turnBannerSlide = 0.25f;
 		private const float turnBannerFadeIn = 0.25f;
 		private const float turnBannerFadeOut = 0.25f;
-		
-		public void Initialize(FightDeck fightDeck)
+
+        [Header("Entity UI")]
+        [SerializeField] private GameObject characterFightUIPrefab;
+        [SerializeField] private GameObject mobFightUIPrefab;
+
+        public void Initialize(FightDeck fightDeck)
 		{
 			fightDeck.OnDrawCard += DrawCard;
 			fightDeck.OnDrawMultiplesCard += DrawMultiplesCard;
@@ -88,6 +93,8 @@ namespace OMG.Game.Fight
 			
 			FightCardUI fightCardUI = cardObject.GetComponent<FightCardUI>();
 			fightCardUI.Initialize(drawCard,cardSettings);
+
+            handsUI.Add(fightCardUI);
 		}
 		private void DrawMultiplesCard(List<FightCard> drawCards)
 		{
@@ -166,8 +173,9 @@ namespace OMG.Game.Fight
 			foreach (FightCardUI fightCardUI in handsUI)
 			{
 				if (fightCardUI == null) continue;
-				
-				if (fightCardUI.IsBoostable)
+                if (fightCardUI.CardState == FightCardState.Selected) continue; //if it's the card that have been selected don't make it selectable
+
+                if (fightCardUI.IsBoostable)
 				{
 					fightCardUI.SetState(FightCardState.Selectable);
 				}
@@ -185,6 +193,7 @@ namespace OMG.Game.Fight
 			foreach (FightCardUI fightCardUI in handsUI)
 			{
 				if (fightCardUI == null) continue;
+                if (fightCardUI.CardState == FightCardState.Selected) continue; //if it's the card that have been selected don't make it selectable
 
 				fightCardUI.SetState(FightCardState.Selectable);
 			}			
@@ -197,16 +206,31 @@ namespace OMG.Game.Fight
 		private void InitializeCardSelect()
 		{
 			cardSelectObject.SetActive(false);
-			cardSelectButton.onClick.AddListener(() => OnCancelCardSelect?.Invoke());
+			cardSelectButton.onClick.AddListener(() =>
+            {
+                OnCancelCardSelect?.Invoke();
+            });
 		}
-		public void ShowCardSelectUI()
+		public void ShowCardSelectUI(FightCard fightCard)
 		{
 			if (cardSelectTween != null)
 				TweenManager.Despawn(cardSelectTween);
 			
 			cardSelectTween = cardSelectGroup.DoFade(1f,cardSelectFadeDuration);
 			cardSelectObject.SetActive(true);
-		}
+
+            foreach (FightCardUI cardUI in handsUI)
+            {
+                if (cardUI == null)
+                    continue;
+
+                if (cardUI.IsFightCard(fightCard))
+                {
+                    cardUI.SetState(FightCardState.Selected);
+                    break;
+                }
+            }
+        }
 		public void HideCardSelectUI()
 		{
 			if (cardSelectTween != null)
@@ -316,6 +340,20 @@ namespace OMG.Game.Fight
             Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(worldPos);
             return new Vector2((ViewportPosition.x * fightUIRect.sizeDelta.x) - (fightUIRect.sizeDelta.x * 0.5f),
                                 (ViewportPosition.y * fightUIRect.sizeDelta.y) - (fightUIRect.sizeDelta.y * 0.5f));
+        }
+        public FightMobEntityUI SpawnMobEntityUI(Vector3 worldPos)
+        {
+            GameObject newMobsUI = Instantiate(mobFightUIPrefab, transform);
+            newMobsUI.transform.SetAsFirstSibling();
+            newMobsUI.GetComponent<RectTransform>().anchoredPosition = WorldTofightCanvas(worldPos);
+            return newMobsUI.GetComponentInChildren<FightMobEntityUI>();
+        }
+        public FightCharacterEntityUI SpawnCharacterEntityUI(Vector3 worldPos)
+        {
+            GameObject newCharacterUI = Instantiate(characterFightUIPrefab, transform);
+            newCharacterUI.transform.SetAsFirstSibling();
+            newCharacterUI.GetComponent<RectTransform>().anchoredPosition = WorldTofightCanvas(worldPos);
+            return newCharacterUI.GetComponentInChildren<FightCharacterEntityUI>();
         }
         #endregion
     }

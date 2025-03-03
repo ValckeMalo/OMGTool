@@ -15,7 +15,7 @@ MonoBehaviour:
   background: 2
   type: 2
   value: 100
-  wakfu: 0
+  energy: -1
   name: Boost
   icon: {fileID: -598820051, guid: 12856d8969ed3f84aa32ccee62e0018b, type: 3}
   isBoostable: 1

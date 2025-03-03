@@ -48,8 +48,6 @@ namespace OMG.Game.Fight
         [Header("Entity")]
         [SerializeField] private Transform characterPosition;
         [SerializeField] private Transform[] mobsPosition = new Transform[3];
-        [SerializeField] private GameObject characterFightEntityPrefab;
-        [SerializeField] private GameObject mobFightEntityPrefab;
 
         //Energy
         private int currentEnergy = 0;
@@ -74,40 +72,14 @@ namespace OMG.Game.Fight
             //initialize card/deck
             fightDeck = new FightDeck(context.characterManager.Inventory.Deck);
 
-            //Spawn mobs
-            List<FightMobEntity> allMobsFightEntity = new List<FightMobEntity>();
-            int i = 0;
-            foreach (MobData mobData in context.mobsData)
-            {
-                GameObject newMobsUI = Instantiate(mobFightEntityPrefab, mobsPosition[i].position, Quaternion.identity, fightUI.transform);
-                newMobsUI.GetComponent<RectTransform>().anchoredPosition = fightUI.WorldTofightCanvas(mobsPosition[i].position);
-
-                FightMobEntityUI fightMobEntityUI = newMobsUI.GetComponent<FightMobEntityUI>();
-                FightMobEntity fightMobEntity = new FightMobEntity();
-                fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, fightMobEntityUI);
-                allMobsFightEntity.Add(fightMobEntity);
-                i++;
-            }
-
-            //Spawn Character
-            DungeonCharacter dungeonCharacter = new DungeonCharacter(context.characterManager);
-            GameObject characterUI = Instantiate(characterFightEntityPrefab, fightUI.transform);
-            characterUI.GetComponent<RectTransform>().anchoredPosition = fightUI.WorldTofightCanvas(characterPosition.position);
-
-            FightCharacterEntityUI fightCharacterEntityUI = characterUI.GetComponent<FightCharacterEntityUI>();
-            FightCharacterEntity fightCharacterEntity = new FightCharacterEntity();
-            fightCharacterEntity.InitializeCharacter(dungeonCharacter, fightCharacterEntityUI);
-
-            //spawn the entities and their UI
-            InitsMobs();
-            InitCharacter();
-
             //Initialize fightData
             fightData = new FightData();
-            fightData.InitializeData(fightCharacterEntity, allMobsFightEntity);
+            fightData.InitializeData(SpawnCharacter(), SpawnMobs());
 
+            //Initialize fight ui
             fightUI.Initialize(fightDeck);
 
+            //subscribe to action on ui
             fightUI.OnRequestCharacterEndTurn += RequestEndCharacterTurn;
             fightUI.OnCancelCardSelect += CancelSelectCard;
 
@@ -160,9 +132,19 @@ namespace OMG.Game.Fight
         }
 
         #region Mobs
-        private void InitsMobs()
+        private List<FightMobEntity> SpawnMobs()
         {
+            List<FightMobEntity> allMobsFightEntity = new List<FightMobEntity>();
+            int i = 0;
+            foreach (MobData mobData in context.mobsData)
+            {
+                FightMobEntity fightMobEntity = new FightMobEntity();
+                fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, fightUI.SpawnMobEntityUI(mobsPosition[i].position));
+                allMobsFightEntity.Add(fightMobEntity);
+                i++;
+            }
 
+            return allMobsFightEntity;
         }
         private void NewMobsTurn()
         {
@@ -207,15 +189,21 @@ namespace OMG.Game.Fight
         #endregion
 
         #region Character
-        private void InitCharacter()
+        private FightCharacterEntity SpawnCharacter()
         {
+            //Spawn Character
+            DungeonCharacter dungeonCharacter = new DungeonCharacter(context.characterManager);
+            FightCharacterEntity fightCharacterEntity = new FightCharacterEntity();
+            fightCharacterEntity.InitializeCharacter(dungeonCharacter, fightUI.SpawnCharacterEntityUI(characterPosition.position));
 
+            return fightCharacterEntity;
         }
         private void CharacterTurn()
         {
             fightDeck.NewTurn();//draw if possible next card
             fightUI.StartCharacterTurnButton(fightData.TurnCount);
             fightUI.PlayBannerTurnCharacter();
+            fightUI.SetCardStateOnEnergy(unlockEnergy - currentEnergy);
 
             if (fightData.FightCharacterEntity != null)
                 fightData.FightCharacterEntity.NewTurn(); //update the entity
@@ -258,7 +246,7 @@ namespace OMG.Game.Fight
         }
         private bool CanAddEnergy(int energyToAdd)
         {
-            return (currentEnergy + energyToAdd <= unlockEnergy) && (currentEnergy + energyToAdd > 0);
+            return (currentEnergy + energyToAdd <= unlockEnergy);
         }
         private void AddEnergy(int energyToAdd)
         {
@@ -283,7 +271,6 @@ namespace OMG.Game.Fight
             if (needSecondCardToSelect)
             {
                 secondCardSelected = fightCard;
-                needSecondCardToSelect = false;
                 return;
             }
 
@@ -291,6 +278,8 @@ namespace OMG.Game.Fight
             {
                 if (fightCard.NeedAnotherCard)
                 {
+                    secondCardSelected = null;
+                    needSecondCardToSelect = true;
                     StartCoroutine(SelectCard(fightCard));
                     return;
                 }
@@ -306,7 +295,7 @@ namespace OMG.Game.Fight
         }
         private IEnumerator SelectCard(FightCard fightCard)
         {
-            fightUI.ShowCardSelectUI();
+            fightUI.ShowCardSelectUI(fightCard);
 
             if (fightCard.CardType == CardBackground.Boost)
             {
@@ -317,7 +306,21 @@ namespace OMG.Game.Fight
                 fightUI.SetSacrificialbeCard();
             }
 
-            yield return new WaitUntil(() => secondCardSelected != null);
+            yield return new WaitUntil(() =>
+            {
+                if (secondCardSelected != null)
+                {
+                    if (secondCardSelected == fightCard)
+                    {
+                        secondCardSelected = null;
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                return false;
+            });
 
             AddEnergy(fightCard.Energy);
 
@@ -325,6 +328,7 @@ namespace OMG.Game.Fight
             {
                 fightDeck.BoostFightCardInHand(secondCardSelected, fightCard.Value);
                 FightCardProcess.ProcessOnlySpells(fightCard, isFirstCardPlayed, fightData, fightDeck);
+                fightDeck.RemoveCardInHand(fightCard);
             }
             else if (fightCard.NeedSacrifice)
             {
@@ -337,6 +341,9 @@ namespace OMG.Game.Fight
             {
                 Debug.LogError($"The first card does not seems to boost the other card or need a sacrifice {fightCard} & {secondCardSelected}");
             }
+
+            fightUI.HideCardSelectUI();
+            needSecondCardToSelect = false;
 
             if (CanDoPerfect)
             {

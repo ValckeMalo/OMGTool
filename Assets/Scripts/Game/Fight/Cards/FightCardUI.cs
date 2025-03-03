@@ -20,6 +20,8 @@ namespace OMG.Game.Fight.Cards
         private FightCard fightCard;
         private FightCardState cardState = FightCardState.Default;
 
+        public FightCardState CardState => cardState;
+        public bool IsFightCard(FightCard fightCard) => fightCard == this.fightCard;
         public int CardEnergy => fightCard.Energy;
         public bool IsBoostable => fightCard.IsBoostable;
 
@@ -63,6 +65,12 @@ namespace OMG.Game.Fight.Cards
         }
         private void OnCardDestroyed()
         {
+            print("Destroy");
+            TweenManager.Despawn(tweenScale);
+            TweenManager.Despawn(tooltipTween);
+
+            ReleaseTooltip();
+
             Destroy(gameObject);
         }
         #endregion

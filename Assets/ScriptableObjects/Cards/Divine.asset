@@ -15,7 +15,7 @@ MonoBehaviour:
   background: 4
   type: 0
   value: 102
-  wakfu: 0
+  energy: 2
   name: Divine
   icon: {fileID: 1397210691, guid: d6e0229eebccb144ba09ebb047d54212, type: 3}
   isBoostable: 0

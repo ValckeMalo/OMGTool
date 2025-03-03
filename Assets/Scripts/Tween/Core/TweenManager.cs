@@ -173,7 +173,6 @@ namespace MVProduction.Tween.Core
                 Tween.OnTweenCallback(tween.onKill);
             }
 
-            tween.active = false;
             RemoveActiveTween(tween);
             tween.Reset();
             tween = null;

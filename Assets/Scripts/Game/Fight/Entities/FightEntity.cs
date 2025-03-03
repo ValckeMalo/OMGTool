@@ -46,7 +46,7 @@ namespace OMG.Game.Fight.Entities
         {
             if (HasStatus(StatusType.Invincibility)) return;
 
-            if (!isPiercingDamage) //damage the armor
+            if (!isPiercingDamage)// damage the armor
             {
                 if (currentArmor < damage)
                 {
@@ -61,7 +61,7 @@ namespace OMG.Game.Fight.Entities
                 }
             }
 
-            currentHealth -= damage;
+            currentHealth = Mathf.Max(currentHealth - damage, 0);
             entityUI.UpdateHealthUI(currentHealth, currentArmor);
         }
         public void Heal(int valueHeal)

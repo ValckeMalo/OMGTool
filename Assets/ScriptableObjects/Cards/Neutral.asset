@@ -15,7 +15,7 @@ MonoBehaviour:
   background: 3
   type: 3
   value: 1
-  wakfu: -1
+  energy: 1
   name: Neutral
   icon: {fileID: 1928970010, guid: 3c58bb42ea05f26449ab356753dafe18, type: 3}
   isBoostable: 0

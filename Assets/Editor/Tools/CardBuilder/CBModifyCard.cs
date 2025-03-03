@@ -28,7 +28,7 @@ namespace MVProduction
         private SerializedObject currentCard;
         private SerializedProperty propCardName;
         private SerializedProperty propCardValue;
-        private SerializedProperty propCardWakfu;
+        private SerializedProperty propCardEnergy;
         private SerializedProperty propCardIcon;
         private SerializedProperty propBackground;
         private SerializedProperty propCardType;
@@ -163,7 +163,7 @@ namespace MVProduction
                 //VALUE CARD
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
-                    EditorGUILayout.PropertyField(propCardWakfu);
+                    EditorGUILayout.PropertyField(propCardEnergy);
                 }
 
                 //ICON CARD
@@ -274,7 +274,7 @@ namespace MVProduction
             propCardType = currentCard.FindProperty("type");
 
             propCardValue = currentCard.FindProperty("value");
-            propCardWakfu = currentCard.FindProperty("wakfu");
+            propCardEnergy = currentCard.FindProperty("energy");
             propCardName = currentCard.FindProperty("name");
 
             propCardIcon = currentCard.FindProperty("icon");
