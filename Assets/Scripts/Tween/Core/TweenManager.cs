@@ -1,6 +1,7 @@
 namespace MVProduction.Tween.Core
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public static class TweenManager
     {
@@ -22,7 +23,7 @@ namespace MVProduction.Tween.Core
                 }
             }
 
-            if (tweenToKill)
+            if (tweenToKill || killTween.Count > 0)
             {
                 DespawnActiveTweens(killTween);
                 killTween.Clear();
@@ -56,6 +57,18 @@ namespace MVProduction.Tween.Core
         /// <returns></returns>
         private static bool UpdateTween(Tween tween, float deltaTime)
         {
+            if (tween == null)
+            {
+                MarkForKilling(tween);
+                return true;
+            }
+
+            if (tween.target == null)
+            {
+                MarkForKilling(tween);
+                return true;
+            }
+
             //IF the tween havn't been start do it now
             if (!tween.startupDone)
             {

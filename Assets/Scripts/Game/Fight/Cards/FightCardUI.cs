@@ -3,6 +3,7 @@ namespace OMG.Game.Fight.Cards
     using MVProduction.Tween;
     using MVProduction.Tween.Core;
     using MVProduction.Tween.DoTween.Module;
+    using MVProduction.CustomAttributes;
 
     using OMG.Data.Card;
     using OMG.Game.Tooltip;
@@ -19,7 +20,6 @@ namespace OMG.Game.Fight.Cards
         [SerializeField] private CardUIData cardUIData;
         private FightCard fightCard;
         private FightCardState cardState = FightCardState.Default;
-        private bool isDestroyed = false;
 
         public FightCardState CardState => cardState;
         public bool IsFightCard(FightCard fightCard) => fightCard == this.fightCard;
@@ -69,8 +69,10 @@ namespace OMG.Game.Fight.Cards
             TweenManager.Despawn(tweenScale);
             TweenManager.Despawn(tooltipTween);
 
+            fightCard.OnCardUpdated -= UpdateFightUI;
+            fightCard.OnCardDestroyed -= OnCardDestroyed;
+
             ReleaseTooltip();
-            isDestroyed = true;
 
             Destroy(gameObject);
         }
@@ -101,8 +103,6 @@ namespace OMG.Game.Fight.Cards
         #region Tween
         private void ScaleUp(float delay = 0.1f)
         {
-            if (isDestroyed) return;
-
             if (tweenScale != null)
                 TweenManager.Despawn(tweenScale);
 
@@ -110,7 +110,7 @@ namespace OMG.Game.Fight.Cards
         }
         private void ScaleDown()
         {
-            if (cardState == FightCardState.Selected || isDestroyed) return;
+            if (cardState == FightCardState.Selected) return;
 
             if (tweenScale != null)
                 TweenManager.Despawn(tweenScale);
