@@ -54,7 +54,8 @@ namespace MVProduction.Tween.DoTween.Module
                 () => target.sizeDelta,
                 (value) =>
                 {
-                    target.sizeDelta = value;
+                    if (target != null)
+                        target.sizeDelta = value;
                 },
             endValue, duration);
 

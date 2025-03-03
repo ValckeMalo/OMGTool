@@ -55,7 +55,7 @@ namespace OMG.Game.Fight
 			int nbDrawableCard = drawableCard.Count;
 			List<FightCard> cardDraw = new List<FightCard>();
 			
-			for (int i = 0; i < nbDrawableCard; i++)
+			for (int i = 0; i < nbToDraw; i++)
 			{
 				//pick a random card in the drawable one
 				FightCard drawFightCard = drawableCard[UnityEngine.Random.Range(0,nbDrawableCard)];

@@ -9,13 +9,13 @@ namespace OMG.Game.Fight
     
     using OMG.Data.Card;
     using OMG.Game.Fight.Cards;
+    using OMG.Game.Fight.Entities;
 	
     using MVProduction.CustomAttributes;
     
     using MVProduction.Tween;
     using MVProduction.Tween.Core;
     using MVProduction.Tween.DoTween.Module;
-    using OMG.Game.Fight.Entities;
 
     public class FightUI : MonoBehaviour
     {

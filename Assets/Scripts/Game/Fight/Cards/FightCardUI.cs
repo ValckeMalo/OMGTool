@@ -19,6 +19,7 @@ namespace OMG.Game.Fight.Cards
         [SerializeField] private CardUIData cardUIData;
         private FightCard fightCard;
         private FightCardState cardState = FightCardState.Default;
+        private bool isDestroyed = false;
 
         public FightCardState CardState => cardState;
         public bool IsFightCard(FightCard fightCard) => fightCard == this.fightCard;
@@ -28,7 +29,7 @@ namespace OMG.Game.Fight.Cards
         [Header("Disable")]
         [SerializeField] private Image disableCardImage;
 
-        //tween animation
+        //tween scale animation
         private const float ratioScale = 1.2f;
         private const float timeScale = 0.1f;
         private Vector2 cardSize = Vector2.zero;
@@ -65,11 +66,11 @@ namespace OMG.Game.Fight.Cards
         }
         private void OnCardDestroyed()
         {
-            print("Destroy");
             TweenManager.Despawn(tweenScale);
             TweenManager.Despawn(tooltipTween);
 
             ReleaseTooltip();
+            isDestroyed = true;
 
             Destroy(gameObject);
         }
@@ -100,21 +101,20 @@ namespace OMG.Game.Fight.Cards
         #region Tween
         private void ScaleUp(float delay = 0.1f)
         {
+            if (isDestroyed) return;
+
             if (tweenScale != null)
-            {
                 TweenManager.Despawn(tweenScale);
-            }
 
             tweenScale = cardRect.DoScale(cardSize * ratioScale, timeScale).AddDelay(delay);
         }
         private void ScaleDown()
         {
-            if (cardState == FightCardState.Selected) return;
+            if (cardState == FightCardState.Selected || isDestroyed) return;
 
             if (tweenScale != null)
-            {
                 TweenManager.Despawn(tweenScale);
-            }
+
             cardRect.DoScale(cardSize, timeScale);
         }
         #endregion
