@@ -15,11 +15,13 @@ namespace OMG.Game.Fight.Entities
         private int maxHealth;
         protected int currentArmor;
         protected List<FightEntityStatus> currentStatus;
+        protected bool isDying = false;
 
         public float EntityPercentHealth => currentHealth / maxHealth;
         public int EntityCurrentHealth => currentHealth;
         public int Currentarmor => currentArmor;
-        public bool IsDying() => (currentHealth <= 0);
+        public bool IsDying => isDying;
+        public bool CanDie() => currentHealth <= 0;
 
         protected void InitializeEntity(int currentHealth, int maxHealth, FightEntityUI entityUI)
         {

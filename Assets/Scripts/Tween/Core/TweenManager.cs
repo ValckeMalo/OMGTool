@@ -177,9 +177,9 @@ namespace MVProduction.Tween.Core
         /// Reset the tween and nullify it
         /// </summary>
         /// <param name="tween"></param>
-        public static void Despawn(Tween tween)
+        public static Tween Despawn(Tween tween)
         {
-            if (tween == null) return;
+            if (tween == null) return null;
 
             if (tween.onKill != null)
             {
@@ -189,6 +189,7 @@ namespace MVProduction.Tween.Core
             RemoveActiveTween(tween);
             tween.Reset();
             tween = null;
+            return tween;
         }
 
         public static void DespawnAll()

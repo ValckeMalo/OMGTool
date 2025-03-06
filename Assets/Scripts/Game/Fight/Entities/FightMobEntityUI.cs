@@ -12,7 +12,8 @@ namespace OMG.Game.Fight.Entities
 
     using OMG.Game.Tooltip;
     using OMG.Data.Mobs.Actions;
-    
+    using System;
+
     public class FightMobEntityUI : FightEntityUI
     {
         [Title("Preview Attack")]
@@ -21,8 +22,11 @@ namespace OMG.Game.Fight.Entities
         [SerializeField] private Image previewAttackIcon;
         private MobActionUI previewAttackUI;
 
+        //tween move UI
+        const float timeMove = 1f;
+
         //tween preview attack
-        private TweenerCore<float, float> previewAttackTween = null;
+        private Tween previewAttackTween = null;
 
         #region Tooltip
         protected override List<TooltipData> GetAllTooltips()
@@ -57,10 +61,23 @@ namespace OMG.Game.Fight.Entities
         private void FadePreviewAttack(float endValue, float duration)
         {
             if (previewAttackTween != null)
-                TweenManager.Despawn(previewAttackTween);
+                previewAttackTween = TweenManager.Despawn(previewAttackTween);
 
             previewAttackTween = previewAttackGroup.DoFade(endValue, duration);
         }
         #endregion
+
+        public void UpdatePos(Vector2 canvasPos)
+        {
+            (transform as RectTransform).DoAnchorMove(canvasPos, timeMove);
+        }
+
+        public override void DespawnUI()
+        {
+            if (previewAttackTween != null) 
+                previewAttackTween = TweenManager.Despawn(previewAttackTween);
+
+            base.DespawnUI();
+        }
     }
 }

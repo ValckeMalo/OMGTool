@@ -1,6 +1,5 @@
 namespace OMG.Game.Fight.Entities
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     using TMPro;
@@ -16,7 +15,7 @@ namespace OMG.Game.Fight.Entities
     using MVProduction.Tween.DoTween.Module;
 
     public class FightEntityUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
-    {
+    {		
         [Title("Health")]
         [Header("Health Slider Color")]
         [SerializeField] private Color healthColor;
@@ -36,8 +35,8 @@ namespace OMG.Game.Fight.Entities
         [SerializeField] private TextMeshProUGUI armorText;
 
         //tween slider
-        private TweenerCore<float, float> hitSliderTween = null;
-        private TweenerCore<float, float> healthSliderTween = null;
+        private Tween hitSliderTween = null;
+        private Tween healthSliderTween = null;
 
         [Title("Status")]
         [SerializeField] private CanvasGroup statusGroup;
@@ -50,7 +49,7 @@ namespace OMG.Game.Fight.Entities
         [SerializeField] private TextMeshProUGUI entityName;
 
         //hover Tween
-        private TweenerCore<float, float> hoverTween = null;
+        private Tween hoverTween = null;
 
         [Title("Tooltip")]
         [SerializeField] private CanvasGroup tooltipGroup;
@@ -59,14 +58,23 @@ namespace OMG.Game.Fight.Entities
         private List<GameObject> allTooltipsObject = null;
 
         //tooltip tween
-        private TweenerCore<float, float> tooltipTween = null;
+        private Tween tooltipTween = null;
 
-        #region Animation
-        public IEnumerator AnimationDeath()
+        #region Death
+        public virtual void DespawnUI()
         {
-            //TODO add the fx et death mob etc
+            if (hoverTween != null) 
+                hoverTween = TweenManager.Despawn(hoverTween);
+            if (hitSliderTween != null)
+                hitSliderTween = TweenManager.Despawn(hitSliderTween);
+            if (healthSliderTween != null)
+                healthSliderTween = TweenManager.Despawn(healthSliderTween);
+            if (tooltipTween != null)
+                tooltipTween = TweenManager.Despawn(tooltipTween);
 
-            yield return new WaitForSeconds(3f);//time anim/fx death
+            ReleaseTooltip();
+
+            Destroy(gameObject);
         }
         #endregion
 
@@ -161,12 +169,12 @@ namespace OMG.Game.Fight.Entities
 
         #region IPointer
         public void OnPointerEnter(PointerEventData eventData)
-        {
+        {			
             FadeHover(0.9f, 0.1f);
             ShowTooltip();
         }
         public void OnPointerExit(PointerEventData eventData)
-        {
+        {			
             FadeHover(0f, 0.05f);
             HideTooltip();
         }

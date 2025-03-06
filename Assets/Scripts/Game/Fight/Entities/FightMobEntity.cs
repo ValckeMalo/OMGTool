@@ -19,10 +19,26 @@ namespace OMG.Game.Fight.Entities
         [SerializeField, ReadOnly] private MobActionData nextMobAction;
         private Action<MobActionData> onNextActionUpdate = null;
         private FightMobEntityUI mobUI;
+		private int pos = 0;
+		
+		public int Pos => pos;
+		public void UpdatePos(Vector2 canvasPos,int newPos)
+		{
+            mobUI.UpdatePos(canvasPos);
+			pos = newPos;
+		}
+        public void SetPos(int newPos)
+        {
+            pos = newPos;
+        }
 
         public IEnumerator RequestDie(Action<FightMobEntity> OnMobDie)
-        {
-            yield return entityUI.AnimationDeath();
+        {     
+            isDying = true;
+			entityUI.DespawnUI();
+			entityUI = null;
+			
+            yield return new WaitForSeconds(1f);
 
             OnMobDie?.Invoke(this);
         }

@@ -108,24 +108,36 @@ namespace OMG.Game.Fight
         }
         private void UpdateFightProgress()
         {
-            if (fightData.FightCharacterEntity == null || fightData.FightCharacterEntity.IsDying())
+            if (fightData.FightCharacterEntity == null || fightData.FightCharacterEntity.IsDying)
             {
                 SetState(FightState.Lose);
                 return;
             }
 
-            if (fightData.AllMobs == null)
+            if (fightData.AllMobs != null)
             {
-                SetState(FightState.Win);
-                return;
-            }
+                for (int i = 0; i < fightData.AllMobs.Count; i++)
+                {
+                    FightMobEntity fightMob = fightData.AllMobs[i];
 
-            foreach (FightMobEntity fightMob in fightData.AllMobs)
-            {
-                if (fightMob == null || fightMob.IsDying())
-                    continue;
+                    if (fightMob == null) continue;
 
-                return;
+                    if (!fightMob.IsDying && fightMob.CanDie())
+                    {
+                        fightData.AllMobs.Remove(fightMob);
+                        i--;
+                        StartCoroutine(fightMob.RequestDie(
+                        (FightMobEntity fightMob) =>
+                        {
+                            fightMob = null;
+                            UpdateMobsPosition();
+                        }
+                        ));
+                        continue;
+                    }
+
+                    return;
+                }
             }
 
             SetState(FightState.Win);
@@ -141,6 +153,7 @@ namespace OMG.Game.Fight
                 FightMobEntity fightMobEntity = new FightMobEntity();
                 fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, fightUI.SpawnMobEntityUI(mobsPosition[i].position));
                 allMobsFightEntity.Add(fightMobEntity);
+                fightMobEntity.SetPos(i);
                 i++;
             }
 
@@ -185,6 +198,26 @@ namespace OMG.Game.Fight
             }
 
             SetState(FightState.PlayerTurn);
+        }
+
+        private void SwitchMobPos(FightMobEntity fightMob, int newPos)
+        {
+            fightMob.UpdatePos(fightUI.WorldTofightCanvas(mobsPosition[newPos].position), newPos);
+        }
+        private void UpdateMobsPosition()
+        {
+            int mobPos = 0;
+            foreach (FightMobEntity fightMob in fightData.AllMobs)
+            {
+                if (fightMob == null) continue;
+
+                if (fightMob.Pos != mobPos)
+                {
+                    SwitchMobPos(fightMob, mobPos);
+                }
+
+                mobPos++;
+            }
         }
         #endregion
 
