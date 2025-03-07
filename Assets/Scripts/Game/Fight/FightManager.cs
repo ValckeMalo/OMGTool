@@ -9,10 +9,11 @@ namespace OMG.Game.Fight
     using OMG.Game.Dungeon;
     using OMG.Game.Fight.Cards;
     using OMG.Game.Fight.Entities;
-
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
+    using UnityEngine.Rendering;
 
     [System.Serializable]
     public class FightContext
@@ -48,6 +49,7 @@ namespace OMG.Game.Fight
         [Header("Entity")]
         [SerializeField] private Transform characterPosition;
         [SerializeField] private Transform[] mobsPosition = new Transform[3];
+        public static Action OnMobDie;
 
         //Energy
         private int currentEnergy = 0;
@@ -63,8 +65,10 @@ namespace OMG.Game.Fight
         private FightCard secondCardSelected = null;
         private bool isFirstCardPlayed = true;
 
+        #region Fight
         private void Start()
         {
+            OnMobDie += UpdateFightProgress;
             InitializeFight();
         }
         private void InitializeFight()
@@ -89,16 +93,19 @@ namespace OMG.Game.Fight
         {
             currentState = fightState;
 
-            UpdateFightProgress();
-
             switch (currentState)
             {
                 case FightState.PlayerTurn:
+                    UpdateFightProgress();
                     CharacterTurn();
                     break;
 
                 case FightState.MobsTurn:
                     NewMobsTurn();
+                    break;
+
+                case FightState.Win:
+                    RequestWin();
                     break;
 
                 default:
@@ -142,6 +149,19 @@ namespace OMG.Game.Fight
 
             SetState(FightState.Win);
         }
+        #endregion
+
+        #region Win
+        private void RequestWin()
+        {
+            fightDeck.EndFight();
+            StartCoroutine(AnimWin());
+        }
+        private IEnumerator AnimWin()
+        {
+            yield return new WaitForSeconds(0.5f);//let the mobs been killed
+        }
+        #endregion
 
         #region Mobs
         private List<FightMobEntity> SpawnMobs()
@@ -263,6 +283,7 @@ namespace OMG.Game.Fight
         {
             if (CanDoPerfect)
             {
+                fightUI.TogglePerfectEnergyUI(false);
                 unlockEnergy = MinUnlockEnergy;
                 fightUI.ResetPadlock();
             }
@@ -410,14 +431,12 @@ namespace OMG.Game.Fight
         private void RequestPerfect()
         {
             fightDeck.DrawPerfectCard();
+            fightUI.TogglePerfectEnergyUI(true);
             fightUI.SetPerfectMode();
         }
         #endregion
     }
 }
-
-//TODO les mobs n'ont pas leur place dans la list
-//TODO les mobs ne peuvent pas changer de place lors de la mort d'un autre
 
 //TODO Make All Todo in code
 

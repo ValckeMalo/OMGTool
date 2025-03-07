@@ -38,7 +38,7 @@ namespace OMG.Game.Fight.Entities
 			entityUI.DespawnUI();
 			entityUI = null;
 			
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
             OnMobDie?.Invoke(this);
         }
@@ -125,7 +125,7 @@ namespace OMG.Game.Fight.Entities
                     return FightManager.Instance.FightData.WeakestFightMobEntity();
 
                 case FightEntityTarget.RandomMobOther:
-                    return FightManager.Instance.FightData.GetRandomMob();//TODO set the pos of the current mob to execpt it for the random
+                    return FightManager.Instance.FightData.GetRandomMob(pos);
 
                 case FightEntityTarget.RandomMobWithState:
                     return FightManager.Instance.FightData.GetRandomMobWithStatus(StatusType.Poison);

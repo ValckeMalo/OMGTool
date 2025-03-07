@@ -1,7 +1,9 @@
 namespace OMG.Game.Fight.Entities
 {
     using MVProduction.CustomAttributes;
+    using MVProduction.Tween;
     using MVProduction.Tween.Core;
+    using MVProduction.Tween.Ease;
     using MVProduction.Tween.DoTween.Module;
 
     using System.Collections.Generic;
@@ -12,7 +14,7 @@ namespace OMG.Game.Fight.Entities
 
     using OMG.Game.Tooltip;
     using OMG.Data.Mobs.Actions;
-    using System;
+
 
     public class FightMobEntityUI : FightEntityUI
     {
@@ -27,6 +29,9 @@ namespace OMG.Game.Fight.Entities
 
         //tween preview attack
         private Tween previewAttackTween = null;
+
+        //tween update Pos
+        private Tween movePosTween = null;
 
         #region Tooltip
         protected override List<TooltipData> GetAllTooltips()
@@ -69,13 +74,19 @@ namespace OMG.Game.Fight.Entities
 
         public void UpdatePos(Vector2 canvasPos)
         {
-            (transform as RectTransform).DoAnchorMove(canvasPos, timeMove);
+            if (movePosTween != null)
+                movePosTween = TweenManager.Despawn(movePosTween);
+
+            movePosTween = (transform as RectTransform).DoAnchorMove(canvasPos, timeMove).SetEase(Easing.InOutQuint);
         }
 
         public override void DespawnUI()
         {
             if (previewAttackTween != null) 
                 previewAttackTween = TweenManager.Despawn(previewAttackTween);
+
+            if (movePosTween != null)
+                movePosTween = TweenManager.Despawn(movePosTween);
 
             base.DespawnUI();
         }

@@ -65,6 +65,11 @@ namespace OMG.Game.Fight.Entities
 
             currentHealth = Mathf.Max(currentHealth - damage, 0);
             entityUI.UpdateHealthUI(currentHealth, currentArmor);
+
+            if (CanDie())
+            {
+                FightManager.OnMobDie?.Invoke();
+            }
         }
         public void Heal(int valueHeal)
         {
