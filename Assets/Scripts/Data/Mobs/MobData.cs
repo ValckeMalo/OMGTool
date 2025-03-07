@@ -14,8 +14,11 @@ namespace OMG.Data.Mobs
         [SerializeField] private int experience;
         [SerializeField] private List<CardData> cardLootable;
         [SerializeField] private int baseHealth;
-		
-		public int BaseHealth => baseHealth;
+
         public List<MobFightBehaviour> MobFightBehaviourList => mobBehaviours;
+
+        //the setter is Only Use for Editor Tools Do not touch it
+        public int BaseHealth { get => baseHealth; set => baseHealth = value; }
+        public int Experience { get => experience; set => experience = value; }
     }
 }

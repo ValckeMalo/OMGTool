@@ -108,7 +108,7 @@ namespace OMG.Game.Fight
 
         public void RemoveCardInHand(FightCard fightCard)
         {
-            if (fightCard == null || !handCard.Contains(fightCard))
+            if (fightCard == null || handCard == null || !handCard.Contains(fightCard))
                 return;
 
             //remove it from the hand
@@ -120,6 +120,9 @@ namespace OMG.Game.Fight
                 fightCard.CardType != CardBackground.Curse &&
                 fightCard.CardType != CardBackground.Finisher)
             {
+                if (drawableCard == null)
+                    return;
+
                 drawableCard.Add(fightCard);
             }
 

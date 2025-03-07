@@ -57,9 +57,9 @@ MonoBehaviour:
         experience: 0
         experienceTreshold: 
     mobsData:
+    - {fileID: 11400000, guid: e768f502686457a43bd4a711637c34ed, type: 2}
     - {fileID: 11400000, guid: f85d9dc653c86d74fa87c89f7064912e, type: 2}
-    - {fileID: 11400000, guid: f85d9dc653c86d74fa87c89f7064912e, type: 2}
-    - {fileID: 11400000, guid: f85d9dc653c86d74fa87c89f7064912e, type: 2}
+    - {fileID: 11400000, guid: e768f502686457a43bd4a711637c34ed, type: 2}
   fightUI: {fileID: 0}
   characterPosition: {fileID: 0}
   mobsPosition:

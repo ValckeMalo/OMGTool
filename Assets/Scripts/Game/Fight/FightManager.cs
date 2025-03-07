@@ -440,8 +440,6 @@ namespace OMG.Game.Fight
 
 //TODO Make All Todo in code
 
-//TODO Debug new Fight System
-
 //TODO Made Mobs Creator Tool
 //TODO Made MobAction Creator Tool
 //TODO Made Deck Creator Tool

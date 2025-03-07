@@ -15,7 +15,7 @@ MonoBehaviour:
   background: 5
   type: 0
   value: 20
-  wakfu: 0
+  energy: 0
   name: Curse
   icon: {fileID: -1388669491, guid: e438c2b87558c6a498535c661a311cad, type: 3}
   isBoostable: 1

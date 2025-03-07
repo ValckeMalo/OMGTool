@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8913a87bcc9a33e4691bcbd412a34852, type: 3}
-  m_Name: Arakne
+  m_Name: Rat
   m_EditorClassIdentifier: 
   mobBehaviours:
   - primaryFightCondition:
@@ -30,10 +30,10 @@ MonoBehaviour:
       mobActionsList:
       - mobAction: {fileID: 11400000, guid: 5ba43cd7c5e82dd48afbc57f98451593, type: 2}
         target: 0
-        value: 8
+        value: 6
       - mobAction: {fileID: 11400000, guid: 09face20f29590c40aefbd92e3e4fdab, type: 2}
         target: 1
-        value: 11
-  experience: 10
+        value: 8
+  experience: 0
   cardLootable: []
-  baseHealth: 36
+  baseHealth: 21

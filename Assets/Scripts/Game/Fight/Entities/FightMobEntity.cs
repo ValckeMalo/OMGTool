@@ -69,6 +69,7 @@ namespace OMG.Game.Fight.Entities
                     if (primaryCondition)
                     {
                         SetNextAction(behaviour.MobActionList.GetMobAction());
+                        return;
                     }
                 }
                 else
@@ -78,10 +79,12 @@ namespace OMG.Game.Fight.Entities
                     if (behaviour.ConditionOperator == ConditionOperator.And && primaryCondition && secondaryCondition)
                     {
                         SetNextAction(behaviour.MobActionList.GetMobAction());
+                        return;
                     }
                     else if (behaviour.ConditionOperator == ConditionOperator.Or && (primaryCondition || secondaryCondition))
                     {
                         SetNextAction(behaviour.MobActionList.GetMobAction());
+                        return;
                     }
                 }
             }
