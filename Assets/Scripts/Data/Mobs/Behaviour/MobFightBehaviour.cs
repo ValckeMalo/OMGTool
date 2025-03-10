@@ -12,11 +12,11 @@ namespace OMG.Data.Mobs.Behaviour
         [SerializeField] private FightCondition primaryFightCondition;
         [SerializeField] private ConditionOperator conditionOperator;
         [SerializeField] private FightCondition secondaryFightCondition;
-        [SerializeField] private SimpleMobActionsList mobActionList;//TODO don't forget to change the type to MobActionsList
+        [SerializeReference,SerializeField] private MobActionsList mobActionList;
 
         public FightCondition PrimaryFightCondition { get => primaryFightCondition; }
-        public ConditionOperator ConditionOperator { get => conditionOperator; }
+        public ConditionOperator ConditionOperator { get => conditionOperator; set => conditionOperator = value; }
         public FightCondition SecondaryFightCondition { get => secondaryFightCondition; }
-        public MobActionsList MobActionList { get => mobActionList; }
+        public MobActionsList MobActionList { get => mobActionList; set => mobActionList = value; }
     }
 }

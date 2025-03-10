@@ -11,7 +11,7 @@ namespace OMG.Data.Mobs.Actions
 		[Title("Simple Mob Actions List")]
 		[SerializeField] private List<MobActionData> mobActionsList;
 		
-		public List<MobActionData> MobActionsList { get => mobActionsList; }
+		public List<MobActionData> MobActionsList { get => mobActionsList; set => mobActionsList = value; }
 		
 		public override MobActionData GetMobAction()
 		{

@@ -10,7 +10,7 @@ namespace OMG.Data.Mobs.Actions
 		[SerializeField] private MobActionData mobAction = null;
 		[SerializeField] private int weight = 0;
 		
-		public MobActionData MobAction { get => mobAction; }
-		public int Weight { get => weight; }
+		public MobActionData MobAction { get => mobAction; set => mobAction = value; }
+		public int Weight { get => weight; set => weight = value; }
 	}
 }

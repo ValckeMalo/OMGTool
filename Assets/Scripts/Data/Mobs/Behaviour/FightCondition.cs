@@ -16,10 +16,10 @@ namespace OMG.Data.Mobs.Behaviour
         [SerializeField] private float specificValue;
         [SerializeField] private FightPosition specificPosition;
 
-        public FightConditionType ConditionType { get => conditionType; }
-        public ComparisonOperator ComparisionOperator { get => comparisionOperator; }
-        public StatusType SpecificStatus { get => specificStatus; }
+        public FightConditionType ConditionType { get => conditionType; set => conditionType = value; }
+        public ComparisonOperator ComparisionOperator { get => comparisionOperator; set => comparisionOperator = value; }
+        public StatusType SpecificStatus { get => specificStatus; set => specificStatus = value; }
         public float SpecificValue { get => specificValue; }
-        public FightPosition SpecificPosition { get => specificPosition; }
+        public FightPosition SpecificPosition { get => specificPosition; set => specificPosition = value; }
     }
 }

@@ -13,8 +13,8 @@ namespace OMG.Data.Mobs.Actions
 		[Title("Weight Mob Actions List")]
 		[SerializeField] private List<MobActionWeight> mobActionsWeightList;
 		
-		public List<MobActionWeight> MobActionsWeightList { get => mobActionsWeightList; }
-		public List<MobActionWeight> OrderMobActionsWeightList { get => mobActionsWeightList; }
+		public List<MobActionWeight> MobActionsWeightList { get => mobActionsWeightList; set => mobActionsWeightList = value; }
+		public List<MobActionWeight> OrderMobActionsWeightList { get => mobActionsWeightList; set => mobActionsWeightList = value; }
 		
 		public override MobActionData GetMobAction()
 		{
