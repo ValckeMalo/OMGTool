@@ -37,4 +37,7 @@ MonoBehaviour:
     - rid: 4200291887202697280
       type: {class: SimpleMobActionsList, ns: OMG.Data.Mobs.Actions, asm: Assembly-CSharp}
       data:
-        mobActionsList: []
+        mobActionsList:
+        - mobAction: {fileID: 11400000, guid: 5ba43cd7c5e82dd48afbc57f98451593, type: 2}
+          target: 0
+          value: 5

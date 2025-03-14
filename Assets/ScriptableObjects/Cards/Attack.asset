@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: 0
   type: 0
-  value: 15
-  energy: 1
+  value: 100
+  energy: -2
   name: Attack
   icon: {fileID: -1864520909, guid: 052526c09a3fab242a2b8610f4dcfc22, type: 3}
   isBoostable: 1

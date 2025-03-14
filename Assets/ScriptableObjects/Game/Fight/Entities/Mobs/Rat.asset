@@ -27,13 +27,17 @@ MonoBehaviour:
       specificValue: 0
       specificPosition: 0
     mobActionList:
-      mobActionsList:
-      - mobAction: {fileID: 11400000, guid: 5ba43cd7c5e82dd48afbc57f98451593, type: 2}
-        target: 0
-        value: 6
-      - mobAction: {fileID: 11400000, guid: 09face20f29590c40aefbd92e3e4fdab, type: 2}
-        target: 1
-        value: 8
+      rid: 4200291974700597320
   experience: 0
   cardLootable: []
   baseHealth: 21
+  references:
+    version: 2
+    RefIds:
+    - rid: 4200291974700597320
+      type: {class: SimpleMobActionsList, ns: OMG.Data.Mobs.Actions, asm: Assembly-CSharp}
+      data:
+        mobActionsList:
+        - mobAction: {fileID: 11400000, guid: 09face20f29590c40aefbd92e3e4fdab, type: 2}
+          target: 0
+          value: 5
