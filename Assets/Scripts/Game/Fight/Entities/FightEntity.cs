@@ -10,6 +10,7 @@ namespace OMG.Game.Fight.Entities
     {
         [Header("Entity UI")]
         [SerializeField] protected FightEntityUI entityUI;
+        [SerializeField] protected FightEntityWorld entityWorld;
 
         protected int currentHealth;
         private int maxHealth;
@@ -23,11 +24,12 @@ namespace OMG.Game.Fight.Entities
         public bool IsDying => isDying;
         public bool CanDie() => currentHealth <= 0;
 
-        protected void InitializeEntity(int currentHealth, int maxHealth, FightEntityUI entityUI)
+        protected void InitializeEntity(int currentHealth, int maxHealth, FightEntityUI entityUI, FightEntityWorld entityWorld)
         {
             this.currentHealth = currentHealth;
             this.maxHealth = maxHealth;
             this.entityUI = entityUI;
+            this.entityWorld = entityWorld;
 
             currentArmor = 0;
             currentStatus = new List<FightEntityStatus>();

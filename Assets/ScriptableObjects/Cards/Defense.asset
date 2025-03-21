@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: 1
   type: 1
-  value: 150
-  energy: 4
+  value: 5
+  energy: 1
   name: Defense
   icon: {fileID: 1151999357, guid: 5cacfb1cc77aeec499c0ddb668baadf4, type: 3}
   isBoostable: 1

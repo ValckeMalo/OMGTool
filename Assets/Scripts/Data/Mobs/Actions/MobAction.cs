@@ -7,7 +7,6 @@ namespace OMG.Data.Mobs.Actions
 
     public abstract class MobAction : ScriptableObject
     {
-        [Title("Mob Action")]
         [SerializeField] protected MobActionUI mobActionUI = null;
         public MobActionUI MobActionUI => mobActionUI;
 

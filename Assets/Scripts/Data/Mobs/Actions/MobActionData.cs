@@ -8,7 +8,6 @@ namespace OMG.Data.Mobs.Actions
     [System.Serializable]
     public class MobActionData
     {
-        [Title("Mob Action Target")]
         [SerializeField] private MobAction mobAction = null;
         [SerializeField] private FightEntityTarget target = FightEntityTarget.Me;
         [SerializeField] private int value = 0;

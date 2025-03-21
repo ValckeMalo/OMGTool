@@ -9,7 +9,6 @@ namespace OMG.Data.Mobs.Actions
     [System.Serializable]
 	public class WeightMobActionsList : MobActionsList
 	{
-		[Title("Weight Mob Actions List")]
 		[SerializeField] private List<MobActionWeight> mobActionsWeightList;
 		
 		public List<MobActionWeight> MobActionsWeightList { get => mobActionsWeightList; set => mobActionsWeightList = value; }
@@ -21,9 +20,9 @@ namespace OMG.Data.Mobs.Actions
 			
 			foreach (MobActionWeight mobActionWeight in mobActionsWeightList)
 			{
-				sum -= mobActionWeight.Weight;
+                roll -= mobActionWeight.Weight;
 				
-				if (sum <= 0)
+				if (roll <= 0)
 				{
 					return mobActionWeight.MobAction;
 				}

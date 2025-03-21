@@ -13,7 +13,6 @@ namespace OMG.Game.Fight
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
-    using UnityEngine.Rendering;
 
     [System.Serializable]
     public class FightContext
@@ -47,8 +46,8 @@ namespace OMG.Game.Fight
         [SerializeField] private FightUI fightUI;
 
         [Header("Entity")]
-        [SerializeField] private Transform characterPosition;
-        [SerializeField] private Transform[] mobsPosition = new Transform[3];
+        [SerializeField] private FightEntityWorld characterWorld;
+        [SerializeField] private FightEntityWorld[] mobsWorld = new FightEntityWorld[3];
         public static Action OnMobDie;
 
         //Energy
@@ -170,8 +169,11 @@ namespace OMG.Game.Fight
             int i = 0;
             foreach (MobData mobData in context.mobsData)
             {
+                FightEntityWorld fightEntityWorld = mobsWorld[i];
+                FightMobEntityUI mobUI = fightUI.SpawnMobEntityUI(fightEntityWorld.WorldTransform.position);
+
                 FightMobEntity fightMobEntity = new FightMobEntity();
-                fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, fightUI.SpawnMobEntityUI(mobsPosition[i].position));
+                fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, mobUI, fightEntityWorld);
                 allMobsFightEntity.Add(fightMobEntity);
                 fightMobEntity.SetPos(i);
                 i++;
@@ -222,7 +224,7 @@ namespace OMG.Game.Fight
 
         private void SwitchMobPos(FightMobEntity fightMob, int newPos)
         {
-            fightMob.UpdatePos(fightUI.WorldTofightCanvas(mobsPosition[newPos].position), newPos);
+            fightMob.UpdatePos(fightUI.WorldTofightCanvas(mobsWorld[newPos].WorldTransform.position), mobsWorld[newPos].WorldTransform.position, newPos);
         }
         private void UpdateMobsPosition()
         {
@@ -247,7 +249,7 @@ namespace OMG.Game.Fight
             //Spawn Character
             DungeonCharacter dungeonCharacter = new DungeonCharacter(context.characterManager);
             FightCharacterEntity fightCharacterEntity = new FightCharacterEntity();
-            fightCharacterEntity.InitializeCharacter(dungeonCharacter, fightUI.SpawnCharacterEntityUI(characterPosition.position));
+            fightCharacterEntity.InitializeCharacter(dungeonCharacter, fightUI.SpawnCharacterEntityUI(characterWorld.WorldTransform.position), characterWorld);
 
             return fightCharacterEntity;
         }

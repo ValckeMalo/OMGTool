@@ -1,7 +1,10 @@
 namespace OMG.Game.Fight.Entities
 {
     using MVProduction.CustomAttributes;
-
+    using MVProduction.Tween;
+    using MVProduction.Tween.DoTween;
+    using MVProduction.Tween.DoTween.Module;
+    using MVProduction.Tween.Ease;
     using OMG.Data.Mobs;
     using OMG.Data.Mobs.Actions;
     using OMG.Data.Mobs.Behaviour;
@@ -19,36 +22,39 @@ namespace OMG.Game.Fight.Entities
         [SerializeField, ReadOnly] private MobActionData nextMobAction;
         private Action<MobActionData> onNextActionUpdate = null;
         private FightMobEntityUI mobUI;
-		private int pos = 0;
-		
-		public int Pos => pos;
-		public void UpdatePos(Vector2 canvasPos,int newPos)
-		{
+        private int pos = 0;
+
+        public int Pos => pos;
+        public void UpdatePos(Vector2 canvasPos, Vector3 newPosWorld, int newPos)
+        {
             mobUI.UpdatePos(canvasPos);
-			pos = newPos;
-		}
+            entityWorld.MoveTo(newPosWorld, 1f);
+            pos = newPos;
+        }
         public void SetPos(int newPos)
         {
             pos = newPos;
         }
 
         public IEnumerator RequestDie(Action<FightMobEntity> OnMobDie)
-        {     
+        {
             isDying = true;
-			entityUI.DespawnUI();
-			entityUI = null;
-			
+            entityUI.DespawnUI();
+            entityUI = null;
+
+            entityWorld.GetComponent<SpriteRenderer>().enabled = false;
+
             yield return new WaitForSeconds(0.5f);
 
             OnMobDie?.Invoke(this);
         }
 
-        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData, FightMobEntityUI mobUI)
+        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData, FightMobEntityUI mobUI, FightEntityWorld fightEntityWorld)
         {
             this.mobData = mobData;
             this.mobUI = mobUI;
 
-            InitializeEntity(currentHealth, maxHealth, mobUI);
+            InitializeEntity(currentHealth, maxHealth, mobUI, fightEntityWorld);
             SearchNextAction();
         }
 
@@ -99,10 +105,14 @@ namespace OMG.Game.Fight.Entities
                 else
                     nextMobAction.ExecuteAction(GetTarget(nextMobAction.Target));
 
+                float durationAnim = entityWorld.AttackAnim();
+
+                yield return new WaitForSeconds(durationAnim / 2f);
+
                 mobUI.AttackUsed();
                 nextMobAction = null;
 
-                yield return new WaitForSeconds(1.0f);
+                yield return new WaitForSeconds(durationAnim / 2f);
             }
         }
         private FightEntity GetTarget(FightEntityTarget target)

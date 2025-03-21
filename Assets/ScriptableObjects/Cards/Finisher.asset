@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: 6
   type: 0
-  value: 30
+  value: 50
   energy: 0
   name: Finisher
   icon: {fileID: -1963147090, guid: f24f988aac215a243bcb4e190e63f55e, type: 3}

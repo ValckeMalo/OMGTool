@@ -19,7 +19,7 @@ namespace OMG.Data.Mobs.Behaviour
         public FightConditionType ConditionType { get => conditionType; set => conditionType = value; }
         public ComparisonOperator ComparisionOperator { get => comparisionOperator; set => comparisionOperator = value; }
         public StatusType SpecificStatus { get => specificStatus; set => specificStatus = value; }
-        public float SpecificValue { get => specificValue; }
+        public float SpecificValue { get => specificValue; set => specificValue = value; }
         public FightPosition SpecificPosition { get => specificPosition; set => specificPosition = value; }
     }
 }

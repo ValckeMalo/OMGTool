@@ -1845,6 +1845,8 @@ GameObject:
   m_Component:
   - component: {fileID: 435450078}
   - component: {fileID: 435450079}
+  - component: {fileID: 435450080}
+  - component: {fileID: 435450081}
   m_Layer: 0
   m_Name: Bouftou
   m_TagString: Untagged
@@ -1922,6 +1924,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &435450080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435450077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 868533646fe3da14c88ed094453738ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldTransform: {fileID: 435450078}
+  entityAnimator: {fileID: 435450081}
+--- !u!95 &435450081
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435450077}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fb8bf29ee11ef5d4a9cb73647d99f795, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &464588608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3317,6 +3355,8 @@ GameObject:
   m_Component:
   - component: {fileID: 838151146}
   - component: {fileID: 838151147}
+  - component: {fileID: 838151148}
+  - component: {fileID: 838151149}
   m_Layer: 0
   m_Name: Bouftou
   m_TagString: Untagged
@@ -3394,6 +3434,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &838151148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838151145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 868533646fe3da14c88ed094453738ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldTransform: {fileID: 838151146}
+  entityAnimator: {fileID: 838151149}
+--- !u!95 &838151149
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838151145}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fb8bf29ee11ef5d4a9cb73647d99f795, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &840010957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4592,6 +4668,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1129627119}
   - component: {fileID: 1129627120}
+  - component: {fileID: 1129627121}
+  - component: {fileID: 1129627122}
   m_Layer: 0
   m_Name: Arakne
   m_TagString: Untagged
@@ -4669,6 +4747,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1129627121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129627118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 868533646fe3da14c88ed094453738ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldTransform: {fileID: 1129627119}
+  entityAnimator: {fileID: 1129627122}
+--- !u!95 &1129627122
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129627118}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d93b2efd471b86d4aab59067583ffb45, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &1129905501 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,
@@ -8066,6 +8180,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2083380757}
+  - component: {fileID: 2083380760}
   - component: {fileID: 2083380758}
   - component: {fileID: 2083380759}
   m_Layer: 0
@@ -8167,6 +8282,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2083380760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083380756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 868533646fe3da14c88ed094453738ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldTransform: {fileID: 2083380757}
+  entityAnimator: {fileID: 2083380759}
 --- !u!4 &2103770077 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,
@@ -9572,9 +9701,34 @@ PrefabInstance:
       objectReference: {fileID: 4548637362073812484}
     - target: {fileID: 5897781184359262330, guid: a0b853b75c5fa9449a009a79a3037339,
         type: 3}
+      propertyPath: characterWorld
+      value: 
+      objectReference: {fileID: 2083380760}
+    - target: {fileID: 5897781184359262330, guid: a0b853b75c5fa9449a009a79a3037339,
+        type: 3}
       propertyPath: characterPosition
       value: 
       objectReference: {fileID: 1955808014}
+    - target: {fileID: 5897781184359262330, guid: a0b853b75c5fa9449a009a79a3037339,
+        type: 3}
+      propertyPath: mobsWorld.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897781184359262330, guid: a0b853b75c5fa9449a009a79a3037339,
+        type: 3}
+      propertyPath: 'mobsWorld.Array.data[0]'
+      value: 
+      objectReference: {fileID: 435450080}
+    - target: {fileID: 5897781184359262330, guid: a0b853b75c5fa9449a009a79a3037339,
+        type: 3}
+      propertyPath: 'mobsWorld.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1129627121}
+    - target: {fileID: 5897781184359262330, guid: a0b853b75c5fa9449a009a79a3037339,
+        type: 3}
+      propertyPath: 'mobsWorld.Array.data[2]'
+      value: 
+      objectReference: {fileID: 838151148}
     - target: {fileID: 5897781184359262330, guid: a0b853b75c5fa9449a009a79a3037339,
         type: 3}
       propertyPath: 'mobsPosition.Array.data[0]'

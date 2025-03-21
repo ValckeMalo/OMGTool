@@ -15,9 +15,9 @@ MonoBehaviour:
   mobBehaviours:
   - primaryFightCondition:
       conditionType: 4
-      comparisionOperator: 3
+      comparisionOperator: 2
       specificStatus: 0
-      specificValue: 15
+      specificValue: 3
       specificPosition: 0
     conditionOperator: 0
     secondaryFightCondition:
@@ -27,17 +27,64 @@ MonoBehaviour:
       specificValue: 0
       specificPosition: 0
     mobActionList:
-      rid: 4200291887202697280
+      rid: 4200292133794480221
+  - primaryFightCondition:
+      conditionType: 1
+      comparisionOperator: 0
+      specificStatus: 0
+      specificValue: 0.25
+      specificPosition: 0
+    conditionOperator: 0
+    secondaryFightCondition:
+      conditionType: 0
+      comparisionOperator: 0
+      specificStatus: 0
+      specificValue: 0
+      specificPosition: 0
+    mobActionList:
+      rid: 4200292133794480220
+  - primaryFightCondition:
+      conditionType: 0
+      comparisionOperator: 0
+      specificStatus: 0
+      specificValue: 0
+      specificPosition: 0
+    conditionOperator: 0
+    secondaryFightCondition:
+      conditionType: 0
+      comparisionOperator: 0
+      specificStatus: 0
+      specificValue: 0
+      specificPosition: 0
+    mobActionList:
+      rid: 4200292133794480219
   experience: 10
   cardLootable: []
   baseHealth: 36
   references:
     version: 2
     RefIds:
-    - rid: 4200291887202697280
+    - rid: 4200292133794480219
+      type: {class: SimpleMobActionsList, ns: OMG.Data.Mobs.Actions, asm: Assembly-CSharp}
+      data:
+        mobActionsList:
+        - mobAction: {fileID: 11400000, guid: 09face20f29590c40aefbd92e3e4fdab, type: 2}
+          target: 1
+          value: 7
+        - mobAction: {fileID: 11400000, guid: 5ba43cd7c5e82dd48afbc57f98451593, type: 2}
+          target: 0
+          value: 5
+    - rid: 4200292133794480220
       type: {class: SimpleMobActionsList, ns: OMG.Data.Mobs.Actions, asm: Assembly-CSharp}
       data:
         mobActionsList:
         - mobAction: {fileID: 11400000, guid: 5ba43cd7c5e82dd48afbc57f98451593, type: 2}
           target: 0
-          value: 5
+          value: 15
+    - rid: 4200292133794480221
+      type: {class: SimpleMobActionsList, ns: OMG.Data.Mobs.Actions, asm: Assembly-CSharp}
+      data:
+        mobActionsList:
+        - mobAction: {fileID: 11400000, guid: 09face20f29590c40aefbd92e3e4fdab, type: 2}
+          target: 1
+          value: 30
