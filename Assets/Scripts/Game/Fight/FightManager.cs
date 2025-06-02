@@ -173,7 +173,7 @@ namespace OMG.Game.Fight
                 FightMobEntityUI mobUI = fightUI.SpawnMobEntityUI(fightEntityWorld.WorldTransform.position);
 
                 FightMobEntity fightMobEntity = new FightMobEntity();
-                fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, mobUI, fightEntityWorld);
+                fightMobEntity.InitializeMob(mobData.BaseHealth, mobData.BaseHealth, mobData, mobUI, fightEntityWorld, mobData.entityName);
                 allMobsFightEntity.Add(fightMobEntity);
                 fightMobEntity.SetPos(i);
                 i++;

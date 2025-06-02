@@ -13,7 +13,7 @@ namespace OMG.Game.Fight.Entities
         public void InitializeCharacter(DungeonCharacter dungeonCharacter, FightCharacterEntityUI characterUI , FightEntityWorld fightEntityWorld)
         {
             this.dungeonCharacter = dungeonCharacter;
-            InitializeEntity(dungeonCharacter.Health, dungeonCharacter.MaxHealth, characterUI, fightEntityWorld);
+            InitializeEntity(dungeonCharacter.Health, dungeonCharacter.MaxHealth, characterUI, fightEntityWorld, "Oropo");
         }
     }
 }

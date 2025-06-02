@@ -61,6 +61,7 @@ MonoBehaviour:
   experience: 10
   cardLootable: []
   baseHealth: 36
+  entityName: Arakne
   references:
     version: 2
     RefIds:

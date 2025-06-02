@@ -189,6 +189,11 @@ namespace OMG.Game.Fight.Entities
         #endregion
 
         #region Tooltip
+		public void SetName(string entityName)
+		{
+			this.entityName.text = entityName;
+		}
+		
         private void ShowTooltip()
         {
             if (tooltipTween != null)

@@ -24,7 +24,7 @@ namespace OMG.Game.Fight.Entities
         public bool IsDying => isDying;
         public bool CanDie() => currentHealth <= 0;
 
-        protected void InitializeEntity(int currentHealth, int maxHealth, FightEntityUI entityUI, FightEntityWorld entityWorld)
+        protected void InitializeEntity(int currentHealth, int maxHealth, FightEntityUI entityUI, FightEntityWorld entityWorld, string entityName)
         {
             this.currentHealth = currentHealth;
             this.maxHealth = maxHealth;
@@ -36,6 +36,7 @@ namespace OMG.Game.Fight.Entities
 
             entityUI.UpdateAllStatusUI(currentStatus);
             entityUI.InitHealthUI(this.currentHealth, this.maxHealth, currentArmor);
+			entityUI.SetName(entityName);
         }
         public void NewTurn()
         {

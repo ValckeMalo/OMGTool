@@ -14,6 +14,7 @@ namespace OMG.Data.Mobs
         [SerializeField] private int experience;
         [SerializeField] private List<CardData> cardLootable;
         [SerializeField] private int baseHealth;
+        [SerializeField] public string entityName;
 
         public List<MobFightBehaviour> MobFightBehaviourList => mobBehaviours;
 

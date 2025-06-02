@@ -49,12 +49,12 @@ namespace OMG.Game.Fight.Entities
             OnMobDie?.Invoke(this);
         }
 
-        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData, FightMobEntityUI mobUI, FightEntityWorld fightEntityWorld)
+        public void InitializeMob(int currentHealth, int maxHealth, MobData mobData, FightMobEntityUI mobUI, FightEntityWorld fightEntityWorld, string entityName)
         {
             this.mobData = mobData;
             this.mobUI = mobUI;
 
-            InitializeEntity(currentHealth, maxHealth, mobUI, fightEntityWorld);
+            InitializeEntity(currentHealth, maxHealth, mobUI, fightEntityWorld, entityName);
             SearchNextAction();
         }
 
