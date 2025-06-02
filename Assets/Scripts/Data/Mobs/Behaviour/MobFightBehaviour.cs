@@ -9,9 +9,9 @@ namespace OMG.Data.Mobs.Behaviour
     public class MobFightBehaviour
     {
         [Title("Mob Fight Behaviour")]
-        [SerializeField] private FightCondition primaryFightCondition;
-        [SerializeField] private ConditionOperator conditionOperator;
-        [SerializeField] private FightCondition secondaryFightCondition;
+        [SerializeField] private FightCondition primaryFightCondition = new FightCondition();
+        [SerializeField] private ConditionOperator conditionOperator = ConditionOperator.And;
+        [SerializeField] private FightCondition secondaryFightCondition = new FightCondition();
         [SerializeReference,SerializeField] private MobActionsList mobActionList;
 
         public FightCondition PrimaryFightCondition { get => primaryFightCondition; }

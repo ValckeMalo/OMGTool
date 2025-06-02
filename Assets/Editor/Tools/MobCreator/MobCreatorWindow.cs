@@ -86,9 +86,14 @@ namespace OMG.Tools.MobCreator
                         state = WindowState.Search;
                     }
                     GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("Create", GUILayout.Height(200f), GUILayout.Width(200f)))
+                    using (new EditorGUILayout.VerticalScope(GUILayout.Height(200f), GUILayout.Width(200f)))
                     {
-                        state = WindowState.Create;
+                        GUILayout.Label("Enter the name of the mob you want to create", GUILayout.ExpandWidth(true));
+                        mobName = EditorGUILayout.TextField(mobName, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                        if (GUILayout.Button("Create", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+                        {
+                            CreateAndSaveMob();
+                        }
                     }
                     GUILayout.FlexibleSpace();
                 }
@@ -124,30 +129,68 @@ namespace OMG.Tools.MobCreator
             //grid mob so
             string[] mobDatasGUID = AssetDatabase.FindAssets("t:MobData", null);
 
-            if (mobDatasGUID != null && mobDatasGUID.Length > 0)
+            if (mobDatasGUID == null || mobDatasGUID.Length == 0)
             {
-                using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
+                EditorGUILayout.HelpBox("Aucun MobData trouvé dans le projet.", MessageType.Info);
+                return;
+            }
+
+            // 1) Largeur “cellule” (bouton + padding). Ajustez si nécessaire.
+            float cellWidth = 80f;
+            float cellHeight = 30f;
+
+            // 2) On prend la largeur actuelle de la fenêtre
+            float viewWidth = EditorGUIUtility.currentViewWidth;
+
+            // 3) Combien de colonnes peuvent tenir côte à côte ?
+            int columns = Mathf.Max(1, Mathf.FloorToInt(viewWidth / cellWidth));
+
+            int count = mobDatasGUID.Length;
+
+            for (int i = 0; i < count; ++i)
+            {
+                // À chaque début de ligne, on ouvre une nouvelle HorizontalScope
+                if (i % columns == 0)
                 {
-                    MobData mobData = null;
-                    foreach (string guid in mobDatasGUID)
+                    EditorGUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
+                    GUILayout.FlexibleSpace(); // optionnel, pour centrer horizontalement
+                }
+
+                // On charge et affiche ce MobData dans un VerticalScope
+                string guid = mobDatasGUID[i];
+                MobData mobData = AssetDatabase.LoadAssetAtPath<MobData>(AssetDatabase.GUIDToAssetPath(guid));
+                if (mobData != null)
+                {
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Width(cellWidth), GUILayout.Height(cellHeight)))
                     {
-                        mobData = AssetDatabase.LoadAssetAtPath<MobData>(AssetDatabase.GUIDToAssetPath(guid));
-                        if (mobData == null) continue;
-
-                        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.MaxHeight(50f), GUILayout.MaxWidth(30f)))
+                        // Votre bouton avec le nom du mob, centré
+                        if (GUILayout.Button(
+                                mobData.name,
+                                new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter },
+                                GUILayout.ExpandHeight(true),
+                                GUILayout.MinWidth(50f),
+                                GUILayout.MaxHeight(20f)))
                         {
-                            if (GUILayout.Button(EditorGUIUtility.ObjectContent(null, typeof(MobData)).image, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
-                            {
-                                selectedGUID = guid;
-                                originalMob = mobData;
-                                copyMob = Instantiate<MobData>(originalMob);
-                                SOCopyMob = new SerializedObject(copyMob);
-                                state = WindowState.Modify;
-                            }
-
-                            EditorGUILayout.LabelField(mobData.name, new GUIStyle(EditorStyles.label) { alignment = TextAnchor.MiddleCenter });
+                            selectedGUID = guid;
+                            originalMob = mobData;
+                            copyMob = Instantiate<MobData>(originalMob);
+                            SOCopyMob = new SerializedObject(copyMob);
+                            state = WindowState.Modify;
                         }
                     }
+                }
+                else
+                {
+                    // Même si l'asset n'existe pas, on ajoute un espace pour garder la grille régulière
+                    GUILayout.Space(cellWidth);
+                }
+
+                // Si on a atteint la fin de la ligne (ou le dernier élément), on ferme la HorizontalScope
+                if (i % columns == columns - 1 || i == count - 1)
+                {
+                    GUILayout.FlexibleSpace(); // optionnel, pour centrer horizontalement
+                    EditorGUILayout.EndHorizontal();
+                    GUILayout.Space(4);       // petit espace vertical entre les lignes
                 }
             }
         }
@@ -206,6 +249,9 @@ namespace OMG.Tools.MobCreator
                 //Behaviour
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
+                    if (copyMob.MobFightBehaviourList == null)
+                        copyMob.MobFightBehaviourList = new List<MobFightBehaviour>();
+
                     //tool
                     using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
                     {
@@ -253,7 +299,6 @@ namespace OMG.Tools.MobCreator
                         GUI.backgroundColor = Color.white;
                         if (copyMob.MobFightBehaviourList != null && copyMob.MobFightBehaviourList.Count > 0)
                         {
-
                             for (int i = 0; i < copyMob.MobFightBehaviourList.Count; i++)
                             {
                                 if (CurrentIndexBehaviour == i)
@@ -280,39 +325,49 @@ namespace OMG.Tools.MobCreator
                     //fight conditions
                     using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
                     {
-                        DrawFightConditon(SelectedMobFightBehaviour.PrimaryFightCondition, true);
-
-                        bool canDrawSecondCondition = SelectedMobFightBehaviour.PrimaryFightCondition.ConditionType != FightConditionType.None;
-                        if (canDrawSecondCondition)
+                        if (copyMob.MobFightBehaviourList != null && copyMob.MobFightBehaviourList.Count > 0)
                         {
-                            using (new EditorGUILayout.VerticalScope(GUILayout.Width(50f)))
+                            DrawFightConditon(SelectedMobFightBehaviour.PrimaryFightCondition, true);
+
+                            bool canDrawSecondCondition = SelectedMobFightBehaviour.PrimaryFightCondition.ConditionType != FightConditionType.None;
+                            if (canDrawSecondCondition)
                             {
-                                SelectedMobFightBehaviour.ConditionOperator = (ConditionOperator)EditorGUILayout.EnumPopup(SelectedMobFightBehaviour.ConditionOperator);
+                                using (new EditorGUILayout.VerticalScope(GUILayout.Width(50f)))
+                                {
+                                    SelectedMobFightBehaviour.ConditionOperator = (ConditionOperator)EditorGUILayout.EnumPopup(SelectedMobFightBehaviour.ConditionOperator);
+                                }
                             }
-                        }
-                        else
-                        {
-                            GUILayout.Space(50f);
-                        }
+                            else
+                            {
+                                GUILayout.Space(50f);
+                            }
 
-                        DrawFightConditon(SelectedMobFightBehaviour.SecondaryFightCondition, canDrawSecondCondition);
+                            DrawFightConditon(SelectedMobFightBehaviour.SecondaryFightCondition, canDrawSecondCondition);
+                        }
                     }
                 }
 
                 //list mobs
                 using (EditorGUILayout.ScrollViewScope scrollView = new EditorGUILayout.ScrollViewScope(scrollPos, EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
                 {
-                    scrollPos = scrollView.scrollPosition;
+                    if (copyMob.MobFightBehaviourList != null && copyMob.MobFightBehaviourList.Count > 0)
+                    {
+                        scrollPos = scrollView.scrollPosition;
+                        SOCopyMob = new SerializedObject(copyMob);
+                        if (SOCopyMob.FindProperty("mobBehaviours").arraySize > 0 && SOCopyMob.FindProperty("mobBehaviours").arraySize > currentIndexBehaviour)
+                        {
 
-                    SerializedProperty mobActionsProp = SOCopyMob.FindProperty("mobBehaviours")
-                                                                 .GetArrayElementAtIndex(CurrentIndexBehaviour)
-                                                                 .FindPropertyRelative("mobActionList");
+                            SerializedProperty mobActionsProp = SOCopyMob.FindProperty("mobBehaviours")
+                                                                         .GetArrayElementAtIndex(CurrentIndexBehaviour)
+                                                                         .FindPropertyRelative("mobActionList");
 
-                    SOCopyMob.Update();
+                            SOCopyMob.Update();
 
-                    EditorGUILayout.PropertyField(mobActionsProp, new GUIContent("Mob Actions List"), true);
+                            EditorGUILayout.PropertyField(mobActionsProp, new GUIContent("Mob Actions List"), true);
 
-                    SOCopyMob.ApplyModifiedProperties();
+                            SOCopyMob.ApplyModifiedProperties();
+                        }
+                    }
                 }
             }
 
@@ -440,9 +495,9 @@ namespace OMG.Tools.MobCreator
 
         private void CreateAndSaveMob()
         {
-            if (mobPrefab == null)
+            if (string.IsNullOrEmpty(mobName))
             {
-                EditorUtility.DisplayDialog("Erreur", "Veuillez assigner un prefab de base !", "OK");
+                EditorUtility.DisplayDialog("Erreur", "Veuillez entrer un nom pour le mob !", "OK");
                 return;
             }
 
@@ -450,25 +505,24 @@ namespace OMG.Tools.MobCreator
             if (string.IsNullOrEmpty(path)) return;
 
             string relativePath = "Assets" + path.Substring(Application.dataPath.Length);
-            string assetPath = Path.Combine(relativePath, mobName + ".prefab");
-
-            GameObject newMob = Instantiate(mobPrefab);
-            newMob.name = mobName;
-
-            // Créer le dossier s'il n'existe pas
             if (!AssetDatabase.IsValidFolder(relativePath))
             {
                 Directory.CreateDirectory(path);
                 AssetDatabase.Refresh();
             }
 
-            // Sauvegarder en Prefab
-            PrefabUtility.SaveAsPrefabAsset(newMob, assetPath);
-            DestroyImmediate(newMob);
+            // Create ScriptableObject
+            MobData mobData = ScriptableObject.CreateInstance<MobData>();
+            mobData.name = mobName;
+            mobData.entityName = mobName;
 
-            EditorUtility.DisplayDialog("Succès", $"Mob sauvegardé dans {assetPath}", "OK");
+            string assetPath = Path.Combine(relativePath, $"{mobName}.asset");
+            AssetDatabase.CreateAsset(mobData, assetPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            EditorUtility.DisplayDialog("Succès", $"MobData sauvegardé dans {assetPath}", "OK");
         }
-
         private bool LooseFocus()
         {
             if (Event.current.type == EventType.MouseDown && Event.current.button == 0)

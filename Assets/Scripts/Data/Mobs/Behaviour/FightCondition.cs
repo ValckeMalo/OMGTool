@@ -13,7 +13,7 @@ namespace OMG.Data.Mobs.Behaviour
         [SerializeField] private FightConditionType conditionType;
         [SerializeField] private ComparisonOperator comparisionOperator;
         [SerializeField] private StatusType specificStatus;
-        [SerializeField] private float specificValue;
+        [SerializeField] private float specificValue = 0f;
         [SerializeField] private FightPosition specificPosition;
 
         public FightConditionType ConditionType { get => conditionType; set => conditionType = value; }
